@@ -73,6 +73,8 @@
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.6);
             box-shadow: 0 8px 32px 0 rgba(28, 25, 23, 0.05);
+            transform: translateZ(0);
+            will-change: transform, backdrop-filter;
         }
         .glass-dark {
             background: rgba(28, 25, 23, 0.7);
@@ -80,10 +82,13 @@
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            transform: translateZ(0);
+            will-change: transform, backdrop-filter;
         }
         .glow-pulse {
             box-shadow: 0 0 25px rgba(212, 242, 104, 0.4);
             animation: pulse-glow 3s infinite alternate;
+            will-change: box-shadow;
         }
         @keyframes pulse-glow {
             from { box-shadow: 0 0 15px rgba(212, 242, 104, 0.2); }
@@ -94,8 +99,8 @@
            ANIMATIONS
            ========================================= */
         @keyframes reveal-up {
-            0% { transform: translateY(40px); opacity: 0; filter: blur(5px); }
-            100% { transform: translateY(0); opacity: 1; filter: blur(0); }
+            0% { transform: translateY(40px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
         }
         @keyframes fade-in {
             0% { opacity: 0; }
@@ -115,9 +120,12 @@
         .animate-reveal {
             opacity: 0;
             animation: reveal-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            will-change: transform, opacity;
         }
         .animate-float {
             animation: float 6s ease-in-out infinite;
+            will-change: transform;
+            transform: translateZ(0);
         }
         
         .delay-100 { animation-delay: 0.1s; }
@@ -129,6 +137,7 @@
             opacity: 0;
             transform: translateY(30px);
             transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
         }
         .scroll-reveal.is-visible {
             opacity: 1;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-BR">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -81,6 +81,8 @@
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.6);
             box-shadow: 0 8px 32px 0 rgba(28, 25, 23, 0.05);
+            transform: translateZ(0);
+            will-change: transform, backdrop-filter;
         }
         
         .glass-dark {
@@ -89,11 +91,14 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+            transform: translateZ(0);
+            will-change: transform, backdrop-filter;
         }
 
         .glow-pulse {
             box-shadow: 0 0 25px rgba(212, 242, 104, 0.4);
             animation: pulse-glow 3s infinite alternate;
+            will-change: box-shadow;
         }
 
         @keyframes pulse-glow {
@@ -116,9 +121,10 @@
         .bg-blob {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
             z-index: 0;
             opacity: 0.5;
+            will-change: transform;
+            transform: translateZ(0);
         }
 
         .blob-1 {
@@ -187,6 +193,13 @@
         /* =========================================
            UTILITIES & HELPERS
            ========================================= */
+        .hw-accel, .gs-parallax-img, .gs-float-card, .gs-float-card-alt, .gs-float-slow {
+            transform: translateZ(0);
+            will-change: transform;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
         .invisible-start {
             opacity: 0;
             visibility: hidden;
@@ -378,7 +391,7 @@
         <div class="absolute inset-0 z-0 opacity-40 pointer-events-none hw-accel">
             <div class="absolute inset-0" style="background-image: linear-gradient(rgba(28,25,23,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(28,25,23,0.04) 1px, transparent 1px); background-size: 50px 50px;"></div>
             <!-- Soft glow at center -->
-            <div class="absolute top-[30%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-primary/10 blur-[100px]"></div>
+            <div class="absolute top-[30%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-[radial-gradient(circle,rgba(184,157,112,0.15)_0%,transparent_70%)]"></div>
         </div>
 
         <div class="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10 flex flex-col gap-12 lg:gap-16">
@@ -613,46 +626,44 @@
                 }
             });
             
-            // Mouse Move Parallax na Section Inteira
+            // Mouse Move Parallax na Section Inteira (Otimizado com quickTo e requestAnimationFrame)
             const heroSection = document.getElementById('hero');
+            
+            const xToImg = gsap.quickTo('.gs-main-img-wrapper', 'rotationY', {duration: 1, ease: 'power2.out'});
+            const yToImg = gsap.quickTo('.gs-main-img-wrapper', 'rotationX', {duration: 1, ease: 'power2.out'});
+            const xToCard = gsap.quickTo('.gs-float-card', 'x', {duration: 1, ease: 'power2.out'});
+            const yToCard = gsap.quickTo('.gs-float-card', 'y', {duration: 1, ease: 'power2.out'});
+            const xToCardAlt = gsap.quickTo('.gs-float-card-alt', 'x', {duration: 1, ease: 'power2.out'});
+            const yToCardAlt = gsap.quickTo('.gs-float-card-alt', 'y', {duration: 1, ease: 'power2.out'});
+
+            let ticking = false;
+
             heroSection.addEventListener('mousemove', (e) => {
-                const x = (e.clientX / window.innerWidth - 0.5) * 20; // range -10 to 10
-                const y = (e.clientY / window.innerHeight - 0.5) * 20;
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        const x = (e.clientX / window.innerWidth - 0.5) * 20; // range -10 to 10
+                        const y = (e.clientY / window.innerHeight - 0.5) * 20;
 
-                gsap.to('.gs-main-img-wrapper', {
-                    rotationY: -5 + x * 0.5,
-                    rotationX: 2 - y * 0.5,
-                    duration: 1,
-                    ease: "power2.out"
-                });
-
-                gsap.to('.gs-float-card', {
-                    x: x * -1.5,
-                    y: y * -1.5,
-                    duration: 1,
-                    ease: "power2.out"
-                });
-                
-                gsap.to('.gs-float-card-alt', {
-                    x: x * 1.2,
-                    y: y * 1.2,
-                    duration: 1,
-                    ease: "power2.out"
-                });
-            });
+                        xToImg(-5 + x * 0.5);
+                        yToImg(2 - y * 0.5);
+                        xToCard(x * -1.5);
+                        yToCard(y * -1.5);
+                        xToCardAlt(x * 1.2);
+                        yToCardAlt(y * 1.2);
+                        
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
             
             heroSection.addEventListener('mouseleave', () => {
-                gsap.to('.gs-main-img-wrapper', {
-                    rotationY: -5,
-                    rotationX: 2,
-                    duration: 1.5,
-                    ease: "power2.out"
-                });
-                gsap.to('.gs-float-card, .gs-float-card-alt', {
-                    x: 0,
-                    duration: 1.5,
-                    ease: "power2.out"
-                });
+                xToImg(-5);
+                yToImg(2);
+                xToCard(0);
+                yToCard(0);
+                xToCardAlt(0);
+                yToCardAlt(0);
             });
 
             // 4. Seção Neural/Dark Animada
