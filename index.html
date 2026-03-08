@@ -3,14 +3,25 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Hero - Clínica Dimagem</title>
+    <title>Dimagem — Clínica de Diagnóstico por Imagem | Ijuí/RS</title>
+    <meta name="description" content="Dimagem — Referência em diagnóstico por imagem desde 1984. Ressonância Magnética, Tomografia, Ecografia, Raios-X, Mamografia e mais. Ijuí, RS.">
+    <meta name="theme-color" content="#E6E3D6">
+    <link rel="icon" type="image/x-icon" href="assets/raw_files/favicon.ico">
     
-    <!-- Fonts: Inter and Plus Jakarta Sans -->
+    <!-- Preconnect (DNS + TCP antecipado) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     
-    <!-- Tailwind CSS (via CDN para seguir o Design System) -->
+    <!-- Preload das imagens críticas LCP -->
+    <link rel="preload" as="image" href="assets/raw_files/frente-dimagem.webp">
+    
+    <!-- Fonts com display=swap (não bloqueia renderização) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -46,13 +57,13 @@
         }
     </script>
 
-    <!-- Iconify para os ícones UI -->
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <!-- Iconify (defer — não bloqueia) -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" defer></script>
 
-    <!-- GSAP & Lenis via CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <!-- GSAP & Lenis (defer) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js" defer></script>
 
     <style>
         /* =========================================
@@ -149,7 +160,23 @@
             opacity: 0.6;
             pointer-events: none;
         }
+
+        /* Otimização de Performance (Lazy Rendering) */
+        .section-optimized {
+            content-visibility: auto;
+            contain-intrinsic-size: 1000px;
+            contain: paint layout;
+        }
         
+        /* Reduzir repaints de animações de orb */
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            will-change: transform, opacity;
+            filter: blur(60px);
+            transform: translateZ(0); /* Força GPU HW Accel */
+        }
         .bg-blob {
             position: absolute;
             border-radius: 50%;
@@ -387,17 +414,20 @@
         html {
             scrollbar-width: thin;
             scrollbar-color: #c4b99a #E6E3D6;
+            transition: scrollbar-color 0.5s ease;
         }
         html::-webkit-scrollbar {
             width: 8px;
         }
         html::-webkit-scrollbar-track {
             background: #E6E3D6;
+            transition: background 0.5s ease;
         }
         html::-webkit-scrollbar-thumb {
             background: #c4b99a;
             border-radius: 10px;
             border: 2px solid #E6E3D6;
+            transition: background 0.5s ease, border-color 0.5s ease;
         }
         html::-webkit-scrollbar-thumb:hover {
             background: #b89d70;
@@ -436,6 +466,75 @@
             background: #a8a29e; 
         }
 
+        /* Transição suave claro → escuro (imperceptível) */
+        .section-fade-out {
+            position: relative;
+        }
+        .section-fade-out::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 250px;
+            background: linear-gradient(
+                to bottom,
+                rgba(28, 25, 23, 0) 0%,
+                rgba(28, 25, 23, 0.01) 10%,
+                rgba(28, 25, 23, 0.04) 22%,
+                rgba(28, 25, 23, 0.08) 33%,
+                rgba(28, 25, 23, 0.16) 44%,
+                rgba(28, 25, 23, 0.3) 55%,
+                rgba(28, 25, 23, 0.5) 66%,
+                rgba(28, 25, 23, 0.72) 77%,
+                rgba(28, 25, 23, 0.9) 88%,
+                rgba(28, 25, 23, 1) 100%
+            );
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* =========================================
+           AMBIENT BACKGROUND ANIMATIONS
+           ========================================= */
+        @keyframes ambient-drift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -20px) scale(1.05); }
+            50% { transform: translate(-20px, 15px) scale(0.95); }
+            75% { transform: translate(15px, 25px) scale(1.02); }
+        }
+        @keyframes ambient-drift-reverse {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(-25px, 20px) scale(0.97); }
+            50% { transform: translate(20px, -15px) scale(1.04); }
+            75% { transform: translate(-10px, -25px) scale(1); }
+        }
+        @keyframes ambient-pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        @keyframes ambient-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .ambient-orb--1 {
+            animation: ambient-drift 20s ease-in-out infinite;
+        }
+        .ambient-orb--2 {
+            animation: ambient-drift-reverse 25s ease-in-out infinite;
+        }
+        .ambient-orb--3 {
+            animation: ambient-drift 30s ease-in-out infinite;
+            animation-delay: -10s;
+        }
+        .ambient-orb--pulse {
+            animation: ambient-pulse 8s ease-in-out infinite;
+        }
+        .ambient-grid-shift {
+            animation: ambient-drift 40s ease-in-out infinite;
+        }
+
         /* =========================================
            MARQUEE ANIMATION (Convênios)
            ========================================= */
@@ -449,9 +548,6 @@
         }
         .animate-marquee {
             animation: marquee 40s linear infinite;
-        }
-        .animate-marquee:hover {
-            animation-play-state: paused;
         }
         .marquee-container {
             display: flex;
@@ -654,6 +750,7 @@
                         src="assets/raw_files/frente-dimagem.webp" 
                         alt="Fachada Clínica Dimagem" 
                         class="w-full h-full object-cover scale-[1.05] gs-parallax-img hover:scale-110 transition-transform duration-[1.5s] ease-out img-mask"
+                        loading="lazy"
                         onerror="this.src='https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1200'; this.classList.remove('img-mask');"
                     >
                     <!-- Gradiente base para a imagem -->
@@ -666,7 +763,7 @@
                     <div class="glass-effect rounded-2xl p-4 pr-6 flex items-center gap-4 border border-white/60 backdrop-blur-xl group hover:bg-white/60 transition-colors duration-300">
                         <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shadow-inner border-2 border-white relative group-hover:scale-105 transition-transform duration-500">
                             <!-- Fallback emborrachado se a imagem não carregar localmente -->
-                            <img src="assets/raw_files/Dr.-CELSO-VEDOLIN.webp" alt="Dr. Celso Vedolin" class="w-full h-full object-cover object-top" onerror="this.src='https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400'">
+                            <img src="assets/raw_files/Dr.-CELSO-VEDOLIN.webp" alt="Dr. Celso Vedolin" class="w-full h-full object-cover object-top" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400'">
                         </div>
                         <div class="flex flex-col">
                             <span class="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-primary font-bold mb-1 flex items-center gap-1">
@@ -716,12 +813,15 @@
     <hr class="section-divider">
 
     <!-- 2️⃣ A CLÍNICA (ESTRUTURA TECH - LIGHT MODE) -->
-    <section id="about" class="relative w-full py-24 lg:py-32 bg-beige-100 text-stone-600 overflow-hidden border-t border-stone-300/50">
+    <section id="about" class="relative w-full py-24 lg:py-32 bg-beige-100 text-stone-600 overflow-hidden border-t border-stone-300/50 section-optimized">
         <!-- Abstract Background Mesh / Grid -->
         <div class="absolute inset-0 z-0 opacity-40 pointer-events-none hw-accel">
-            <div class="absolute inset-0" style="background-image: linear-gradient(rgba(28,25,23,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(28,25,23,0.04) 1px, transparent 1px); background-size: 50px 50px;"></div>
+            <div class="absolute inset-0 ambient-grid-shift" style="background-image: linear-gradient(rgba(28,25,23,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(28,25,23,0.04) 1px, transparent 1px); background-size: 50px 50px;"></div>
             <!-- Soft glow at center -->
-            <div class="absolute top-[30%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-[radial-gradient(circle,rgba(184,157,112,0.15)_0%,transparent_70%)]"></div>
+            <div class="absolute top-[30%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-[radial-gradient(circle,rgba(184,157,112,0.15)_0%,transparent_70%)] ambient-orb ambient-orb--1"></div>
+            <!-- Orbs extras animados -->
+            <div class="ambient-orb ambient-orb--2 w-[25vw] h-[25vw] top-[60%] right-[5%] bg-[radial-gradient(circle,rgba(158,160,143,0.1)_0%,transparent_70%)]"></div>
+            <div class="ambient-orb ambient-orb--3 ambient-orb--pulse w-[15vw] h-[15vw] top-[10%] right-[30%] bg-[radial-gradient(circle,rgba(184,157,112,0.08)_0%,transparent_70%)]"></div>
         </div>
 
         <div class="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10 flex flex-col gap-12 lg:gap-16">
@@ -844,12 +944,13 @@
     <hr class="section-divider">
 
     <!-- 3️⃣ CORPO CLÍNICO (CARROSSEL PREMIUM) -->
-    <section id="team" class="relative w-full py-28 lg:py-36 bg-beige-100 overflow-hidden border-t border-stone-300/30">
+    <section id="team" class="relative w-full pt-28 lg:pt-36 pb-56 lg:pb-64 bg-beige-100 overflow-hidden border-t border-stone-300/30 section-fade-out section-optimized">
         <!-- Background decorativo -->
         <div class="absolute inset-0 z-0 pointer-events-none">
-            <div class="absolute inset-0" style="background-image: linear-gradient(rgba(28,25,23,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(28,25,23,0.03) 1px, transparent 1px); background-size: 50px 50px;"></div>
-            <div class="absolute top-[5%] right-[5%] w-[40vw] h-[40vw] rounded-full bg-[radial-gradient(circle,rgba(184,157,112,0.08)_0%,transparent_70%)]"></div>
-            <div class="absolute bottom-[10%] left-[10%] w-[35vw] h-[35vw] rounded-full bg-[radial-gradient(circle,rgba(158,160,143,0.08)_0%,transparent_70%)]"></div>
+            <div class="absolute inset-0 ambient-grid-shift" style="background-image: linear-gradient(rgba(28,25,23,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(28,25,23,0.03) 1px, transparent 1px); background-size: 50px 50px; animation-delay: -5s;"></div>
+            <div class="absolute top-[5%] right-[5%] w-[40vw] h-[40vw] rounded-full bg-[radial-gradient(circle,rgba(184,157,112,0.08)_0%,transparent_70%)] ambient-orb ambient-orb--2"></div>
+            <div class="absolute bottom-[10%] left-[10%] w-[35vw] h-[35vw] rounded-full bg-[radial-gradient(circle,rgba(158,160,143,0.08)_0%,transparent_70%)] ambient-orb ambient-orb--1"></div>
+            <div class="ambient-orb ambient-orb--3 ambient-orb--pulse w-[20vw] h-[20vw] top-[40%] left-[50%] bg-[radial-gradient(circle,rgba(184,157,112,0.06)_0%,transparent_70%)]"></div>
         </div>
 
         <div class="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10">
@@ -890,6 +991,10 @@
                         <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-stone-200/60 shadow-sm text-xs font-bold text-stone-700 uppercase tracking-wider">
                             <iconify-icon icon="solar:hand-stars-bold" class="text-primary" width="15"></iconify-icon>
                             Compromisso
+                        </span>
+                        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-stone-200/60 shadow-sm text-xs font-bold text-stone-700 uppercase tracking-wider">
+                            <iconify-icon icon="solar:hearts-bold" class="text-primary" width="15"></iconify-icon>
+                            Confiança e Cuidado
                         </span>
                     </div>
                 </div>
@@ -1096,7 +1201,7 @@
     </section>
 
     <!-- 5️⃣ CONVÊNIOS (Marquee Premium) -->
-    <section id="convenios" class="relative w-full py-16 bg-stone-900 border-t border-stone-800 overflow-hidden flex flex-col items-center justify-center">
+    <section id="convenios" class="relative w-full py-16 bg-stone-900 overflow-hidden flex flex-col items-center justify-center section-optimized">
         <!-- Badge da Seção -->
         <div class="mb-10 text-center relative z-10 w-full px-6 flex flex-col items-center">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-stone-800/80 shadow-sm text-[10px] font-bold uppercase tracking-widest text-primary mb-3">
@@ -1194,13 +1299,14 @@
     
 
     <!-- 6️⃣ EXAMES (CARDS LAVA EFF) -->
-    <section id="exams" class="relative w-full py-16 lg:py-24 bg-stone-900 text-beige-100 overflow-hidden">
+    <section id="exams" class="relative w-full py-16 lg:py-24 bg-stone-900 text-beige-100 overflow-hidden section-optimized">
         
         <!-- Abstract Background -->
         <div class="absolute inset-0 z-0 pointer-events-none opacity-20">
-            <div class="absolute inset-0" style="background-image: linear-gradient(rgba(234,232,222,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(234,232,222,0.05) 1px, transparent 1px); background-size: 60px 60px;"></div>
-            <div class="absolute top-[20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(184,157,112,0.1)_0%,transparent_60%)]"></div>
-            <div class="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-[radial-gradient(circle,rgba(212,242,104,0.05)_0%,transparent_60%)]"></div>
+            <div class="absolute inset-0 ambient-grid-shift" style="background-image: linear-gradient(rgba(234,232,222,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(234,232,222,0.05) 1px, transparent 1px); background-size: 60px 60px; animation-delay: -8s;"></div>
+            <div class="absolute top-[20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(184,157,112,0.1)_0%,transparent_60%)] ambient-orb ambient-orb--1"></div>
+            <div class="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-[radial-gradient(circle,rgba(212,242,104,0.05)_0%,transparent_60%)] ambient-orb ambient-orb--2"></div>
+            <div class="ambient-orb ambient-orb--3 ambient-orb--pulse w-[18vw] h-[18vw] top-[50%] left-[30%] bg-[radial-gradient(circle,rgba(184,157,112,0.06)_0%,transparent_70%)]"></div>
         </div>
 
         <div class="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10 flex flex-col gap-12 lg:gap-16">
@@ -1365,16 +1471,20 @@
         </div>
     </section>
 
+    <!-- Transição suave: escuro → escuro (exames → contato) -->
+    <div class="w-full h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
+
     <!-- 9️⃣ CONTATO — Dobra Premium -->
-    <section id="contact" class="relative w-full py-20 lg:py-32 bg-stone-900 text-white overflow-hidden">
+    <section id="contact" class="relative w-full py-20 lg:py-32 bg-stone-900 text-white overflow-hidden section-optimized">
         
         <!-- Background Decorativo -->
         <div class="absolute inset-0 z-0 pointer-events-none">
             <!-- Grid sutil -->
-            <div class="absolute inset-0 opacity-[0.04]" style="background-image: linear-gradient(rgba(234,232,222,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(234,232,222,0.3) 1px, transparent 1px); background-size: 80px 80px;"></div>
+            <div class="absolute inset-0 opacity-[0.04] ambient-grid-shift" style="background-image: linear-gradient(rgba(234,232,222,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(234,232,222,0.3) 1px, transparent 1px); background-size: 80px 80px; animation-delay: -15s;"></div>
             <!-- Glow orbs -->
-            <div class="absolute top-[10%] left-[-5%] w-[40vw] h-[40vw] rounded-full bg-[radial-gradient(circle,rgba(184,157,112,0.12)_0%,transparent_60%)]"></div>
-            <div class="absolute bottom-[5%] right-[-8%] w-[35vw] h-[35vw] rounded-full bg-[radial-gradient(circle,rgba(158,160,143,0.08)_0%,transparent_60%)]"></div>
+            <div class="absolute top-[10%] left-[-5%] w-[40vw] h-[40vw] rounded-full bg-[radial-gradient(circle,rgba(184,157,112,0.12)_0%,transparent_60%)] ambient-orb ambient-orb--2"></div>
+            <div class="absolute bottom-[5%] right-[-8%] w-[35vw] h-[35vw] rounded-full bg-[radial-gradient(circle,rgba(158,160,143,0.08)_0%,transparent_60%)] ambient-orb ambient-orb--1"></div>
+            <div class="ambient-orb ambient-orb--3 ambient-orb--pulse w-[22vw] h-[22vw] top-[45%] right-[25%] bg-[radial-gradient(circle,rgba(184,157,112,0.05)_0%,transparent_70%)]"></div>
             <!-- Linha diagonal decorativa -->
             <div class="absolute top-0 right-[20%] w-px h-full bg-gradient-to-b from-transparent via-primary/10 to-transparent"></div>
             <div class="absolute top-0 right-[80%] w-px h-full bg-gradient-to-b from-transparent via-white/5 to-transparent"></div>
@@ -1593,7 +1703,7 @@
                     </div>
                     <h3 id="modal-title" class="font-heading text-2xl md:text-3xl font-bold text-stone-900 tracking-tight">Nome do Exame</h3>
                 </div>
-                <button id="modal-close" class="absolute top-6 right-6 md:relative md:top-0 md:right-0 w-10 h-10 rounded-full bg-stone-100 text-stone-600 flex items-center justify-center hover:bg-stone-200 hover:text-stone-900 transition-colors self-start shrink-0">
+                <button id="modal-close" class="absolute top-6 right-6 md:relative md:top-0 md:right-0 w-10 h-10 rounded-full bg-stone-900/80 backdrop-blur-sm text-white flex items-center justify-center hover:bg-[#B89D70] hover:scale-110 hover:rotate-90 transition-all duration-300 shadow-lg self-start shrink-0">
                     <iconify-icon icon="solar:close-circle-bold" width="24"></iconify-icon>
                 </button>
             </div>
@@ -2408,7 +2518,7 @@
             // =============================================
             const mainNav = document.getElementById('main-nav');
             const htmlEl = document.documentElement;
-            const darkSections = document.querySelectorAll('#exams, #contact');
+            const darkSections = document.querySelectorAll('#convenios, #exams, #contact');
             
             darkSections.forEach(section => {
                 ScrollTrigger.create({
