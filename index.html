@@ -96,14 +96,19 @@
         }
 
         .glow-pulse {
-            box-shadow: 0 0 25px rgba(212, 242, 104, 0.4);
+            box-shadow: 0 0 25px rgba(184, 157, 112, 0.4);
             animation: pulse-glow 3s infinite alternate;
             will-change: box-shadow;
         }
 
         @keyframes pulse-glow {
-            from { box-shadow: 0 0 15px rgba(212, 242, 104, 0.15); }
-            to { box-shadow: 0 0 35px rgba(212, 242, 104, 0.6); }
+            from { box-shadow: 0 0 15px rgba(184, 157, 112, 0.15); }
+            to { box-shadow: 0 0 35px rgba(184, 157, 112, 0.6); }
+        }
+
+        @keyframes pulse-glow-gold {
+            from { box-shadow: 0 0 15px rgba(184, 157, 112, 0.15); }
+            to { box-shadow: 0 0 35px rgba(184, 157, 112, 0.5); }
         }
 
         /* =========================================
@@ -388,23 +393,38 @@
             display: flex;
             width: max-content;
         }
+        /* Navbar Dark Mode (quando sobre seções escuras) */
+        #main-nav.nav-dark {
+            background: linear-gradient(to right, rgba(28,25,23,0.85), rgba(28,25,23,0.65)) !important;
+            border-color: rgba(255,255,255,0.08) !important;
+            box-shadow: 0 8px 32px -8px rgba(0,0,0,0.3) !important;
+        }
+        #main-nav.nav-dark .nav-link {
+            color: rgba(255,255,255,0.7) !important;
+        }
+        #main-nav.nav-dark .nav-link:hover {
+            color: #b89d70 !important;
+        }
+        #main-nav.nav-dark .nav-logo {
+            filter: brightness(10) !important;
+        }
     </style>
 </head>
 <body class="bg-beige-200 text-stone-900 min-h-screen w-full antialiased overflow-x-hidden">
 
     <!-- Navbar Glass Effect -->
-    <header class="absolute top-5 left-1/2 -translate-x-1/2 w-[95%] max-w-[1280px] z-50 transition-all duration-500 backdrop-blur-[16px] bg-gradient-to-r from-white/80 to-white/40 border-t border-l border-white/80 border-b border-r border-white/30 rounded-full shadow-[0_8px_32px_-8px_rgba(28,25,23,0.08)] invisible-start gs-nav lg:fixed">
+    <header id="main-nav" class="absolute top-5 left-1/2 -translate-x-1/2 w-[95%] max-w-[1280px] z-50 transition-all duration-500 backdrop-blur-[16px] bg-gradient-to-r from-white/80 to-white/40 border-t border-l border-white/80 border-b border-r border-white/30 rounded-full shadow-[0_8px_32px_-8px_rgba(28,25,23,0.08)] invisible-start gs-nav lg:fixed">
         <div class="px-7 py-3.5 md:py-4 flex items-center justify-between w-full">
             <div class="flex items-center shrink-0 pl-1">
-                <img src="assets/raw_files/logodimagem.webp" alt="Dimagem" class="h-8 md:h-9 lg:h-10 object-contain drop-shadow-sm">
+                <img src="assets/raw_files/logodimagem.webp" alt="Dimagem" class="nav-logo h-8 md:h-9 lg:h-10 object-contain drop-shadow-sm transition-all duration-500">
             </div>
             
             <div class="hidden lg:flex flex-1 justify-center items-center gap-8 xl:gap-12 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.12em] text-stone-700/80 whitespace-nowrap">
-                <a href="#about" class="hover:text-primary transition-colors hover:scale-105 active:scale-95 transform">A clínica</a>
-                <a href="#exams" class="hover:text-primary transition-colors hover:scale-105 active:scale-95 transform">Exames</a>
-                <a href="#team" class="hover:text-primary transition-colors hover:scale-105 active:scale-95 transform">Corpo Clínico</a>
-                <a href="#convenios" class="hover:text-primary transition-colors hover:scale-105 active:scale-95 transform">Convênios</a>
-                <a href="#" class="hover:text-primary transition-colors hover:scale-105 active:scale-95 transform">Contato</a>
+                <a href="#about" class="nav-link hover:text-primary transition-colors hover:scale-105 active:scale-95 transform">A clínica</a>
+                <a href="#exams" class="nav-link hover:text-primary transition-colors hover:scale-105 active:scale-95 transform">Exames</a>
+                <a href="#team" class="nav-link hover:text-primary transition-colors hover:scale-105 active:scale-95 transform">Corpo Clínico</a>
+                <a href="#convenios" class="nav-link hover:text-primary transition-colors hover:scale-105 active:scale-95 transform">Convênios</a>
+                <a href="#contact" class="nav-link hover:text-primary transition-colors hover:scale-105 active:scale-95 transform">Contato</a>
             </div>
 
             <div class="flex items-center shrink-0 justify-end pr-1">
@@ -527,10 +547,9 @@
                 <!-- Floating Card 2: Tecnologia (Glass Dark) -->
                 <!-- Posição: Canto superior direito/central -->
                 <div class="absolute top-[15%] -right-[5%] lg:-right-[5%] z-20 gs-float-card-alt delay-200 shadow-2xl group cursor-pointer hover:z-30">
-                    <div class="glass-dark rounded-[1.5rem] p-4 sm:p-5 flex items-center gap-4 border border-white/10 glow-pulse backdrop-blur-md group-hover:scale-105 group-hover:border-white/30 group-hover:shadow-[0_0_40px_rgba(212,242,104,0.25)] transition-all duration-300">
-                        <div class="w-12 h-12 rounded-full bg-lime-400 flex items-center justify-center text-stone-900 shadow-lg relative overflow-hidden group-hover:bg-lime-500 transition-colors duration-300">
-                            <!-- Soft glow reflection in circle -->
-                            <div class="absolute top-0 left-0 w-full h-1/2 bg-white/30 rounded-t-full"></div>
+                    <div class="glass-dark rounded-[1.5rem] p-4 sm:p-5 flex items-center gap-4 border border-white/10 backdrop-blur-md group-hover:scale-105 group-hover:border-primary/30 group-hover:shadow-[0_0_40px_rgba(184,157,112,0.25)] transition-all duration-300" style="box-shadow: 0 0 25px rgba(184,157,112,0.3); animation: pulse-glow-gold 3s infinite alternate;">
+                        <div class="w-12 h-12 rounded-full bg-[#B89D70] flex items-center justify-center text-white shadow-lg relative overflow-hidden group-hover:bg-[#c4ad82] transition-colors duration-300">
+                            <div class="absolute top-0 left-0 w-full h-1/2 bg-white/25 rounded-t-full"></div>
                             <iconify-icon icon="solar:scanner-bold-duotone" width="24" class="relative z-10 group-hover:rotate-12 transition-transform duration-300"></iconify-icon>
                         </div>
                         <div class="flex flex-col pr-2">
@@ -709,27 +728,28 @@
                         <span class="block font-bold shimmer-title mt-1">diagnóstico.</span>
                     </h2>
                     
-                    <!-- Stats rápidos abaixo do título -->
-                    <div class="flex items-center gap-6 mt-8">
-                        <div class="flex items-center gap-2">
-                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                                <iconify-icon icon="solar:users-group-rounded-bold" class="text-primary" width="18"></iconify-icon>
-                            </div>
-                            <div>
-                                <span class="block text-lg font-heading font-bold text-stone-900">+10</span>
-                                <span class="block text-[10px] text-stone-400 uppercase tracking-wider font-bold">Especialistas</span>
-                            </div>
-                        </div>
-                        <div class="w-px h-10 bg-gradient-to-b from-transparent via-stone-300 to-transparent"></div>
-                        <div class="flex items-center gap-2">
-                            <div class="w-10 h-10 rounded-full bg-sage/10 flex items-center justify-center">
-                                <iconify-icon icon="solar:diploma-verified-bold" class="text-sage" width="18"></iconify-icon>
-                            </div>
-                            <div>
-                                <span class="block text-lg font-heading font-bold text-stone-900">40+</span>
-                                <span class="block text-[10px] text-stone-400 uppercase tracking-wider font-bold">Anos de Tradição</span>
-                            </div>
-                        </div>
+                    <!-- Destaques abaixo do título -->
+                    <div class="flex flex-wrap items-center gap-3 mt-8">
+                        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-stone-200/60 shadow-sm text-xs font-bold text-stone-700 uppercase tracking-wider">
+                            <iconify-icon icon="solar:shield-check-bold" class="text-primary" width="15"></iconify-icon>
+                            Precisão Diagnóstica
+                        </span>
+                        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-stone-200/60 shadow-sm text-xs font-bold text-stone-700 uppercase tracking-wider">
+                            <iconify-icon icon="solar:document-bold" class="text-primary" width="15"></iconify-icon>
+                            Laudos Online
+                        </span>
+                        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-stone-200/60 shadow-sm text-xs font-bold text-stone-700 uppercase tracking-wider">
+                            <iconify-icon icon="solar:heart-pulse-bold" class="text-primary" width="15"></iconify-icon>
+                            Atendimento Humanizado
+                        </span>
+                        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-stone-200/60 shadow-sm text-xs font-bold text-stone-700 uppercase tracking-wider">
+                            <iconify-icon icon="solar:diploma-verified-bold" class="text-primary" width="15"></iconify-icon>
+                            40+ Anos de Tradição
+                        </span>
+                        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-stone-200/60 shadow-sm text-xs font-bold text-stone-700 uppercase tracking-wider">
+                            <iconify-icon icon="solar:hand-stars-bold" class="text-primary" width="15"></iconify-icon>
+                            Compromisso
+                        </span>
                     </div>
                 </div>
                 
@@ -1204,6 +1224,217 @@
         </div>
     </section>
 
+    <!-- 9️⃣ CONTATO — Dobra Premium -->
+    <section id="contact" class="relative w-full py-20 lg:py-32 bg-stone-900 text-white overflow-hidden">
+        
+        <!-- Background Decorativo -->
+        <div class="absolute inset-0 z-0 pointer-events-none">
+            <!-- Grid sutil -->
+            <div class="absolute inset-0 opacity-[0.04]" style="background-image: linear-gradient(rgba(234,232,222,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(234,232,222,0.3) 1px, transparent 1px); background-size: 80px 80px;"></div>
+            <!-- Glow orbs -->
+            <div class="absolute top-[10%] left-[-5%] w-[40vw] h-[40vw] rounded-full bg-[radial-gradient(circle,rgba(184,157,112,0.12)_0%,transparent_60%)]"></div>
+            <div class="absolute bottom-[5%] right-[-8%] w-[35vw] h-[35vw] rounded-full bg-[radial-gradient(circle,rgba(158,160,143,0.08)_0%,transparent_60%)]"></div>
+            <!-- Linha diagonal decorativa -->
+            <div class="absolute top-0 right-[20%] w-px h-full bg-gradient-to-b from-transparent via-primary/10 to-transparent"></div>
+            <div class="absolute top-0 right-[80%] w-px h-full bg-gradient-to-b from-transparent via-white/5 to-transparent"></div>
+        </div>
+
+        <!-- Watermark Background -->
+        <div class="absolute -right-10 top-10 text-white/[0.02] font-heading italic text-[10rem] md:text-[16rem] lg:text-[20rem] rotate-[-8deg] select-none pointer-events-none leading-none">Contato</div>
+
+        <div class="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10">
+
+            <!-- HEADER DA SEÇÃO -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start gs-contact-header mb-16 lg:mb-20">
+                <div>
+                    <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-primary/30 bg-white/5 backdrop-blur-sm shadow-sm text-xs font-bold uppercase tracking-widest text-primary mb-6 gs-contact-badge">
+                        <iconify-icon icon="solar:chat-round-call-bold-duotone" width="16"></iconify-icon> Fale Conosco
+                    </div>
+                    <h2 class="gs-contact-title font-heading tracking-tight text-4xl md:text-5xl lg:text-6xl text-white leading-[1.05]">
+                        <span class="block font-medium">Entre em</span>
+                        <span class="block font-bold text-primary mt-1">contato.</span>
+                    </h2>
+                    <p class="gs-contact-subtitle text-stone-400 font-sans leading-relaxed text-base md:text-lg mt-6 max-w-md">
+                        Tire suas dúvidas, agende seu exame ou solicite informações. Estamos prontos para atendê-lo com excelência.
+                    </p>
+                </div>
+
+                <!-- Info Cards (lado direito) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 gs-contact-info">
+                    <!-- Horário -->
+                    <div class="glass-dark rounded-2xl p-6 border border-white/10 hover:border-primary/30 transition-all duration-500 group hover:-translate-y-1">
+                        <div class="w-11 h-11 rounded-xl bg-primary/15 flex items-center justify-center mb-4 group-hover:bg-primary/25 transition-colors">
+                            <iconify-icon icon="solar:clock-circle-bold-duotone" class="text-primary" width="22"></iconify-icon>
+                        </div>
+                        <h4 class="font-heading font-bold text-white text-sm mb-2">Horário de Atendimento</h4>
+                        <p class="text-stone-400 text-xs leading-relaxed">Segunda à Sexta<br><span class="text-stone-300">7h30 às 12h</span><br><span class="text-stone-300">13h30 às 18h</span></p>
+                    </div>
+
+                    <!-- Endereço -->
+                    <div class="glass-dark rounded-2xl p-6 border border-white/10 hover:border-primary/30 transition-all duration-500 group hover:-translate-y-1">
+                        <div class="w-11 h-11 rounded-xl bg-primary/15 flex items-center justify-center mb-4 group-hover:bg-primary/25 transition-colors">
+                            <iconify-icon icon="solar:map-point-bold-duotone" class="text-primary" width="22"></iconify-icon>
+                        </div>
+                        <h4 class="font-heading font-bold text-white text-sm mb-2">Endereço</h4>
+                        <p class="text-stone-400 text-xs leading-relaxed">Rua Dr. Pestana, 128<br><span class="text-stone-300">Centro | Ijuí / RS</span></p>
+                    </div>
+
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/555598454253" target="_blank" class="glass-dark rounded-2xl p-6 border border-white/10 hover:border-green-500/40 transition-all duration-500 group hover:-translate-y-1 cursor-pointer block">
+                        <div class="w-11 h-11 rounded-xl bg-green-500/15 flex items-center justify-center mb-4 group-hover:bg-green-500/25 transition-colors">
+                            <iconify-icon icon="logos:whatsapp-icon" width="22"></iconify-icon>
+                        </div>
+                        <h4 class="font-heading font-bold text-white text-sm mb-2">WhatsApp</h4>
+                        <p class="text-stone-400 text-xs leading-relaxed font-mono">(55) 98454.2538</p>
+                    </a>
+
+                    <!-- Telefone -->
+                    <a href="tel:5533327755" class="glass-dark rounded-2xl p-6 border border-white/10 hover:border-primary/30 transition-all duration-500 group hover:-translate-y-1 cursor-pointer block">
+                        <div class="w-11 h-11 rounded-xl bg-primary/15 flex items-center justify-center mb-4 group-hover:bg-primary/25 transition-colors">
+                            <iconify-icon icon="solar:phone-bold-duotone" class="text-primary" width="22"></iconify-icon>
+                        </div>
+                        <h4 class="font-heading font-bold text-white text-sm mb-2">Telefone Fixo</h4>
+                        <p class="text-stone-400 text-xs leading-relaxed font-mono">(55) 3332.7755</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- FORMULÁRIO + MAPA -->
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-10 gs-contact-form-area">
+                
+                <!-- Formulário (3 cols) -->
+                <div class="lg:col-span-3 relative">
+                    <div class="bg-white/[0.04] backdrop-blur-xl rounded-[2rem] p-8 md:p-10 border border-white/10 relative overflow-hidden group">
+                        <!-- Glow decorativo -->
+                        <div class="absolute -top-20 -left-20 w-60 h-60 bg-primary/8 rounded-full blur-[60px] pointer-events-none group-hover:bg-primary/12 transition-all duration-700"></div>
+                        <div class="absolute -bottom-16 -right-16 w-48 h-48 bg-sage/5 rounded-full blur-[50px] pointer-events-none"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-3 mb-8">
+                                <div class="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center">
+                                    <iconify-icon icon="solar:pen-new-square-bold-duotone" class="text-primary" width="20"></iconify-icon>
+                                </div>
+                                <div>
+                                    <h3 class="font-heading font-bold text-white text-lg">Envie sua mensagem</h3>
+                                    <p class="text-stone-500 text-xs">Responderemos o mais breve possível</p>
+                                </div>
+                            </div>
+
+                            <form class="space-y-5 font-sans" id="contact-form">
+                                <!-- Nome + E-mail -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="relative group/inp">
+                                        <label class="absolute left-4 -top-2.5 px-2 bg-stone-900 text-[10px] font-bold text-primary tracking-widest uppercase">Nome</label>
+                                        <input type="text" placeholder="Seu nome completo" class="w-full bg-white/5 border border-white/10 rounded-lg px-5 py-3.5 placeholder-stone-600 text-white shadow-sm focus:outline-none focus:border-primary/50 focus:bg-white/[0.07] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all text-sm">
+                                    </div>
+                                    <div class="relative group/inp">
+                                        <label class="absolute left-4 -top-2.5 px-2 bg-stone-900 text-[10px] font-bold text-primary tracking-widest uppercase">E-mail</label>
+                                        <input type="email" placeholder="seu@email.com" class="w-full bg-white/5 border border-white/10 rounded-lg px-5 py-3.5 placeholder-stone-600 text-white shadow-sm focus:outline-none focus:border-primary/50 focus:bg-white/[0.07] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all text-sm">
+                                    </div>
+                                </div>
+
+                                <!-- Telefone + Assunto -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="relative group/inp">
+                                        <label class="absolute left-4 -top-2.5 px-2 bg-stone-900 text-[10px] font-bold text-primary tracking-widest uppercase">Telefone</label>
+                                        <input type="text" placeholder="(55) 9 9999-9999" class="w-full bg-white/5 border border-white/10 rounded-lg px-5 py-3.5 placeholder-stone-600 text-white shadow-sm focus:outline-none focus:border-primary/50 focus:bg-white/[0.07] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all text-sm">
+                                    </div>
+                                    <div class="relative group/inp">
+                                        <label class="absolute left-4 -top-2.5 px-2 bg-stone-900 text-[10px] font-bold text-primary tracking-widest uppercase">Assunto</label>
+                                        <input type="text" placeholder="Agendamento, dúvida..." class="w-full bg-white/5 border border-white/10 rounded-lg px-5 py-3.5 placeholder-stone-600 text-white shadow-sm focus:outline-none focus:border-primary/50 focus:bg-white/[0.07] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all text-sm">
+                                    </div>
+                                </div>
+
+                                <!-- Mensagem -->
+                                <div class="relative group/inp">
+                                    <label class="absolute left-4 -top-2.5 px-2 bg-stone-900 text-[10px] font-bold text-primary tracking-widest uppercase">Mensagem</label>
+                                    <textarea rows="4" placeholder="Conte-nos como podemos ajudá-lo..." class="w-full bg-white/5 border border-white/10 rounded-lg px-5 py-3.5 placeholder-stone-600 text-white shadow-sm focus:outline-none focus:border-primary/50 focus:bg-white/[0.07] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all text-sm resize-none"></textarea>
+                                </div>
+
+                                <!-- Botão Enviar -->
+                                <button type="submit" class="btn-premium w-full relative overflow-hidden bg-gradient-to-r from-[#B89D70] to-[#c4ad82] hover:from-[#a38a60] hover:to-[#b89d70] text-white font-bold uppercase tracking-[0.2em] rounded-xl py-4 shadow-[0_10px_30px_-5px_rgba(184,157,112,0.4)] hover:shadow-[0_15px_40px_-5px_rgba(184,157,112,0.6)] hover:-translate-y-1 transform transition-all duration-300 flex items-center justify-center gap-3 text-sm">
+                                    <div class="absolute inset-0 bg-white/10 -translate-x-full rotate-[45deg] hover:animate-[shimmer_1.5s_infinite] pointer-events-none"></div>
+                                    Enviar Mensagem
+                                    <iconify-icon icon="solar:paper-plane-bold" width="18"></iconify-icon>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mapa (2 cols) -->
+                <div class="lg:col-span-2 flex flex-col gap-6">
+                    <!-- Mapa embed -->
+                    <div class="relative rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl flex-1 min-h-[300px] lg:min-h-0 group">
+                        <!-- Overlay gradiente sutil -->
+                        <div class="absolute inset-0 z-10 bg-gradient-to-t from-stone-900/40 via-transparent to-stone-900/20 pointer-events-none group-hover:opacity-50 transition-opacity duration-500"></div>
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3524.89!2d-53.9120037!3d-28.3918881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94fc2d602433e337%3A0x2c810884c50e664!2sDIMAGEM%20-%20Cl%C3%ADnica%20de%20Diagn%C3%B3stico%20por%20Imagem!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0; min-height: 300px;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            class="w-full h-full object-cover"
+                        ></iframe>
+                        
+                        <!-- Badge flutuante no mapa -->
+                        <div class="absolute bottom-4 left-4 z-20 glass-dark rounded-xl px-4 py-3 flex items-center gap-3 border border-white/10">
+                            <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                                <iconify-icon icon="solar:map-point-wave-bold" class="text-primary" width="16"></iconify-icon>
+                            </div>
+                            <div>
+                                <span class="text-white text-xs font-bold block">Dimagem</span>
+                                <span class="text-stone-400 text-[10px]">Centro, Ijuí/RS</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mini CTA WhatsApp -->
+                    <a href="https://wa.me/555598454253" target="_blank" class="flex items-center gap-4 bg-green-500/10 border border-green-500/20 rounded-2xl px-6 py-5 hover:bg-green-500/15 hover:border-green-500/30 hover:-translate-y-0.5 transition-all duration-300 group">
+                        <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <iconify-icon icon="logos:whatsapp-icon" width="24"></iconify-icon>
+                        </div>
+                        <div>
+                            <span class="text-white font-heading font-bold text-sm block">Atendimento rápido via WhatsApp</span>
+                            <span class="text-green-400/70 text-xs">(55) 98454.2538 · Resposta imediata</span>
+                        </div>
+                        <iconify-icon icon="solar:arrow-right-up-linear" class="text-green-400 ml-auto" width="20"></iconify-icon>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Rodapé da seção -->
+            <div class="mt-16 lg:mt-20 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 gs-contact-footer">
+                <div class="flex items-center gap-4">
+                    <div class="flex -space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-primary/20 border-2 border-stone-900 flex items-center justify-center"><iconify-icon icon="solar:stethoscope-bold" class="text-primary" width="14"></iconify-icon></div>
+                        <div class="w-8 h-8 rounded-full bg-sage/20 border-2 border-stone-900 flex items-center justify-center"><iconify-icon icon="solar:heart-pulse-bold" class="text-sage" width="14"></iconify-icon></div>
+                        <div class="w-8 h-8 rounded-full bg-primary/20 border-2 border-stone-900 flex items-center justify-center"><iconify-icon icon="solar:shield-check-bold" class="text-primary" width="14"></iconify-icon></div>
+                    </div>
+                    <p class="text-stone-500 text-xs font-sans">Referência em diagnóstico por imagem desde 1984</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="https://www.instagram.com/dimagemijui" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-stone-500 hover:text-primary hover:border-primary/30 transition-all duration-300 hover:-translate-y-0.5">
+                        <iconify-icon icon="mdi:instagram" width="18"></iconify-icon>
+                    </a>
+                    <a href="https://www.facebook.com/dimagemijui/" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-stone-500 hover:text-primary hover:border-primary/30 transition-all duration-300 hover:-translate-y-0.5">
+                        <iconify-icon icon="mdi:facebook" width="18"></iconify-icon>
+                    </a>
+                    <a href="mailto:dimagem@dimagem.com.br" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-stone-500 hover:text-primary hover:border-primary/30 transition-all duration-300 hover:-translate-y-0.5">
+                        <iconify-icon icon="solar:letter-bold" width="18"></iconify-icon>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Crédito -->
+            <div class="mt-6 text-center">
+                <p class="text-stone-600 text-[10px] uppercase tracking-[0.2em] font-medium">Criado por <a href="#" class="text-primary hover:text-white transition-colors duration-300 font-bold">Puzoto Design</a></p>
+            </div>
+        </div>
+    </section>
+
     <!-- 7️⃣ MODAL DE PREPARO (HIDDEN BY DEFAULT) -->
     <div id="exam-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 invisible opacity-0 pointer-events-none">
         <!-- Overlay -->
@@ -1279,37 +1510,37 @@
                 <form class="space-y-5 font-sans">
                     <!-- Row 1 -->
                     <div class="group/inp relative">
-                        <label class="absolute left-4 -top-2.5 px-2 bg-white text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">Nome Completo</label>
-                        <input type="text" placeholder="EX: DR. JOÃO SILVA" class="w-full bg-white border-2 border-stone-100 rounded-xl px-5 py-3.5 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all uppercase tracking-wide text-sm">
+                        <label class="absolute left-4 -top-2.5 px-2 bg-[#f5f3ef] text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">Nome Completo</label>
+                        <input type="text" placeholder="EX: DR. JOÃO SILVA" class="w-full bg-white border-2 border-stone-100 rounded-lg px-5 py-3.5 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all uppercase tracking-wide text-sm">
                     </div>
                     
                     <!-- Row 2 -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="group/inp relative">
-                            <label class="absolute left-4 -top-2.5 px-2 bg-white text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">CRM / UF</label>
-                            <input type="text" placeholder="000000 / RS" class="w-full bg-white border-2 border-stone-100 rounded-xl px-5 py-3.5 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all uppercase tracking-wide text-sm">
+                            <label class="absolute left-4 -top-2.5 px-2 bg-[#f5f3ef] text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">CRM / UF</label>
+                            <input type="text" placeholder="000000 / RS" class="w-full bg-white border-2 border-stone-100 rounded-lg px-5 py-3.5 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all uppercase tracking-wide text-sm">
                         </div>
                         <div class="group/inp relative">
-                            <label class="absolute left-4 -top-2.5 px-2 bg-white text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">Cidade</label>
-                            <input type="text" placeholder="IJUÍ" class="w-full bg-white border-2 border-stone-100 rounded-xl px-5 py-3.5 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all uppercase tracking-wide text-sm">
+                            <label class="absolute left-4 -top-2.5 px-2 bg-[#f5f3ef] text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">Cidade</label>
+                            <input type="text" placeholder="IJUÍ" class="w-full bg-white border-2 border-stone-100 rounded-lg px-5 py-3.5 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all uppercase tracking-wide text-sm">
                         </div>
                     </div>
 
                     <!-- Row 3 -->
                     <div class="group/inp relative">
-                        <label class="absolute left-4 -top-2.5 px-2 bg-white text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">E-mail Profissional</label>
-                        <input type="email" placeholder="CONTATO@EXEMPLO.COM.BR" class="w-full bg-white border-2 border-stone-100 rounded-xl px-5 py-3.5 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all uppercase tracking-wide text-sm">
+                        <label class="absolute left-4 -top-2.5 px-2 bg-[#f5f3ef] text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">E-mail Profissional</label>
+                        <input type="email" placeholder="CONTATO@EXEMPLO.COM.BR" class="w-full bg-white border-2 border-stone-100 rounded-lg px-5 py-3.5 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all uppercase tracking-wide text-sm">
                     </div>
 
                     <!-- Row 4 -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="group/inp relative">
-                            <label class="absolute left-4 -top-2.5 px-2 bg-white text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">WhatsApp</label>
-                            <input type="text" placeholder="(55) 9 9999-9999" class="w-full bg-white border-2 border-stone-100 rounded-xl px-5 py-3.5 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all uppercase tracking-wide text-sm">
+                            <label class="absolute left-4 -top-2.5 px-2 bg-[#f5f3ef] text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">WhatsApp</label>
+                            <input type="text" placeholder="(55) 9 9999-9999" class="w-full bg-white border-2 border-stone-100 rounded-lg px-5 py-3.5 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all uppercase tracking-wide text-sm">
                         </div>
                         <div class="group/inp relative">
-                            <label class="absolute left-4 -top-2.5 px-2 bg-white text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">Especialidade</label>
-                            <input type="text" placeholder="GERAL" class="w-full bg-white border-2 border-stone-100 rounded-xl px-5 py-3.5 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all uppercase tracking-wide text-sm">
+                            <label class="absolute left-4 -top-2.5 px-2 bg-[#f5f3ef] text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">Especialidade</label>
+                            <input type="text" placeholder="GERAL" class="w-full bg-white border-2 border-stone-100 rounded-lg px-5 py-3.5 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] focus:shadow-[0_0_0_3px_rgba(184,157,112,0.1)] transition-all uppercase tracking-wide text-sm">
                         </div>
                     </div>
 
@@ -1524,6 +1755,38 @@
                        stagger: 0.08, 
                        ease: 'back.out(1.2)' 
                    }, "-=0.5");
+
+            // =============================================
+            // 4.6 CONTATO SECTION (Reveal animations)
+            // =============================================
+            
+            const contactTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#contact",
+                    start: "top 75%",
+                    end: "bottom bottom",
+                    toggleActions: "play none none reverse"
+                }
+            });
+
+            gsap.set('.gs-contact-badge', { autoAlpha: 0, x: -20 });
+            gsap.set('.gs-contact-title', { autoAlpha: 0, y: 40 });
+            gsap.set('.gs-contact-subtitle', { autoAlpha: 0, y: 25 });
+            gsap.set('.gs-contact-info > *', { autoAlpha: 0, y: 30, scale: 0.95 });
+            gsap.set('.gs-contact-form-area', { autoAlpha: 0, y: 40 });
+            gsap.set('.gs-contact-footer', { autoAlpha: 0, y: 20 });
+
+            contactTl
+                .to('.gs-contact-badge', { autoAlpha: 1, x: 0, duration: 0.7, ease: 'power3.out' })
+                .to('.gs-contact-title', { autoAlpha: 1, y: 0, duration: 1, ease: 'power4.out' }, "-=0.4")
+                .to('.gs-contact-subtitle', { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out' }, "-=0.5")
+                .to('.gs-contact-info > *', { 
+                    autoAlpha: 1, y: 0, scale: 1, 
+                    duration: 0.7, stagger: 0.1, 
+                    ease: 'back.out(1.2)' 
+                }, "-=0.5")
+                .to('.gs-contact-form-area', { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out' }, "-=0.4")
+                .to('.gs-contact-footer', { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' }, "-=0.3");
 
             // =============================================
             // 5. CORPO CLÍNICO — Animações + Carrossel
@@ -1997,6 +2260,24 @@
             
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && !pacsModal.classList.contains('invisible')) closePacsModal();
+            });
+
+            // =============================================
+            // NAVBAR DARK MODE — Detecção de seções escuras
+            // =============================================
+            const mainNav = document.getElementById('main-nav');
+            const darkSections = document.querySelectorAll('#exams, #contact');
+            
+            darkSections.forEach(section => {
+                ScrollTrigger.create({
+                    trigger: section,
+                    start: 'top 80px',
+                    end: 'bottom 80px',
+                    onEnter: () => mainNav.classList.add('nav-dark'),
+                    onLeave: () => mainNav.classList.remove('nav-dark'),
+                    onEnterBack: () => mainNav.classList.add('nav-dark'),
+                    onLeaveBack: () => mainNav.classList.remove('nav-dark'),
+                });
             });
 
         });
