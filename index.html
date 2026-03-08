@@ -211,7 +211,7 @@
     <!-- Navbar Minimalista (Mock apenas para visual) -->
     <header class="absolute top-0 w-full z-50 px-6 md:px-12 py-6 flex items-center justify-between invisible-start gs-nav">
         <div class="flex items-center">
-            <img src="assets/raw_files/logodimagem.png" alt="Dimagem" class="h-8 md:h-12 object-contain">
+            <img src="assets/raw_files/logodimagem.webp" alt="Dimagem" class="h-8 md:h-12 object-contain">
         </div>
         <div class="hidden lg:flex gap-4 xl:gap-8 text-xs xl:text-sm font-semibold uppercase tracking-wider text-stone-600 whitespace-nowrap">
             <a href="#" class="hover:text-primary transition-colors">A clínica</a>
@@ -310,7 +310,7 @@
                 <div class="relative w-full lg:w-[85%] h-full rounded-[2.5rem] overflow-hidden shadow-2xl glass-effect border-2 border-white gs-main-img-wrapper z-10" style="transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);">
                     <div class="absolute inset-0 bg-stone-900/5 z-10 pointer-events-none mix-blend-multiply"></div>
                     <img 
-                        src="assets/raw_files/frente dimagem.png" 
+                        src="assets/raw_files/frente-dimagem.webp" 
                         alt="Fachada Clínica Dimagem" 
                         class="w-full h-full object-cover scale-[1.05] gs-parallax-img hover:scale-110 transition-transform duration-[1.5s] ease-out img-mask"
                         onerror="this.src='https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1200'; this.classList.remove('img-mask');"
@@ -325,7 +325,7 @@
                     <div class="glass-effect rounded-2xl p-4 pr-6 flex items-center gap-4 border border-white/60 backdrop-blur-xl group hover:bg-white/60 transition-colors duration-300">
                         <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shadow-inner border-2 border-white relative group-hover:scale-105 transition-transform duration-500">
                             <!-- Fallback emborrachado se a imagem não carregar localmente -->
-                            <img src="assets/raw_files/Dr. CELSO VEDOLIN.png" alt="Dr. Celso Vedolin" class="w-full h-full object-cover object-top" onerror="this.src='https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400'">
+                            <img src="assets/raw_files/Dr.-CELSO-VEDOLIN.webp" alt="Dr. Celso Vedolin" class="w-full h-full object-cover object-top" onerror="this.src='https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400'">
                         </div>
                         <div class="flex flex-col">
                             <span class="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-primary font-bold mb-1 flex items-center gap-1">
@@ -369,6 +369,128 @@
 
             </div>
 
+        </div>
+    </section>
+
+    <!-- 2️⃣ A CLÍNICA (ESTRUTURA TECH - LIGHT MODE) -->
+    <section id="about" class="relative w-full py-24 lg:py-32 bg-beige-100 text-stone-600 overflow-hidden border-t border-stone-300/50">
+        <!-- Abstract Background Mesh / Grid -->
+        <div class="absolute inset-0 z-0 opacity-40 pointer-events-none hw-accel">
+            <div class="absolute inset-0" style="background-image: linear-gradient(rgba(28,25,23,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(28,25,23,0.04) 1px, transparent 1px); background-size: 50px 50px;"></div>
+            <!-- Soft glow at center -->
+            <div class="absolute top-[30%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-primary/10 blur-[100px]"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10 flex flex-col gap-12 lg:gap-16">
+            
+            <!-- HEADER DA SEÇÃO -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center gs-about-reveal">
+                <div class="w-full">
+                    <!-- Badge super premium introduzindo a seção -->
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-white/60 shadow-sm text-[10px] font-bold uppercase tracking-widest text-primary mb-6">
+                        <iconify-icon icon="solar:hospital-bold-duotone" width="14"></iconify-icon> Sobre a Clínica
+                    </div>
+                    
+                    <!-- Novo Titulo de Alto Impacto Apple-Like -->
+                    <h2 class="font-heading tracking-tight text-4xl md:text-5xl lg:text-6xl text-stone-900 leading-[1.05]">
+                        <span class="block font-medium">O encontro exato entre</span>
+                        <span class="block font-bold text-gradient mt-1">tecnologia e cuidado.</span>
+                    </h2>
+                </div>
+                <div class="w-full flex flex-col gap-5 border-l-2 border-primary/30 pl-5 md:pl-8 py-2">
+                    <p class="text-stone-600 font-sans leading-relaxed text-base md:text-lg">
+                        Há mais de <strong>40 anos</strong> unimos tecnologia avançada e ética humanizada em Ijuí. Porque para nós, cada exame carrega uma história de vida e confiança.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1.5 bg-white border border-stone-200 rounded-lg text-[11px] uppercase tracking-wider font-bold text-stone-600 shadow-sm flex items-center gap-1.5"><iconify-icon icon="solar:shield-check-bold" class="text-primary"></iconify-icon> Segurança</span>
+                        <span class="px-3 py-1.5 bg-white border border-stone-200 rounded-lg text-[11px] uppercase tracking-wider font-bold text-stone-600 shadow-sm flex items-center gap-1.5"><iconify-icon icon="solar:heart-pulse-bold" class="text-primary"></iconify-icon> Acolhimento</span>
+                        <span class="px-3 py-1.5 bg-white border border-stone-200 rounded-lg text-[11px] uppercase tracking-wider font-bold text-stone-600 shadow-sm flex items-center gap-1.5"><iconify-icon icon="solar:target-bold" class="text-primary"></iconify-icon> Precisão</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRID PRINCIPAL COMPOSITION -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+                
+                <!-- COLUNA ESQUERDA: Image Node Panel -->
+                <div class="lg:col-span-7 relative w-full h-[450px] lg:h-[600px] gs-about-visual hw-accel group">
+                    <!-- BACKGROUND CONTAINER (Overflow Hidden to crop glass/imgs mas permitindo absolute fora) -->
+                    <div class="absolute inset-0 rounded-[2.5rem] overflow-hidden bg-white/40 border border-stone-200/50 shadow-xl glass-effect z-0">
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/60 to-beige-100/50 z-0 pointer-events-none backdrop-blur-3xl"></div>
+                    </div>
+                    
+                    <!-- CONTENT WRAPPER -->
+                    <div class="absolute inset-4 md:inset-8 z-10 flex items-center justify-center">
+                        <!-- FOTO Base -->
+                        <div class="absolute inset-0 rounded-[1.5rem] overflow-hidden shadow-inner border border-white/60 bg-white">
+                            <img src="assets/raw_files/frente-dimagem.webp" alt="Dimagem Fachada" loading="lazy" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-[2s] ease-out">
+                            <!-- Clareamento elegante por cima da foto ao invés de escurecer -->
+                            <div class="absolute inset-0 bg-gradient-to-b from-stone-900/10 via-transparent to-stone-900/20 z-20 pointer-events-none mix-blend-overlay"></div>
+                        </div>
+
+                        <!-- Tech overlay / Nodes -->
+                        <!-- Central Node -->
+                        <div class="relative z-30 w-16 h-16 rounded-full bg-white border border-stone-300 flex items-center justify-center shadow-lg gs-tech-node transition-transform duration-500 group-hover:scale-110">
+                            <iconify-icon icon="solar:server-square-cloud-bold-duotone" width="28" class="text-primary"></iconify-icon>
+                            <!-- Radar pulse -->
+                            <div class="absolute inset-0 rounded-full border border-primary/40 animate-[ping_3s_linear_infinite] opacity-60"></div>
+                        </div>
+
+                        <!-- Lines connected to the edges -->
+                        <div class="absolute z-20 top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white to-transparent shadow-sm"></div>
+                        <div class="absolute z-20 left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white to-transparent shadow-sm"></div>
+                    </div>
+                </div>
+
+                <!-- COLUNA DIREITA: List Features -->
+                <div class="lg:col-span-5 flex flex-col justify-center gap-10 gs-about-list hw-accel pt-4 lg:pt-12">
+                    <!-- Item 1 -->
+                    <div class="flex gap-6 group hover:translate-x-2 transition-transform duration-300 cursor-default">
+                        <div class="w-12 h-12 shrink-0 rounded-full border border-stone-200 bg-white/60 shadow-sm flex items-center justify-center font-mono text-sm text-stone-500 group-hover:text-primary group-hover:border-primary/40 group-hover:bg-white transition-all">
+                            01
+                        </div>
+                        <div class="flex flex-col">
+                            <h4 class="font-heading text-lg text-stone-900 font-bold mb-1 group-hover:text-primary transition-colors">Tecnologia de Última Geração</h4>
+                            <p class="text-sm text-stone-500 leading-relaxed">Equipamentos modernos que garantem diagnósticos mais precisos.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="flex gap-6 group hover:translate-x-2 transition-transform duration-300 cursor-default">
+                        <div class="w-12 h-12 shrink-0 rounded-full border border-stone-200 bg-white/60 shadow-sm flex items-center justify-center font-mono text-sm text-stone-500 group-hover:text-primary group-hover:border-primary/40 group-hover:bg-white transition-all">
+                            02
+                        </div>
+                        <div class="flex flex-col">
+                            <h4 class="font-heading text-lg text-stone-900 font-bold mb-1 group-hover:text-primary transition-colors">Equipe Médica Especializada</h4>
+                            <p class="text-sm text-stone-500 leading-relaxed">Profissionais com ampla experiência e alto rigor técnico global.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="flex gap-6 group hover:translate-x-2 transition-transform duration-300 cursor-default">
+                        <div class="w-12 h-12 shrink-0 rounded-full border border-stone-200 bg-white/60 shadow-sm flex items-center justify-center font-mono text-sm text-stone-500 group-hover:text-primary group-hover:border-primary/40 group-hover:bg-white transition-all">
+                            03
+                        </div>
+                        <div class="flex flex-col">
+                            <h4 class="font-heading text-lg text-stone-900 font-bold mb-1 group-hover:text-primary transition-colors">Atendimento Humanizado</h4>
+                            <p class="text-sm text-stone-500 leading-relaxed">Cuidado, atenção e conforto em cada etapa da sua experiência.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="flex gap-6 group hover:translate-x-2 transition-transform duration-300 cursor-default">
+                        <div class="w-12 h-12 shrink-0 rounded-full border border-stone-200 bg-white/60 shadow-sm flex items-center justify-center font-mono text-sm text-stone-500 group-hover:text-primary group-hover:border-primary/40 group-hover:bg-white transition-all">
+                            04
+                        </div>
+                        <div class="flex flex-col">
+                            <h4 class="font-heading text-lg text-stone-900 font-bold mb-1 group-hover:text-primary transition-colors">Resultados Digitais</h4>
+                            <p class="text-sm text-stone-500 leading-relaxed">Acesso rápido, limpo e seguro a resultados 100% online.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
     </section>
 
@@ -532,6 +654,24 @@
                     ease: "power2.out"
                 });
             });
+
+            // 4. Seção Neural/Dark Animada
+            const aboutTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#about",
+                    start: "top 70%",
+                    end: "bottom bottom",
+                    toggleActions: "play none none reverse"
+                }
+            });
+
+            gsap.set('.gs-about-reveal', { autoAlpha: 0, y: 30 });
+            gsap.set('.gs-about-visual', { autoAlpha: 0, scale: 0.95, x: -30 });
+            gsap.set('.gs-about-list > div', { autoAlpha: 0, x: 30 });
+
+            aboutTl.to('.gs-about-reveal', { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out' })
+                   .to('.gs-about-visual', { autoAlpha: 1, scale: 1, x: 0, duration: 1.2, ease: 'power3.out' }, "-=0.6")
+                   .to('.gs-about-list > div', { autoAlpha: 1, x: 0, duration: 0.8, stagger: 0.15, ease: 'power2.out' }, "-=0.8");
 
         });
     </script>
