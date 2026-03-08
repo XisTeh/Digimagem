@@ -217,6 +217,94 @@
             mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
             -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
         }
+
+        /* =========================================
+           TEAM CARDS — Selection & Animations
+           ========================================= */
+        .team-card {
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .team-card__inner {
+            border: 2px solid transparent;
+        }
+
+        /* Card NÃO selecionado */
+        .team-card:not(.is-selected) .team-card__inner {
+            opacity: 0.85;
+            border-color: rgba(28, 25, 23, 0.06);
+        }
+        .team-card:not(.is-selected):hover .team-card__inner {
+            opacity: 1;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px -8px rgba(28, 25, 23, 0.12);
+        }
+        .team-card:not(.is-selected) .team-card__badge,
+        .team-card:not(.is-selected) .team-card__star {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        /* Card SELECIONADO — cor primária laranja/dourada */
+        .team-card.is-selected {
+            z-index: 10;
+        }
+        .team-card.is-selected .team-card__inner {
+            opacity: 1;
+            border-color: #b89d70;
+            box-shadow: 0 20px 50px -12px rgba(184, 157, 112, 0.4), 0 8px 20px -4px rgba(184, 157, 112, 0.2);
+            transform: translateY(-8px);
+        }
+        .team-card.is-selected .team-card__badge,
+        .team-card.is-selected .team-card__star {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .team-card.is-selected .team-card__info {
+            background: linear-gradient(135deg, #b89d70 0%, #c4ad82 100%);
+            border-top: none;
+        }
+        .team-card.is-selected .team-card__info h4 {
+            color: #fff;
+        }
+        .team-card.is-selected .team-card__info .team-card__role-text {
+            color: rgba(255,255,255,0.9);
+        }
+        .team-card.is-selected .team-card__info .team-card__crm {
+            color: rgba(255,255,255,0.65);
+        }
+        
+        /* Shine effect on selected */
+        .team-card.is-selected .team-card__inner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            z-index: 30;
+            animation: shine-sweep 2s ease-in-out 0.3s;
+            pointer-events: none;
+        }
+        @keyframes shine-sweep {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+
+        
+        /* Título Corpo Clínico shimmer */
+        @keyframes shimmer-text {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        .shimmer-title {
+            background: linear-gradient(90deg, #1c1917 0%, #1c1917 40%, #b89d70 50%, #1c1917 60%, #1c1917 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer-text 5s ease-in-out infinite;
+        }
     </style>
 </head>
 <body class="bg-beige-200 text-stone-900 min-h-screen w-full antialiased overflow-x-hidden">
@@ -271,7 +359,7 @@
                 <!-- Título Principal -->
                 <h1 class="font-heading tracking-tight text-5xl md:text-6xl lg:text-7xl leading-[1.05] text-stone-900 mb-6 drop-shadow-sm">
                     <div class="overflow-hidden pb-2 -mb-2 pt-2 -mt-2"><span class="block gs-title">Precisão em</span></div>
-                    <div class="overflow-hidden pb-4 -mb-4 pt-2 -mt-2"><span class="block gs-title text-gradient font-bold drop-shadow-md">diagnósticos.</span></div>
+                    <div class="overflow-hidden pb-4 -mb-4 pt-2 -mt-2"><span class="block gs-title text-gradient font-bold drop-shadow-md shimmer-title">diagnósticos.</span></div>
                     <div class="overflow-hidden pb-2 -mb-2 pt-2 -mt-2">
                         <span class="block gs-title text-stone-700/80 font-serif italic text-4xl md:text-5xl tracking-normal font-light">
                             Cuidado em cada detalhe.
@@ -400,8 +488,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center gs-about-reveal">
                 <div class="w-full">
                     <!-- Badge super premium introduzindo a seção -->
-                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-white/60 shadow-sm text-[10px] font-bold uppercase tracking-widest text-primary mb-6">
-                        <iconify-icon icon="solar:hospital-bold-duotone" width="14"></iconify-icon> Sobre a Clínica
+                    <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-primary/30 bg-white/60 shadow-sm text-xs font-bold uppercase tracking-widest text-primary mb-6">
+                        <iconify-icon icon="solar:hospital-bold-duotone" width="16"></iconify-icon> Sobre a Clínica
                     </div>
                     
                     <!-- Novo Titulo de Alto Impacto Apple-Like -->
@@ -412,7 +500,10 @@
                 </div>
                 <div class="w-full flex flex-col gap-5 border-l-2 border-primary/30 pl-5 md:pl-8 py-2">
                     <p class="text-stone-600 font-sans leading-relaxed text-base md:text-lg">
-                        Há mais de <strong>40 anos</strong> unimos tecnologia avançada e ética humanizada em Ijuí. Porque para nós, cada exame carrega uma história de vida e confiança.
+                        A Dimagem é referência em diagnóstico por imagem em Ijuí e região há mais de <strong>40 anos</strong>. Nossa história é construída com ética, precisão e confiabilidade, aliando tecnologia avançada a uma equipe qualificada para oferecer diagnósticos seguros e atendimento humanizado.
+                    </p>
+                    <p class="text-stone-600 font-sans leading-relaxed text-base md:text-lg">
+                        Para nós, cada exame carrega uma história de vida, e cada diagnóstico merece confiança, cuidado e excelência em cada detalhe.
                     </p>
                     <div class="flex flex-wrap gap-2">
                         <span class="px-3 py-1.5 bg-white border border-stone-200 rounded-lg text-[11px] uppercase tracking-wider font-bold text-stone-600 shadow-sm flex items-center gap-1.5"><iconify-icon icon="solar:shield-check-bold" class="text-primary"></iconify-icon> Segurança</span>
@@ -506,6 +597,193 @@
             </div>
         </div>
     </section>
+
+    <!-- 3️⃣ CORPO CLÍNICO (CARROSSEL PREMIUM) -->
+    <section id="team" class="relative w-full py-28 lg:py-36 bg-beige-100 overflow-hidden border-t border-stone-300/30">
+        <!-- Background decorativo -->
+        <div class="absolute inset-0 z-0 pointer-events-none">
+            <div class="absolute inset-0" style="background-image: linear-gradient(rgba(28,25,23,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(28,25,23,0.03) 1px, transparent 1px); background-size: 50px 50px;"></div>
+            <div class="absolute top-[5%] right-[5%] w-[40vw] h-[40vw] rounded-full bg-[radial-gradient(circle,rgba(184,157,112,0.08)_0%,transparent_70%)]"></div>
+            <div class="absolute bottom-[10%] left-[10%] w-[35vw] h-[35vw] rounded-full bg-[radial-gradient(circle,rgba(158,160,143,0.08)_0%,transparent_70%)]"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10">
+
+            <!-- HEADER -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8 gs-team-header">
+                <div class="max-w-2xl">
+                    <div class="gs-team-badge inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-primary/30 bg-white/60 shadow-sm text-xs font-bold uppercase tracking-widest text-primary mb-6">
+                        <iconify-icon icon="solar:stethoscope-bold-duotone" width="16"></iconify-icon> Corpo Clínico
+                    </div>
+                    <h2 class="gs-team-title font-heading tracking-tight text-5xl md:text-6xl lg:text-7xl text-stone-900 leading-[1.05]">
+                        <span class="block font-medium">Quem cuida do seu</span>
+                        <span class="block font-bold shimmer-title mt-1">diagnóstico.</span>
+                    </h2>
+                    <p class="gs-team-subtitle text-stone-500 font-sans leading-relaxed text-base md:text-lg mt-6 max-w-xl border-l-2 border-primary/30 pl-5">
+                        Uma equipe multidisciplinar de <strong class="text-stone-700">radiologistas e especialistas</strong> com ampla experiência clínica, dedicados à precisão diagnóstica e ao cuidado individualizado com cada paciente.
+                    </p>
+                </div>
+            </div>
+
+            <!-- CARROSSEL DE MÉDICOS CONTAINER EXTRA P/ SETAS -->
+            <div class="relative w-full gs-team-carousel-container group py-4">
+                <!-- Seta esquerda fora do flow, alinhada vert. -->
+                <button id="team-prev" class="absolute -left-4 md:-left-8 lg:-left-16 top-1/2 -translate-y-1/2 z-30 w-12 h-12 lg:w-14 lg:h-14 rounded-full border border-stone-300 bg-white shadow-xl flex items-center justify-center text-stone-600 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 xl:scale-100 scale-90 disabled:opacity-0 disabled:pointer-events-none" aria-label="Anterior">
+                    <iconify-icon icon="solar:arrow-left-linear" width="24"></iconify-icon>
+                </button>
+
+                <!-- CARROSSEL DE MÉDICOS -->
+                <div class="relative gs-team-carousel overflow-hidden py-4">
+                    <div id="team-track" class="flex gap-5 lg:gap-6" style="will-change: transform;">
+
+                    <!-- Dr. Celso Vedolin — RESPONSÁVEL CLÍNICO -->
+                    <div class="team-card is-selected shrink-0 w-[220px] sm:w-[240px] lg:w-[260px] cursor-pointer select-none" data-index="0" data-name="Dr. Celso Vedolin" data-role="Radiologista" data-sub="Responsável Clínico" data-crm="CREMERS 6356">
+                        <div class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
+                            <!-- Badge -->
+                            <div class="team-card__badge absolute top-3 left-3 z-20 px-2.5 py-1 rounded-full bg-primary text-white text-[9px] font-bold uppercase tracking-widest flex items-center gap-1 shadow-md transition-all duration-400">
+                                <iconify-icon icon="solar:shield-check-bold" width="10"></iconify-icon> Resp. Clínico
+                            </div>
+                            <!-- Star -->
+                            <div class="team-card__star absolute top-3 right-3 z-20 w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center shadow-lg transition-all duration-400">
+                                <iconify-icon icon="solar:star-bold" width="12"></iconify-icon>
+                            </div>
+                            <!-- Imagem -->
+                            <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
+                                <img src="assets/raw_files/Dr.-CELSO-VEDOLIN.webp" alt="Dr. Celso Vedolin" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent transition-opacity duration-500"></div>
+                            </div>
+                            <div class="team-card__info p-5 bg-white transition-all duration-500 flex flex-col items-center justify-center text-center min-h-[160px]">
+                                <h4 class="font-heading text-base xl:text-lg font-bold text-stone-900 leading-snug mb-1">Dr. Celso Vedolin</h4>
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <p class="team-card__role-text text-stone-500 text-sm font-medium">Radiologista</p>
+                                </div>
+                                <p class="team-card__crm text-stone-400 text-[10px] sm:text-xs font-mono mt-3 uppercase tracking-widest font-semibold">CREMERS 6356</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dra. Emanuelle Gobbo Simon -->
+                    <div class="team-card shrink-0 w-[220px] sm:w-[240px] lg:w-[260px] cursor-pointer select-none" data-index="1" data-name="Dra. Emanuelle Gobbo Simon" data-role="Radiologista" data-sub="Saúde da Mulher" data-crm="CREMERS 40050">
+                        <div class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
+                            <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
+                                <img src="assets/raw_files/Dra-EMANUELLE-GOBBO-SIMON.webp" alt="Dra. Emanuelle Gobbo Simon" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent transition-opacity duration-500"></div>
+                            </div>
+                            <div class="team-card__info p-5 bg-white transition-all duration-500 flex flex-col items-center justify-center text-center min-h-[160px]">
+                                <h4 class="font-heading text-base xl:text-lg font-bold text-stone-900 leading-snug mb-1">Dra. Emanuelle G. Simon</h4>
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <p class="team-card__role-text text-stone-500 text-sm font-medium">Radiologista · Saúde da Mulher</p>
+                                </div>
+                                <p class="team-card__crm text-stone-400 text-[10px] sm:text-xs font-mono mt-3 uppercase tracking-widest font-semibold">CREMERS 40050</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dr. Henrique da Rosa Sobrinho -->
+                    <div class="team-card shrink-0 w-[220px] sm:w-[240px] lg:w-[260px] cursor-pointer select-none" data-index="2" data-name="Dr. Henrique da Rosa Sobrinho" data-role="Radiologista" data-sub="" data-crm="CREMERS 33250">
+                        <div class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
+                            <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
+                                <img src="assets/raw_files/Dr.-HENRIQUE-DA-ROSA-SOBRINHO.webp" alt="Dr. Henrique da Rosa Sobrinho" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent transition-opacity duration-500"></div>
+                            </div>
+                            <div class="team-card__info p-5 bg-white transition-all duration-500 flex flex-col items-center justify-center text-center min-h-[160px]">
+                                <h4 class="font-heading text-base xl:text-lg font-bold text-stone-900 leading-snug mb-1">Dr. Henrique R. Sobrinho</h4>
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <p class="team-card__role-text text-stone-500 text-sm font-medium">Radiologista</p>
+                                </div>
+                                <p class="team-card__crm text-stone-400 text-[10px] sm:text-xs font-mono mt-3 uppercase tracking-widest font-semibold">CREMERS 33250</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dra. Janize Regiane Paslowski -->
+                    <div class="team-card shrink-0 w-[220px] sm:w-[240px] lg:w-[260px] cursor-pointer select-none" data-index="3" data-name="Dra. Janize Regiane Paslowski" data-role="Radiologista" data-sub="Saúde da Mulher" data-crm="CREMERS 39882">
+                        <div class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
+                            <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
+                                <img src="assets/raw_files/Dra-JANIZE-REGIANE-PASLOWSKI.webp" alt="Dra. Janize Regiane Paslowski" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent transition-opacity duration-500"></div>
+                            </div>
+                            <div class="team-card__info p-5 bg-white transition-all duration-500 flex flex-col items-center justify-center text-center min-h-[160px]">
+                                <h4 class="font-heading text-base xl:text-lg font-bold text-stone-900 leading-snug mb-1">Dra. Janize R. Paslowski</h4>
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <p class="team-card__role-text text-stone-500 text-sm font-medium">Radiologista · Saúde da Mulher</p>
+                                </div>
+                                <p class="team-card__crm text-stone-400 text-[10px] sm:text-xs font-mono mt-3 uppercase tracking-widest font-semibold">CREMERS 39882</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dr. Vinicius Cardoso dos Santos -->
+                    <div class="team-card shrink-0 w-[220px] sm:w-[240px] lg:w-[260px] cursor-pointer select-none" data-index="4" data-name="Dr. Vinicius Cardoso dos Santos" data-role="Radiologia Oncológica" data-sub="" data-crm="CREMERS 30143">
+                        <div class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
+                            <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
+                                <img src="assets/raw_files/Dr.-VINICIUS-CARDOSO-DOS-SANTOS.webp" alt="Dr. Vinicius Cardoso dos Santos" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent transition-opacity duration-500"></div>
+                            </div>
+                            <div class="team-card__info p-5 bg-white transition-all duration-500 flex flex-col items-center justify-center text-center min-h-[160px]">
+                                <h4 class="font-heading text-base xl:text-lg font-bold text-stone-900 leading-snug mb-1">Dr. Vinicius C. dos Santos</h4>
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <p class="team-card__role-text text-stone-500 text-sm font-medium">Radiologia Oncológica</p>
+                                </div>
+                                <p class="team-card__crm text-stone-400 text-[10px] sm:text-xs font-mono mt-3 uppercase tracking-widest font-semibold">CREMERS 30143</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dr. Eduardo Tomasi -->
+                    <div class="team-card shrink-0 w-[220px] sm:w-[240px] lg:w-[260px] cursor-pointer select-none" data-index="5" data-name="Dr. Eduardo Tomasi" data-role="Ecografista" data-sub="" data-crm="CREMERS 32128">
+                        <div class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
+                            <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
+                                <img src="assets/raw_files/Dr.-EDUARDO-TOMASI.webp" alt="Dr. Eduardo Tomasi" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent transition-opacity duration-500"></div>
+                            </div>
+                            <div class="team-card__info p-5 bg-white transition-all duration-500 flex flex-col items-center justify-center text-center min-h-[160px]">
+                                <h4 class="font-heading text-base xl:text-lg font-bold text-stone-900 leading-snug mb-1">Dr. Eduardo Tomasi</h4>
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <p class="team-card__role-text text-stone-500 text-sm font-medium">Ecografista</p>
+                                </div>
+                                <p class="team-card__crm text-stone-400 text-[10px] sm:text-xs font-mono mt-3 uppercase tracking-widest font-semibold">CREMERS 32128</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dr. Kilian Christmann -->
+                    <div class="team-card shrink-0 w-[220px] sm:w-[240px] lg:w-[260px] cursor-pointer select-none" data-index="6" data-name="Dr. Kilian Christmann" data-role="Radiologista" data-sub="" data-crm="CREMERS 61172">
+                        <div class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
+                            <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
+                                <img src="assets/raw_files/D.r-KILIAN-CHRISTMANN.webp" alt="Dr. Kilian Christmann" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent transition-opacity duration-500"></div>
+                            </div>
+                            <div class="team-card__info p-5 bg-white transition-all duration-500 flex flex-col items-center justify-center text-center min-h-[160px]">
+                                <h4 class="font-heading text-base xl:text-lg font-bold text-stone-900 leading-snug mb-1">Dr. Kilian Christmann</h4>
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <p class="team-card__role-text text-stone-500 text-sm font-medium">Radiologista</p>
+                                </div>
+                                <p class="team-card__crm text-stone-400 text-[10px] sm:text-xs font-mono mt-3 uppercase tracking-widest font-semibold">CREMERS 61172</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Seta direita -->
+            <button id="team-next" class="absolute -right-4 md:-right-8 lg:-right-16 top-1/2 -translate-y-1/2 z-30 w-12 h-12 lg:w-14 lg:h-14 rounded-full border border-stone-300 bg-white shadow-xl flex items-center justify-center text-stone-600 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 xl:scale-100 scale-90 disabled:opacity-0 disabled:pointer-events-none" aria-label="Próximo">
+                <iconify-icon icon="solar:arrow-right-linear" width="24"></iconify-icon>
+            </button>
+        </div>
+
+            <!-- Indicadores de progresso -->
+            <div class="flex items-center justify-center gap-2 mt-12 gs-team-dots">
+                <div class="team-dot w-8 h-1.5 rounded-full bg-primary transition-all duration-500" data-dot="0"></div>
+                <div class="team-dot w-4 h-1.5 rounded-full bg-stone-300 transition-all duration-500" data-dot="1"></div>
+                <div class="team-dot w-4 h-1.5 rounded-full bg-stone-300 transition-all duration-500" data-dot="2"></div>
+            </div>
+
+        </div>
+    </section>
+
+
 
     <!-- Scripts de Animação (GSAP + Lenis) -->
     <script>
@@ -683,6 +961,169 @@
             aboutTl.to('.gs-about-reveal', { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out' })
                    .to('.gs-about-visual', { autoAlpha: 1, scale: 1, x: 0, duration: 1.2, ease: 'power3.out' }, "-=0.6")
                    .to('.gs-about-list > div', { autoAlpha: 1, x: 0, duration: 0.8, stagger: 0.15, ease: 'power2.out' }, "-=0.8");
+
+            // =============================================
+            // 5. CORPO CLÍNICO — Animações + Carrossel
+            // =============================================
+            
+            // Animação de entrada com stagger individual
+            gsap.set('.gs-team-badge', { autoAlpha: 0, x: -20 });
+            gsap.set('.gs-team-title', { autoAlpha: 0, y: 40 });
+            gsap.set('.gs-team-subtitle', { autoAlpha: 0, y: 30 });
+            gsap.set('.team-card', { autoAlpha: 0, y: 60, rotationY: 8, scale: 0.88 });
+            gsap.set('.gs-team-dots', { autoAlpha: 0, y: 15 });
+
+            const teamTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#team",
+                    start: "top 78%",
+                    end: "bottom bottom",
+                    toggleActions: "play none none reverse"
+                }
+            });
+
+            teamTl
+                .to('.gs-team-badge', { autoAlpha: 1, x: 0, duration: 0.8, ease: 'power3.out' })
+                .to('.gs-team-title', { autoAlpha: 1, y: 0, duration: 1, ease: 'power4.out' }, "-=0.5")
+                .to('.gs-team-subtitle', { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power3.out' }, "-=0.6")
+                .to('.team-card', { 
+                    autoAlpha: 1, y: 0, rotationY: 0, scale: 1,
+                    duration: 0.9, stagger: 0.1, 
+                    ease: 'power3.out'
+                }, "-=0.6")
+                .to('.gs-team-dots', { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, "-=0.3");
+
+            // Carrossel Logic
+            const track = document.getElementById('team-track');
+            const cards = document.querySelectorAll('.team-card');
+            const prevBtn = document.getElementById('team-prev');
+            const nextBtn = document.getElementById('team-next');
+            const dots = document.querySelectorAll('.team-dot');
+            let currentSlide = 0;
+            const totalCards = cards.length;
+
+            function getCardGap() {
+                return window.innerWidth >= 1024 ? 24 : 20;
+            }
+
+            function getVisibleCards() {
+                if (window.innerWidth >= 1024) return 4;
+                if (window.innerWidth >= 640) return 3;
+                return 2;
+            }
+
+            function getMaxSlide() {
+                return Math.max(0, totalCards - getVisibleCards());
+            }
+
+            function updateCarousel(animated = true) {
+                const gap = getCardGap();
+                const cardWidth = cards[0].offsetWidth + gap;
+                const offset = -currentSlide * cardWidth;
+                
+                if (animated) {
+                    gsap.to(track, {
+                        x: offset,
+                        duration: 0.7,
+                        ease: 'power3.out'
+                    });
+                } else {
+                    gsap.set(track, { x: offset });
+                }
+                
+                // Update dots
+                const maxSlide = getMaxSlide();
+                dots.forEach((dot, i) => {
+                    const zone = maxSlide > 0 ? Math.floor(currentSlide / (maxSlide / dots.length + 0.001)) : 0;
+                    const isActive = i === Math.min(zone, dots.length - 1);
+                    dot.classList.toggle('bg-primary', isActive);
+                    dot.classList.toggle('bg-stone-300', !isActive);
+                    dot.style.width = isActive ? '2rem' : '1rem';
+                });
+
+                // Arrow state
+                gsap.to(prevBtn, { opacity: currentSlide === 0 ? 0.35 : 1, duration: 0.3 });
+                gsap.to(nextBtn, { opacity: currentSlide >= getMaxSlide() ? 0.35 : 1, duration: 0.3 });
+            }
+
+            // Seleção por Clique
+            function selectCard(card) {
+                // Desselecionar todos
+                cards.forEach(c => {
+                    if (c !== card && c.classList.contains('is-selected')) {
+                        c.classList.remove('is-selected');
+                        // Libera do controle do GSAP para o CSS puramente transicionar o off-state sem embaçar
+                        gsap.set(c.querySelector('.team-card__inner'), { clearProps: "all" });
+                    }
+                });
+                
+                // Selecionar o novo
+                if (!card.classList.contains('is-selected')) {
+                    card.classList.add('is-selected');
+                    const inner = card.querySelector('.team-card__inner');
+                    // Libera de transform styles inliens para evitar borrões
+                    gsap.set(inner, { clearProps: "all" });
+                }
+                
+                // Melhorando a lógica de balanceamento
+                const cardIndex = parseInt(card.dataset.index);
+                const max = getMaxSlide();
+                const visible = getVisibleCards();
+                
+                // Nós só queremos mover se o card clicado estiver fora de visão (nas pontas)
+                if (cardIndex < currentSlide) {
+                    currentSlide = cardIndex;
+                    updateCarousel();
+                } else if (cardIndex >= currentSlide + visible - 1) {
+                    currentSlide = cardIndex - visible + 1;
+                    if (currentSlide > max) currentSlide = max;
+                    updateCarousel();
+                }
+            }
+
+            // Click events nos cards
+            cards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    selectCard(card);
+                });
+            });
+
+            // Navegação setas
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < getMaxSlide()) {
+                    currentSlide++;
+                    updateCarousel();
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateCarousel();
+                }
+            });
+
+            // Touch events (mobile only)
+            let touchStartX = 0;
+            track.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+            track.addEventListener('touchend', (e) => {
+                const diff = e.changedTouches[0].clientX - touchStartX;
+                if (Math.abs(diff) > 50) {
+                    if (diff < 0 && currentSlide < getMaxSlide()) currentSlide++;
+                    if (diff > 0 && currentSlide > 0) currentSlide--;
+                    updateCarousel();
+                }
+            });
+
+            // Resize handler
+            window.addEventListener('resize', () => {
+                if (currentSlide > getMaxSlide()) currentSlide = getMaxSlide();
+                updateCarousel(false);
+            });
+
+            // Initial state
+            updateCarousel(false);
 
         });
     </script>
