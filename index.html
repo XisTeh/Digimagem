@@ -305,33 +305,119 @@
             background-clip: text;
             animation: shimmer-text 5s ease-in-out infinite;
         }
+
+        /* =========================================
+           EXAM CARDS (Efeito Lava)
+           ========================================= */
+        .ds-card {
+            border-radius: 1.5rem;
+            overflow: hidden;
+            background: #1c1917;
+            color: #E6E3D6;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        .ds-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
+        }
+        .ds-card__image {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            object-fit: cover; opacity: 0.5; filter: grayscale(50%);
+            transition: transform 0.8s ease, filter 0.5s ease, opacity 0.5s ease;
+        }
+        .ds-card:hover .ds-card__image {
+            transform: scale(1.05);
+            opacity: 0.3;
+            filter: grayscale(0%);
+        }
+        .ds-card__content {
+            position: relative; z-index: 10;
+            height: 100%; display: flex; flex-direction: column; justify-content: space-between;
+            background: linear-gradient(to top, rgba(28,25,23,0.95) 0%, rgba(28,25,23,0.1) 60%, transparent 100%);
+        }
+        .ds-card__icon-btn {
+            width: 3rem; height: 3rem; border-radius: 50%;
+            background: #D4F268; color: #1c1917;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.4s ease; transform: rotate(0deg);
+        }
+        .ds-card:hover .ds-card__icon-btn {
+            transform: rotate(45deg) scale(1.1);
+            background: #C3E354;
+            box-shadow: 0 0 15px rgba(212, 242, 104, 0.3);
+        }
+
+        
+        /* =========================================
+           SCROLLBAR MODAL
+           ========================================= */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f5f5f4; 
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d6d3d1; 
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a8a29e; 
+        }
+
+        /* =========================================
+           MARQUEE ANIMATION (Convênios)
+           ========================================= */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .animate-marquee {
+            animation: marquee 40s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+        .marquee-container {
+            display: flex;
+            width: max-content;
+        }
     </style>
 </head>
 <body class="bg-beige-200 text-stone-900 min-h-screen w-full antialiased overflow-x-hidden">
 
-    <!-- Navbar Minimalista (Mock apenas para visual) -->
-    <header class="absolute top-0 w-full z-50 px-6 md:px-12 py-6 flex items-center justify-between invisible-start gs-nav">
-        <div class="flex items-center">
-            <img src="assets/raw_files/logodimagem.webp" alt="Dimagem" class="h-8 md:h-12 object-contain">
-        </div>
-        <div class="hidden lg:flex gap-4 xl:gap-8 text-xs xl:text-sm font-semibold uppercase tracking-wider text-stone-600 whitespace-nowrap">
-            <a href="#" class="hover:text-primary transition-colors">A clínica</a>
-            <a href="#" class="hover:text-primary transition-colors">Exames</a>
-            <a href="#" class="hover:text-primary transition-colors">Corpo Clínico</a>
-            <a href="#" class="hover:text-primary transition-colors">Convênios</a>
-            <a href="#" class="hover:text-primary transition-colors">PACS</a>
-            <a href="#" class="hover:text-primary transition-colors">Contato</a>
-            <a href="#" class="hover:text-primary transition-colors">Trabalhe Conosco</a>
-        </div>
-        <div>
-            <div class="w-10 h-10 rounded-full border border-stone-300 flex items-center justify-center hover:bg-stone-900 hover:text-white transition-colors cursor-pointer">
-                <iconify-icon icon="solar:hamburger-menu-linear" width="20"></iconify-icon>
+    <!-- Navbar Glass Effect -->
+    <header class="absolute top-5 left-1/2 -translate-x-1/2 w-[95%] max-w-[1280px] z-50 transition-all duration-500 backdrop-blur-[16px] bg-gradient-to-r from-white/80 to-white/40 border-t border-l border-white/80 border-b border-r border-white/30 rounded-full shadow-[0_8px_32px_-8px_rgba(28,25,23,0.08)] invisible-start gs-nav lg:fixed">
+        <div class="px-7 py-3.5 md:py-4 flex items-center justify-between w-full">
+            <div class="flex items-center shrink-0 pl-1">
+                <img src="assets/raw_files/logodimagem.webp" alt="Dimagem" class="h-8 md:h-9 lg:h-10 object-contain drop-shadow-sm">
+            </div>
+            
+            <div class="hidden lg:flex flex-1 justify-center items-center gap-8 xl:gap-12 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.12em] text-stone-700/80 whitespace-nowrap">
+                <a href="#about" class="hover:text-primary transition-colors hover:scale-105 active:scale-95 transform">A clínica</a>
+                <a href="#exams" class="hover:text-primary transition-colors hover:scale-105 active:scale-95 transform">Exames</a>
+                <a href="#team" class="hover:text-primary transition-colors hover:scale-105 active:scale-95 transform">Corpo Clínico</a>
+                <a href="#convenios" class="hover:text-primary transition-colors hover:scale-105 active:scale-95 transform">Convênios</a>
+                <a href="#" class="hover:text-primary transition-colors hover:scale-105 active:scale-95 transform">Contato</a>
+            </div>
+
+            <div class="flex items-center shrink-0 justify-end pr-1">
+                <a href="#" class="btn-premium px-7 py-3 bg-[#B89D70] text-white rounded-full text-[10px] md:text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 shadow-md hover:bg-[#a38a60]">
+                    Resultados digitais
+                    <iconify-icon icon="solar:document-bold" width="14"></iconify-icon>
+                </a>
             </div>
         </div>
     </header>
 
     <!-- 1️⃣ HERO SECTION -->
-    <section id="hero" class="relative w-full min-h-screen flex items-center pt-24 pb-12 lg:pt-0 lg:pb-0 overflow-hidden">
+    <section id="hero" class="relative w-full min-h-screen flex items-center pt-36 pb-12 lg:pt-28 lg:pb-0 overflow-hidden">
         
         <!-- Elementos de Background Mesh Abstract -->
         <div class="bg-mesh">
@@ -342,7 +428,7 @@
             <div class="absolute inset-0" style="background-image: linear-gradient(rgba(28,25,23,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(28,25,23,0.03) 1px, transparent 1px); background-size: 80px 80px;"></div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 relative z-10 items-center">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 relative z-10 items-center mt-6 lg:mt-16">
             
             <!-- ESQUERDA: Texto e Ações -->
             <div class="lg:col-span-5 flex flex-col justify-center order-2 lg:order-1 relative z-20">
@@ -597,7 +683,6 @@
             </div>
         </div>
     </section>
-
     <!-- 3️⃣ CORPO CLÍNICO (CARROSSEL PREMIUM) -->
     <section id="team" class="relative w-full py-28 lg:py-36 bg-beige-100 overflow-hidden border-t border-stone-300/30">
         <!-- Background decorativo -->
@@ -610,8 +695,8 @@
         <div class="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10">
 
             <!-- HEADER -->
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8 gs-team-header">
-                <div class="max-w-2xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center mb-16 lg:mb-20 gs-team-header">
+                <div class="w-full">
                     <div class="gs-team-badge inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-primary/30 bg-white/60 shadow-sm text-xs font-bold uppercase tracking-widest text-primary mb-6">
                         <iconify-icon icon="solar:stethoscope-bold-duotone" width="16"></iconify-icon> Corpo Clínico
                     </div>
@@ -619,9 +704,61 @@
                         <span class="block font-medium">Quem cuida do seu</span>
                         <span class="block font-bold shimmer-title mt-1">diagnóstico.</span>
                     </h2>
-                    <p class="gs-team-subtitle text-stone-500 font-sans leading-relaxed text-base md:text-lg mt-6 max-w-xl border-l-2 border-primary/30 pl-5">
+                </div>
+                
+                <div class="w-full flex flex-col pt-4 md:pt-0 border-l-[3px] border-[#B89D70]/40 pl-6 md:pl-10 py-2 relative">
+                    <p class="gs-team-subtitle text-stone-500 font-sans leading-relaxed text-base md:text-lg mb-8">
                         Uma equipe multidisciplinar de <strong class="text-stone-700">radiologistas e especialistas</strong> com ampla experiência clínica, dedicados à precisão diagnóstica e ao cuidado individualizado com cada paciente.
                     </p>
+                    
+                    <!-- PACS INTEGRAÇÃO -->
+                    <div class="bg-white/60 backdrop-blur-xl rounded-[2rem] p-8 md:p-10 border border-white shadow-[0_20px_50px_rgba(184,157,112,0.1)] relative overflow-hidden group gs-reveal">
+                        <!-- Rederring Glow -->
+                        <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-colors duration-700"></div>
+                        
+                        <!-- Logo Watermark Background -->
+                        <div class="absolute -right-4 -top-4 text-[#B89D70]/5 font-serif italic text-8xl md:text-[10rem] rotate-[-5deg] select-none pointer-events-none group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-1000">Pacs</div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                                <div class="flex-1">
+                                    <h4 class="text-xl md:text-2xl font-heading font-bold text-stone-800 mb-3 flex items-center gap-3">
+                                        <span class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                            <iconify-icon icon="solar:database-bold-duotone" class="text-primary" width="20"></iconify-icon>
+                                        </span>
+                                        Acesso aos Exames
+                                    </h4>
+                                    <p class="text-sm md:text-base text-stone-500 leading-relaxed max-w-md">
+                                        Solução inteligente para visualização e arquivamento de imagens diagnósticas, integrada para médicos e pacientes.
+                                    </p>
+                                </div>
+                                
+                                <div class="flex flex-col sm:flex-row items-stretch sm:items-end gap-5">
+                                    <!-- Botão 1 -->
+                                    <div class="flex flex-col gap-2">
+                                        <span class="text-[10px] text-stone-400 uppercase tracking-[0.2em] font-bold ml-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500">Portal do Paciente</span>
+                                        <a href="https://pacs.dimagem.com.br/login" target="_blank" class="relative overflow-hidden px-8 py-4 bg-[#B89D70] text-white rounded-2xl text-[11px] font-bold uppercase tracking-[0.15em] flex items-center justify-center gap-3 shadow-[0_10px_20px_-5px_rgba(184,157,112,0.4)] hover:shadow-[0_15px_30px_-5px_rgba(184,157,112,0.6)] transition-all duration-300 hover:-translate-y-1 group/btn min-w-[200px]">
+                                            <!-- Shimmer Effect -->
+                                            <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite]"></div>
+                                            Acesso ao PACS
+                                            <iconify-icon icon="solar:alt-arrow-right-bold" width="16" class="group-hover/btn:translate-x-1 transition-transform"></iconify-icon>
+                                        </a>
+                                    </div>
+
+                                    <!-- Botão 2 -->
+                                    <div class="flex flex-col gap-2">
+                                        <span class="text-[10px] text-stone-400 uppercase tracking-[0.2em] font-bold ml-1">Portal do Médico</span>
+                                        <button onclick="openPacsModal()" class="relative overflow-hidden px-8 py-4 bg-white text-[#B89D70] border-2 border-[#B89D70]/20 rounded-2xl text-[11px] font-bold uppercase tracking-[0.15em] flex items-center justify-center gap-3 shadow-lg shadow-stone-200/50 hover:border-[#B89D70] hover:bg-stone-50 transition-all duration-300 hover:-translate-y-1 group/btn2 min-w-[200px]">
+                                             <!-- Glow Overlay -->
+                                            <div class="absolute inset-0 bg-[#B89D70]/5 opacity-0 group-hover/btn2:opacity-100 transition-opacity"></div>
+                                            Solicitar Cadastro
+                                            <iconify-icon icon="solar:user-plus-bold" width="18" class="group-hover/btn2:scale-110 transition-transform"></iconify-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -783,9 +920,385 @@
         </div>
     </section>
 
+    <!-- 5️⃣ CONVÊNIOS (Marquee Premium) -->
+    <section id="convenios" class="relative w-full py-16 bg-stone-900 border-t border-stone-800 overflow-hidden flex flex-col items-center justify-center">
+        <!-- Badge da Seção -->
+        <div class="mb-10 text-center relative z-10 w-full px-6 flex flex-col items-center">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-stone-800/80 shadow-sm text-[10px] font-bold uppercase tracking-widest text-primary mb-3">
+                <iconify-icon icon="solar:shield-check-bold-duotone" width="14"></iconify-icon> Atendimento Flexível
+            </div>
+            <h2 class="font-heading tracking-tight text-xl md:text-2xl lg:text-3xl text-stone-200">
+                Diversos <strong class="text-white font-semibold">Convênios Aceitos</strong>
+            </h2>
+        </div>
 
+        <!-- Grade Marquee Transparente -->
+        <div class="w-full relative py-4 mask-edges" style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);">
+            
+            <div class="marquee-container animate-marquee gap-6 sm:gap-8 px-4 flex-nowrap items-center">
+                <!-- Para dar loop perfeito, os items precisam ser duplicados. -->
 
-    <!-- Scripts de Animação (GSAP + Lenis) -->
+                <!-- BLOCO 1 -->
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:health-bold" class="text-stone-400 group-hover:text-primary transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Cabergs Saúde</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:heart-pulse-bold" class="text-lime-400/80 group-hover:text-lime-400 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">IPE Saúde</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:card-2-bold" class="text-stone-400 group-hover:text-blue-400 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Vital Saúde</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:wallet-bold" class="text-stone-400 group-hover:text-blue-400 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Vital Cauzzo</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:virus-bold" class="text-stone-400 group-hover:text-green-500 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">CISA</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:shield-bold" class="text-stone-400 group-hover:text-blue-500 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">CASSI</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:users-group-rounded-bold" class="text-stone-400 group-hover:text-orange-400 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Saúde Caixa</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:leaf-bold" class="text-stone-400 group-hover:text-green-600 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Unimed</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:letter-bold" class="text-stone-400 group-hover:text-yellow-500 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Correios</span>
+                </div>
+
+                <!-- BLOCO 2 (DUPLICADO EXATAMENTE IGUAL PARA O LOOP DO MARQUEE NÃO QUEBRAR) -->
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:health-bold" class="text-stone-400 group-hover:text-primary transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Cabergs Saúde</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:heart-pulse-bold" class="text-lime-400/80 group-hover:text-lime-400 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">IPE Saúde</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:card-2-bold" class="text-stone-400 group-hover:text-blue-400 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Vital Saúde</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:wallet-bold" class="text-stone-400 group-hover:text-blue-400 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Vital Cauzzo</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:virus-bold" class="text-stone-400 group-hover:text-green-500 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">CISA</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:shield-bold" class="text-stone-400 group-hover:text-blue-500 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">CASSI</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:users-group-rounded-bold" class="text-stone-400 group-hover:text-orange-400 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Saúde Caixa</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:leaf-bold" class="text-stone-400 group-hover:text-green-600 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Unimed</span>
+                </div>
+                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
+                    <iconify-icon icon="solar:letter-bold" class="text-stone-400 group-hover:text-yellow-500 transition-colors"></iconify-icon>
+                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Correios</span>
+                </div>
+
+            </div>
+        </div>
+    
+
+    <!-- 6️⃣ EXAMES (CARDS LAVA EFF) -->
+    <section id="exams" class="relative w-full py-16 lg:py-24 bg-stone-900 text-beige-100 overflow-hidden">
+        
+        <!-- Abstract Background -->
+        <div class="absolute inset-0 z-0 pointer-events-none opacity-20">
+            <div class="absolute inset-0" style="background-image: linear-gradient(rgba(234,232,222,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(234,232,222,0.05) 1px, transparent 1px); background-size: 60px 60px;"></div>
+            <div class="absolute top-[20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(184,157,112,0.1)_0%,transparent_60%)]"></div>
+            <div class="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-[radial-gradient(circle,rgba(212,242,104,0.05)_0%,transparent_60%)]"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10 flex flex-col gap-12 lg:gap-16">
+            
+            <!-- HEADER DA SEÇÃO -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-end gs-exams-header">
+                <div>
+                    <!-- Badge -->
+                    <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-lime-400/30 bg-white/5 backdrop-blur-sm shadow-sm text-xs font-bold uppercase tracking-widest text-lime-400 mb-6">
+                        <iconify-icon icon="solar:scanner-bold-duotone" width="16"></iconify-icon> Nossos Exames
+                    </div>
+                    
+                    <h2 class="font-heading tracking-tight text-4xl md:text-5xl lg:text-6xl text-white leading-[1.05]">
+                        <span class="block font-medium">Portfólio de exames</span>
+                        <span class="block font-bold mt-1 text-primary">alta complexidade.</span>
+                    </h2>
+                </div>
+                
+                <div class="w-full flex flex-col gap-6 md:pl-8 py-2">
+                    <p class="text-stone-400 font-sans leading-relaxed text-base md:text-lg">
+                        Realize seus exames em uma das mais completas estruturas de imagem da região. Tecnologia e equipamentos de última geração a favor da saúde e bem-estar.
+                    </p>
+                    <p class="text-lime-400 font-sans text-xs sm:text-sm font-medium tracking-wide flex items-center gap-2">
+                        <iconify-icon icon="solar:info-circle-bold" width="16"></iconify-icon> Clique em qualquer exame para ver as orientações de preparo.
+                    </p>
+                </div>
+            </div>
+
+            <!-- GRID DOS EXAMES -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 gs-exams-grid z-20 relative">
+                
+                <!-- RM -->
+                <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="RM">
+                    <img src="assets/raw_files/RM.webp" alt="Ressonância Magnética" class="ds-card__image" loading="lazy">
+                    <div class="ds-card__content p-5 lg:p-6">
+                        <div class="flex justify-between w-full">
+                            <span class="text-lime-400 font-mono text-sm">01</span>
+                            <div class="ds-card__icon-btn w-10 h-10 shadow-lg group-hover:bg-lime-500">
+                                <iconify-icon icon="solar:arrow-right-up-linear" width="20"></iconify-icon>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <h4 class="font-heading text-xl lg:text-2xl font-bold leading-tight group-hover:text-primary transition-colors">Ressonância Magnética</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TC -->
+                <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="TC">
+                    <img src="assets/raw_files/TC.webp" alt="Tomografia Computadorizada" class="ds-card__image" loading="lazy">
+                    <div class="ds-card__content p-5 lg:p-6">
+                        <div class="flex justify-between w-full">
+                            <span class="text-lime-400 font-mono text-sm">02</span>
+                            <div class="ds-card__icon-btn w-10 h-10 shadow-lg group-hover:bg-lime-500">
+                                <iconify-icon icon="solar:arrow-right-up-linear" width="20"></iconify-icon>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <h4 class="font-heading text-xl lg:text-2xl font-bold leading-tight group-hover:text-primary transition-colors">Tomografia Computadorizada</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ECO -->
+                <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="ECO">
+                    <img src="assets/raw_files/ECO.webp" alt="Ecografia" class="ds-card__image" loading="lazy">
+                    <div class="ds-card__content p-5 lg:p-6">
+                        <div class="flex justify-between w-full">
+                            <span class="text-lime-400 font-mono text-sm">03</span>
+                            <div class="ds-card__icon-btn w-10 h-10 shadow-lg group-hover:bg-lime-500">
+                                <iconify-icon icon="solar:arrow-right-up-linear" width="20"></iconify-icon>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <h4 class="font-heading text-xl lg:text-2xl font-bold leading-tight group-hover:text-primary transition-colors">Ecografia</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RX -->
+                <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="RX">
+                    <img src="assets/raw_files/RX.webp" alt="Raios-X Digital" class="ds-card__image" loading="lazy">
+                    <div class="ds-card__content p-5 lg:p-6">
+                        <div class="flex justify-between w-full">
+                            <span class="text-lime-400 font-mono text-sm">04</span>
+                            <div class="ds-card__icon-btn w-10 h-10 shadow-lg group-hover:bg-lime-500">
+                                <iconify-icon icon="solar:arrow-right-up-linear" width="20"></iconify-icon>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <h4 class="font-heading text-xl lg:text-2xl font-bold leading-tight group-hover:text-primary transition-colors">Raio-X Digital</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MAMOGRAFIA -->
+                <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="MAMOGRAFIA">
+                    <img src="assets/raw_files/MAMOGRAFIA.webp" alt="Mamografia" class="ds-card__image" loading="lazy">
+                    <div class="ds-card__content p-5 lg:p-6">
+                        <div class="flex justify-between w-full">
+                            <span class="text-lime-400 font-mono text-sm">05</span>
+                            <div class="ds-card__icon-btn w-10 h-10 shadow-lg group-hover:bg-lime-500">
+                                <iconify-icon icon="solar:arrow-right-up-linear" width="20"></iconify-icon>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <h4 class="font-heading text-xl lg:text-2xl font-bold leading-tight group-hover:text-primary transition-colors">Mamografia</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- D.O -->
+                <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="DO">
+                    <img src="assets/raw_files/D.O.webp" alt="Densitometria Óssea" class="ds-card__image" loading="lazy">
+                    <div class="ds-card__content p-5 lg:p-6">
+                        <div class="flex justify-between w-full">
+                            <span class="text-lime-400 font-mono text-sm">06</span>
+                            <div class="ds-card__icon-btn w-10 h-10 shadow-lg group-hover:bg-lime-500">
+                                <iconify-icon icon="solar:arrow-right-up-linear" width="20"></iconify-icon>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <h4 class="font-heading text-xl lg:text-2xl font-bold leading-tight group-hover:text-primary transition-colors">Densitometria Óssea</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BIOPSIA -->
+                <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="BIOPSIA">
+                    <img src="assets/raw_files/BIOPSIA.webp" alt="Biópsia" class="ds-card__image" loading="lazy">
+                    <div class="ds-card__content p-5 lg:p-6">
+                        <div class="flex justify-between w-full">
+                            <span class="text-lime-400 font-mono text-sm">07</span>
+                            <div class="ds-card__icon-btn w-10 h-10 shadow-lg group-hover:bg-lime-500">
+                                <iconify-icon icon="solar:arrow-right-up-linear" width="20"></iconify-icon>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <h4 class="font-heading text-xl lg:text-2xl font-bold leading-tight group-hover:text-primary transition-colors">Punções e Biópsias</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ODONTOLÓGICA -->
+                <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="ODONTOLOGICA">
+                    <img src="assets/raw_files/ODONTOLÓGICA.webp" alt="Radiologia Odontológica" class="ds-card__image" loading="lazy">
+                    <div class="ds-card__content p-5 lg:p-6">
+                        <div class="flex justify-between w-full">
+                            <span class="text-lime-400 font-mono text-sm">08</span>
+                            <div class="ds-card__icon-btn w-10 h-10 shadow-lg group-hover:bg-lime-500">
+                                <iconify-icon icon="solar:arrow-right-up-linear" width="20"></iconify-icon>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <h4 class="font-heading text-xl lg:text-2xl font-bold leading-tight group-hover:text-primary transition-colors">Radiologia Odontológica</h4>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 7️⃣ MODAL DE PREPARO (HIDDEN BY DEFAULT) -->
+    <div id="exam-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 invisible opacity-0 pointer-events-none">
+        <!-- Overlay -->
+        <div id="modal-overlay" class="absolute inset-0 bg-stone-900/60 backdrop-blur-md cursor-pointer"></div>
+        
+        <!-- Content Box -->
+        <div id="modal-content" class="relative bg-beige-100 w-full max-w-3xl max-h-[90vh] rounded-[2rem] shadow-2xl overflow-hidden flex flex-col transform scale-95 opacity-0">
+            <!-- Header -->
+            <div class="p-6 md:p-8 bg-white border-b border-stone-200 flex flex-col md:flex-row md:items-center justify-between gap-4 shrink-0">
+                <div>
+                    <div class="inline-flex items-center gap-2 mb-2">
+                        <span class="px-2.5 py-1 rounded bg-stone-100 text-stone-500 text-[10px] sm:text-xs font-bold uppercase tracking-widest flex items-center gap-1"><iconify-icon icon="solar:info-circle-bold" class="text-stone-400"></iconify-icon> Informações</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary/50"></span>
+                        <span class="text-stone-500 text-[10px] sm:text-xs font-bold uppercase tracking-widest">Preparo para Exames</span>
+                    </div>
+                    <h3 id="modal-title" class="font-heading text-2xl md:text-3xl font-bold text-stone-900 tracking-tight">Nome do Exame</h3>
+                </div>
+                <button id="modal-close" class="absolute top-6 right-6 md:relative md:top-0 md:right-0 w-10 h-10 rounded-full bg-stone-100 text-stone-600 flex items-center justify-center hover:bg-stone-200 hover:text-stone-900 transition-colors self-start shrink-0">
+                    <iconify-icon icon="solar:close-circle-bold" width="24"></iconify-icon>
+                </button>
+            </div>
+            
+            <!-- Body (Scrollable) -->
+            <div class="p-6 md:p-8 overflow-y-auto w-full custom-scrollbar text-stone-700 font-sans leading-relaxed text-sm md:text-base bg-beige-100" id="modal-body">
+                <!-- Content injected via JS -->
+            </div>
+
+            <!-- Footer / Formulário button -->
+            <div id="modal-footer" class="p-6 bg-white border-t border-stone-200 shrink-0 hidden items-center flex-col sm:flex-row justify-between gap-4">
+                <span class="text-xs text-stone-500 font-medium">Faça o download do formulário necessário:</span>
+                <a id="modal-form-btn" href="#" target="_blank" class="btn-premium px-6 py-3 bg-primary text-white rounded-full text-base font-semibold flex items-center gap-2 hover:bg-[#a38a60]">
+                    <iconify-icon icon="solar:document-bold" width="18"></iconify-icon> Formulário
+                </a>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+    <!-- 8️⃣ MODAL DE CADASTRO MÉDICO PACS -->
+    <div id="pacs-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 invisible opacity-0 pointer-events-none">
+        <!-- Overlay -->
+        <div id="pacs-overlay" class="absolute inset-0 bg-stone-900/40 backdrop-blur-sm cursor-pointer"></div>
+        
+        <!-- Content Box Glass -->
+        <div id="pacs-content" class="relative bg-white/90 backdrop-blur-2xl border border-white/50 w-full max-w-xl max-h-[90vh] rounded-[1.5rem] shadow-[0_15px_60px_-15px_rgba(0,0,0,0.2)] overflow-hidden flex flex-col transform scale-95 opacity-0">
+            
+            <button id="pacs-close" class="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-stone-900 text-white flex items-center justify-center hover:bg-[#B89D70] hover:scale-105 transition-all shadow-md">
+                <iconify-icon icon="solar:close-circle-bold" width="20"></iconify-icon>
+            </button>
+
+            <!-- Body do Formulário -->
+            <div class="p-8 md:p-12 w-full overflow-y-auto custom-scrollbar">
+                <div class="text-center mb-10">
+                    <div class="w-16 h-16 bg-[#B89D70]/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-[#B89D70]/20">
+                        <iconify-icon icon="solar:user-speak-bold-duotone" class="text-[#B89D70]" width="32"></iconify-icon>
+                    </div>
+                    <h3 class="font-heading text-3xl font-bold text-stone-800 tracking-tight">Solicitação de Acesso</h3>
+                    <p class="text-base text-stone-500 mt-2">Portal exclusivo para profissionais do corpo clínico.</p>
+                </div>
+
+                <form class="space-y-5 font-sans">
+                    <!-- Row 1 -->
+                    <div class="group/inp relative">
+                        <label class="absolute left-4 -top-2.5 px-2 bg-white text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">Nome Completo</label>
+                        <input type="text" placeholder="EX: DR. JOÃO SILVA" class="w-full bg-white border-2 border-stone-100 rounded-xl px-5 py-4 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] transition-all uppercase tracking-wide text-sm">
+                    </div>
+                    
+                    <!-- Row 2 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div class="group/inp relative">
+                            <label class="absolute left-4 -top-2.5 px-2 bg-white text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">CRM / UF</label>
+                            <input type="text" placeholder="000000 / RS" class="w-full bg-white border-2 border-stone-100 rounded-xl px-5 py-4 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] transition-all uppercase tracking-wide text-sm">
+                        </div>
+                        <div class="group/inp relative">
+                            <label class="absolute left-4 -top-2.5 px-2 bg-white text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">Cidade</label>
+                            <input type="text" placeholder="IJUÍ" class="w-full bg-white border-2 border-stone-100 rounded-xl px-5 py-4 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] transition-all uppercase tracking-wide text-sm">
+                        </div>
+                    </div>
+
+                    <!-- Row 3 -->
+                    <div class="group/inp relative">
+                        <label class="absolute left-4 -top-2.5 px-2 bg-white text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">E-mail Profissional</label>
+                        <input type="email" placeholder="CONTATO@EXEMPLO.COM.BR" class="w-full bg-white border-2 border-stone-100 rounded-xl px-5 py-4 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] transition-all uppercase tracking-wide text-sm">
+                    </div>
+
+                    <!-- Row 4 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div class="group/inp relative">
+                            <label class="absolute left-4 -top-2.5 px-2 bg-white text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">WhatsApp</label>
+                            <input type="text" placeholder="(55) 9 9999-9999" class="w-full bg-white border-2 border-stone-100 rounded-xl px-5 py-4 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] transition-all uppercase tracking-wide text-sm">
+                        </div>
+                        <div class="group/inp relative">
+                            <label class="absolute left-4 -top-2.5 px-2 bg-white text-[10px] font-bold text-[#B89D70] tracking-widest uppercase transition-all">Especialidade</label>
+                            <input type="text" placeholder="GERAL" class="w-full bg-white border-2 border-stone-100 rounded-xl px-5 py-4 placeholder-stone-300 text-stone-800 shadow-sm focus:outline-none focus:border-[#B89D70] transition-all uppercase tracking-wide text-sm">
+                        </div>
+                    </div>
+
+                    <!-- Botão -->
+                    <div class="pt-6">
+                        <button type="submit" class="w-full bg-[#B89D70] hover:bg-[#a38a60] text-white font-bold uppercase tracking-[0.2em] rounded-2xl py-5 shadow-[0_10px_25px_-5px_rgba(184,157,112,0.4)] hover:shadow-[0_15px_35px_-5px_rgba(184,157,112,0.6)] hover:-translate-y-1 transform transition-all duration-300 flex items-center justify-center gap-3">
+                            Enviar Solicitação
+                            <iconify-icon icon="solar:paper-plane-bold" width="18"></iconify-icon>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>    <!-- Scripts de Animação (GSAP + Lenis) -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             
@@ -963,6 +1476,30 @@
                    .to('.gs-about-list > div', { autoAlpha: 1, x: 0, duration: 0.8, stagger: 0.15, ease: 'power2.out' }, "-=0.8");
 
             // =============================================
+            // 4.5 EXAMES SECTION (Reveal & Delay stagger)
+            // =============================================
+            
+            const examsTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#exams",
+                    start: "top 75%",
+                    end: "bottom bottom",
+                    toggleActions: "play none none reverse"
+                }
+            });
+
+            gsap.set('.gs-exams-header', { autoAlpha: 0, y: 30 });
+            gsap.set('.gs-exam-card', { autoAlpha: 0, y: 40, scale: 0.95 });
+
+            examsTl.to('.gs-exams-header', { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out' })
+                   .to('.gs-exam-card', { 
+                       autoAlpha: 1, y: 0, scale: 1, 
+                       duration: 0.8, 
+                       stagger: 0.08, 
+                       ease: 'back.out(1.2)' 
+                   }, "-=0.5");
+
+            // =============================================
             // 5. CORPO CLÍNICO — Animações + Carrossel
             // =============================================
             
@@ -1124,6 +1661,317 @@
 
             // Initial state
             updateCarousel(false);
+
+            // =============================================
+            // 6. MODAL DE EXAMES LOGIC
+            // =============================================
+            const examsData = {
+                'RM': {
+                    title: 'Ressonância Magnética',
+                    formLink: 'https://www.dimagem.com.br/files/frm.pdf',
+                    content: `
+                        <p class="font-bold text-stone-900 text-lg uppercase mb-4 text-primary">Trazer exames anteriores!</p>
+                        
+                        <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm mb-6">
+                            <h4 class="font-heading font-bold text-stone-800 mb-2">ABDÔMEN / APARELHO URINÁRIO / URORESSONÂNCIA / VIAS BILIARES / COLANGIORESSONÂNCIA</h4>
+                            <p>6 horas de jejum.</p>
+                        </div>
+
+                        <h4 class="font-heading font-bold text-stone-900 mb-3 text-lg">Não podem realizar exames, pacientes com:</h4>
+                        <ul class="list-disc pl-5 space-y-2 mb-6">
+                            <li>Marca-passo;</li>
+                            <li>Implantes de estribo no ouvido;</li>
+                            <li>Reconstrução de CAI com metal (CÓCLEA);</li>
+                            <li>Clipes cerebrais para aneurisma (e quando ferrometálicos);</li>
+                            <li>Febre;</li>
+                            <li>Válvulas Liquóricas antigas;</li>
+                            <li>Válvula mitral metálica;</li>
+                            <li>Gravidez de até 4 meses;</li>
+                            <li>Peso superior a 130kg ou com Circunferência abdominal acima de 1,40m;</li>
+                            <li>Profissão que envolva manipulação de limalha de ferro.</li>
+                        </ul>
+
+                        <div class="p-4 bg-orange-50/50 border border-orange-200 rounded-xl mb-6">
+                            <p class="text-orange-800 text-sm italic">P.S.: Pacientes com implantes metálicos devem ser analisados para ver a viabilidade do exame.</p>
+                        </div>
+
+                        <div class="pt-6 border-t border-stone-200">
+                            <h4 class="font-heading font-bold text-stone-800 mb-2">DEMAIS EXAMES</h4>
+                            <p>Sem preparo prévio.</p>
+                        </div>
+                    `
+                },
+                'TC': {
+                    title: 'Tomografia Computadorizada',
+                    formLink: 'https://www.dimagem.com.br/files/fct.pdf',
+                    content: `
+                        <div class="inline-flex items-center gap-2 mb-4 px-3 py-1 bg-stone-200 text-stone-700 text-xs font-bold rounded-full">MULTISLICE - 16 CANAIS</div>
+                        <p class="font-bold text-stone-900 text-lg uppercase mb-4 text-primary">Trazer exames anteriores!</p>
+
+                        <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm mb-6">
+                            <h4 class="font-heading font-bold text-stone-800 mb-2">Sem contraste</h4>
+                            <p>Sem preparo prévio.</p>
+                        </div>
+
+                        <h4 class="font-heading font-bold text-stone-900 mb-4 text-lg border-b border-stone-200 pb-2">Exames em geral com contraste</h4>
+                        <ul class="list-disc pl-5 space-y-3 mb-6">
+                            <li><strong class="text-stone-800">4 horas de jejum;</strong></li>
+                            <li>Se o paciente for <strong>DIABÉTICO</strong> e utilizar os seguintes medicamentos, deve suspendê-los por 48 horas (antes do exame) sob orientação de seu médico: (Metformin, Metformina, Cloridrato de Metformina, Glucophage, Glucoformin, Glifage, Fortamet, Riomet, Alti-Metformin, Apo-Metfotmin, Gen-Metformin, Glycon, Novo-Metformin, Nu-Metformin, PMS-Metformin, Rhoxal-Metformin FC, Rho-Metformin, Dabex e Dimefor);</li>
+                            <li><strong>PACIENTE ALÉRGICO:</strong> Passar preparo para o paciente.</li>
+                        </ul>
+
+                        <h4 class="font-heading font-bold text-stone-900 mb-4 text-lg border-b border-stone-200 pb-2">Abdômen com contraste</h4>
+                        <ul class="list-disc pl-5 space-y-3 mb-6">
+                            <li><strong class="text-stone-800">CRIANÇAS (Até 12 anos):</strong> Jejum completo de 4 horas;</li>
+                            <li><strong class="text-stone-800">ADULTOS:</strong> Jejum completo de 6 horas.</li>
+                            <li>A mesma orientação para <strong>DIABÉTICOS</strong> (suspender medicamentos 48h antes sob orientação médica).</li>
+                            <li><strong>PACIENTE ALÉRGICO:</strong> Passar preparo para o paciente.</li>
+                        </ul>
+                    `
+                },
+                'DO': {
+                    title: 'Densitometria Óssea',
+                    content: `
+                        <p class="font-bold text-stone-900 text-lg uppercase mb-6 text-primary">Trazer exames anteriores!</p>
+
+                        <h4 class="font-heading font-bold text-rose-600 mb-3 text-lg flex items-center gap-2">
+                            <iconify-icon icon="solar:danger-triangle-bold"></iconify-icon> O PACIENTE NÃO PODE:
+                        </h4>
+                        <ul class="list-disc pl-5 space-y-3 mb-6">
+                            <li>Ter recebido injeção de radio-isótopos (Exame de Medicina Nuclear) 72 horas antes do exame;</li>
+                            <li>Ter ingerido comprimidos com cálcio 48 horas antes do exame;</li>
+                            <li>Ter realizado exames com contraste via oral com sulfato de bário nos 7 (sete) dias que antecedem a data prevista para a realização do exame (exames como: Trânsito Intestinal, Enema Opaco, Esôfago e Raio X de Tórax);</li>
+                            <li>Ter realizado exames de Tomografia Computadorizada com o uso de contraste à base de Iodo ou Bário.</li>
+                        </ul>
+                    `
+                },
+                'RX': {
+                    title: 'Raio-X Digital',
+                    content: `
+                        <p class="font-bold text-stone-900 text-lg uppercase mb-6 text-primary">Trazer exames anteriores!</p>
+
+                        <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm mb-6">
+                            <h4 class="font-heading font-bold text-stone-900 mb-2 text-lg">Coluna Lombo-Sacra ou Coluna Total</h4>
+                            <div class="p-3 bg-stone-50 border border-stone-100 rounded-lg mb-4 text-sm text-stone-600">
+                                <p class="mb-1"><strong>Nota:</strong> Fratura de coluna ou acidentados não necessitam do preparo.</p>
+                                <p>Até 14 anos não precisa de preparo.</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div class="p-4 bg-stone-100/50 rounded-xl">
+                                    <strong class="block text-stone-800 mb-1">DULCOLAX</strong>
+                                    <ul class="list-disc pl-4 text-sm space-y-1">
+                                        <li>Até 80 kg: tomar 2 comprimidos.</li>
+                                        <li>Acima de 80 kg: tomar 4 comprimidos.</li>
+                                    </ul>
+                                </div>
+                                <div class="p-4 bg-stone-100/50 rounded-xl">
+                                    <strong class="block text-stone-800 mb-1">LUFTAL ou FLAGASS</strong>
+                                    <ul class="list-disc pl-4 text-sm space-y-1">
+                                        <li>Até 80 kg: tomar 30 gotas.</li>
+                                        <li>Acima de 80 kg: tomar 40 gotas.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <h5 class="font-bold text-stone-800 mb-3 uppercase tracking-wider text-sm">Cronograma de Preparo</h5>
+                            
+                            <div class="space-y-4">
+                                <div class="border-l-2 border-primary pl-4">
+                                    <strong class="text-stone-900 block mb-1">Na véspera:</strong>
+                                    <p class="text-sm">Às 17 horas tomar [qtd] comprimidos de DULCOLAX (Laxante) e [qtd] gotas de LUFTAL;<br>4 horas após, tomar [qtd] gotas de LUFTAL.</p>
+                                    <p class="text-sm mt-2"><strong>No jantar:</strong> Caldo, sopa, bolacha água e sal, pão torrado e chá.</p>
+                                </div>
+
+                                <div class="border-l-2 border-primary pl-4">
+                                    <strong class="text-stone-900 block mb-1">No dia do exame:</strong>
+                                    <p class="text-sm"><strong>PELA MANHÃ:</strong> Bolacha água e sal, pão torrado e chá.<br>Se o exame for realizado à tarde, tomar um caldo ou sopa no almoço.</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 p-4 bg-orange-50/50 border border-orange-200 rounded-xl">
+                                <p class="text-orange-800 text-sm font-medium">OBS: Beber água à vontade. Não comer frutas, verduras, pão, arroz ou bolacha integral. Não tomar leite.</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-stone-200">
+                            <h4 class="font-heading font-bold text-stone-800 mb-2">Demais exames</h4>
+                            <p>Sem preparo.</p>
+                        </div>
+                    `
+                },
+                'ECO': {
+                    title: 'Ecografia',
+                    content: `
+                        <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm mb-4">
+                            <h4 class="font-heading font-bold text-stone-800 mb-2">Abdômen Superior</h4>
+                            <p class="mb-3 text-stone-600">Pode tomar água à vontade.</p>
+                            <ul class="space-y-2">
+                                <li><strong class="text-stone-800">ADULTOS:</strong> Jejum de 8 horas;</li>
+                                <li><strong class="text-stone-800">CRIANÇAS:</strong> Jejum de 4 horas.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm mb-4">
+                            <h4 class="font-heading font-bold text-stone-800 mb-3 text-sm md:text-base leading-snug">Abdômen Total / Aparelho urinário / Obstétrica / Pélvica / Próstata</h4>
+                            <ul class="space-y-3">
+                                <li><strong class="text-stone-800">ADULTOS:</strong> Jejum de 8 horas. Tomar 4 copos de água 1 hora antes e permanecer com a bexiga cheia.</li>
+                                <li><strong class="text-stone-800">CRIANÇAS:</strong> Jejum de 4 horas. Tomar 2 copos de água 1 hora antes e permanecer com a bexiga cheia.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm mb-6">
+                            <h4 class="font-heading font-bold text-stone-800 mb-2">EcoDoppler Aorta e Artérias Renais</h4>
+                            <p>Jejum de 6 horas.</p>
+                        </div>
+
+                        <div class="pt-4 border-t border-stone-200">
+                            <h4 class="font-heading font-bold text-stone-800 mb-2">Demais exames</h4>
+                            <p>Sem preparo.</p>
+                        </div>
+                    `
+                },
+                'MAMOGRAFIA': {
+                    title: 'Mamografia',
+                    content: `
+                        <p class="font-bold text-stone-900 text-lg uppercase mb-4 text-primary">Trazer exames anteriores!</p>
+                        <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
+                            <p class="text-stone-600 mb-4">A mamografia é um exame rápido e seguro. Para garantir o melhor resultado, siga estas orientações:</p>
+                            <ul class="list-disc pl-5 space-y-3">
+                                <li>Recomenda-se agendar preferencialmente na segunda ou terceira semana do ciclo menstrual (após a menstruação), quando as mamas estão menos sensíveis.</li>
+                                <li>No dia do exame, <strong>não use desodorante, talco, loção ou perfume</strong> nas axilas ou nas mamas, pois esses produtos podem interferir nas imagens.</li>
+                                <li>Use roupas de duas peças (blusa e calça/saia), pois será necessário despir-se da cintura para cima.</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                'BIOPSIA': {
+                    title: 'Punções e Biópsias',
+                    content: `
+                        <p class="font-bold text-stone-900 text-lg uppercase mb-4 text-primary">Trazer exames anteriores!</p>
+                        <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
+                            <h4 class="font-heading font-bold text-stone-900 mb-3 text-lg">Recomendações Gerais</h4>
+                            <ul class="list-disc pl-5 space-y-3">
+                                <li>Consultar o médico solicitante sobre a suspensão de medicamentos anticoagulantes, como Aspirina (AAS), Marevan, Xarelto (devem ser suspensos sob orientação médica).</li>
+                                <li>O teste de coagulação (Coagulograma) recente pode ser exigido dependendo do tipo de punção.</li>
+                                <li>Trazer resultados de ultrassonografias, mamografias ou outros exames recentes.</li>
+                                <li>Recomenda-se vir com acompanhante.</li>
+                            </ul>
+                            <div class="mt-4 p-4 bg-orange-50/50 border border-orange-200 rounded-xl">
+                                <p class="text-orange-800 text-sm italic">Como as instruções exatas podem variar de acordo com o órgão, nossa equipe entrará em contato para confirmar o preparo individual.</p>
+                            </div>
+                        </div>
+                    `
+                },
+                'ODONTOLOGICA': {
+                    title: 'Radiologia Odontológica',
+                    content: `
+                        <p class="font-bold text-stone-900 text-lg uppercase mb-4 text-primary">Trazer exames anteriores!</p>
+                        <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
+                            <h4 class="font-heading font-bold text-stone-800 mb-2">Sem preparo prévio necessário</h4>
+                            <p class="text-stone-600 mb-4">Apenas atente-se para:</p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>Remover óculos, brincos, colares, piercings faciais e próteses dentárias móveis antes do exame.</li>
+                                <li>Informar à técnica sobre possibilidade de gravidez.</li>
+                            </ul>
+                        </div>
+                    `
+                }
+            };
+
+            const modal = document.getElementById('exam-modal');
+            const overlay = document.getElementById('modal-overlay');
+            const modalContent = document.getElementById('modal-content');
+            const closeBtn = document.getElementById('modal-close');
+            
+            const mTitle = document.getElementById('modal-title');
+            const mBody = document.getElementById('modal-body');
+            const mFooter = document.getElementById('modal-footer');
+            const mFormBtn = document.getElementById('modal-form-btn');
+
+            function openModal(examKey) {
+                const data = examsData[examKey];
+                if (!data) return;
+
+                mTitle.innerText = data.title;
+                mBody.innerHTML = data.content;
+
+                if (data.formLink) {
+                    mFormBtn.href = data.formLink;
+                    mFooter.classList.remove('hidden');
+                    mFooter.classList.add('flex');
+                } else {
+                    mFooter.classList.add('hidden');
+                    mFooter.classList.remove('flex');
+                }
+
+                modal.classList.remove('invisible', 'pointer-events-none');
+                
+                // Animate In via GSAP for smoothness
+                gsap.to(modal, { autoAlpha: 1, duration: 0.3 });
+                gsap.fromTo(modalContent, 
+                    { scale: 0.95, y: 15, autoAlpha: 0 },
+                    { scale: 1, y: 0, autoAlpha: 1, duration: 0.4, ease: "back.out(1.5)" }
+                );
+                
+                // Pause smoot scroll so user can scroll the modal
+                lenis.stop();
+            }
+
+            function closeModal() {
+                gsap.to(modalContent, { scale: 0.95, y: 15, autoAlpha: 0, duration: 0.3, ease: "power2.inOut" });
+                gsap.to(modal, { autoAlpha: 0, duration: 0.3, onComplete: () => {
+                    modal.classList.add('invisible', 'pointer-events-none');
+                    lenis.start();
+                }});
+            }
+
+            document.querySelectorAll('.gs-exam-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const preparo = card.getAttribute('data-preparo');
+                    if (preparo) openModal(preparo);
+                });
+            });
+
+            closeBtn.addEventListener('click', closeModal);
+            overlay.addEventListener('click', closeModal);
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeModal();
+            });
+
+            // ====== LÓGICA DO MODAL PACS ======
+            const pacsModal = document.getElementById('pacs-modal');
+            const pacsOverlay = document.getElementById('pacs-overlay');
+            const pacsContent = document.getElementById('pacs-content');
+            const pacsCloseBtn = document.getElementById('pacs-close');
+
+            window.openPacsModal = function() {
+                pacsModal.classList.remove('invisible', 'pointer-events-none');
+                
+                // GSAP animation
+                gsap.to(pacsModal, { autoAlpha: 1, duration: 0.3 });
+                gsap.fromTo(pacsContent, 
+                    { scale: 0.95, y: -20, autoAlpha: 0 },
+                    { scale: 1, y: 0, autoAlpha: 1, duration: 0.4, ease: "back.out(1.2)" }
+                );
+                
+                if(typeof lenis !== 'undefined') lenis.stop();
+            }
+
+            window.closePacsModal = function() {
+                gsap.to(pacsContent, { scale: 0.95, y: -20, autoAlpha: 0, duration: 0.3, ease: "power2.inOut" });
+                gsap.to(pacsModal, { autoAlpha: 0, duration: 0.3, onComplete: () => {
+                    pacsModal.classList.add('invisible', 'pointer-events-none');
+                    if(typeof lenis !== 'undefined') lenis.start();
+                }});
+            }
+
+            if(pacsCloseBtn) pacsCloseBtn.addEventListener('click', closePacsModal);
+            if(pacsOverlay) pacsOverlay.addEventListener('click', closePacsModal);
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !pacsModal.classList.contains('invisible')) closePacsModal();
+            });
 
         });
     </script>
