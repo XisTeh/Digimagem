@@ -1,0 +1,569 @@
+/* =========================================
+           GLOBAL & VARIABLES (Design System)
+           ========================================= */
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #E6E3D6; /* Warm Beige da Paleta */
+            color: #1c1917; 
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Textura Noise Global */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 256px 256px;
+        }
+
+        /* Scroll Progress Bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #b89d70, #c4ad82, #b89d70);
+            z-index: 9998;
+            transform-origin: left;
+            transform: scaleX(0);
+            will-change: transform;
+            box-shadow: 0 0 10px rgba(184,157,112,0.5);
+        }
+
+        /* Tipografia de Títulos */
+        h1, h2, h3, h4, h5, h6 { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+        }
+
+        /* =========================================
+           GLASS EFFECT & GLOW
+           ========================================= */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px 0 rgba(28, 25, 23, 0.05);
+            transform: translateZ(0);
+            will-change: transform, backdrop-filter;
+        }
+        
+        .glass-dark {
+            background: rgba(28, 25, 23, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+            transform: translateZ(0);
+            will-change: transform, backdrop-filter;
+        }
+
+        .glow-pulse {
+            box-shadow: 0 0 25px rgba(184, 157, 112, 0.4);
+            animation: pulse-glow 3s infinite alternate;
+            will-change: box-shadow;
+        }
+
+        @keyframes pulse-glow {
+            from { box-shadow: 0 0 15px rgba(184, 157, 112, 0.15); }
+            to { box-shadow: 0 0 35px rgba(184, 157, 112, 0.6); }
+        }
+
+        @keyframes pulse-glow-gold {
+            from { box-shadow: 0 0 15px rgba(184, 157, 112, 0.15); }
+            to { box-shadow: 0 0 35px rgba(184, 157, 112, 0.5); }
+        }
+
+        /* =========================================
+           BACKGROUND ELEMENTS
+           ========================================= */
+        .bg-mesh {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Otimização de Performance (Lazy Rendering) */
+        .section-optimized {
+            content-visibility: auto;
+            contain-intrinsic-size: 1000px;
+            contain: paint layout;
+        }
+        
+        /* Reduzir repaints de animações de orb */
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            will-change: transform, opacity;
+            filter: blur(60px);
+            transform: translateZ(0); /* Força GPU HW Accel */
+        }
+        .bg-blob {
+            position: absolute;
+            border-radius: 50%;
+            z-index: 0;
+            opacity: 0.5;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        .blob-1 {
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, #EAE8DE 0%, rgba(234, 232, 222, 0) 70%);
+            top: -10vw;
+            left: -10vw;
+        }
+
+        .blob-2 {
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, #d2d0c2 0%, rgba(210, 208, 194, 0) 70%);
+            bottom: -20vw;
+            right: -10vw;
+        }
+
+        .blob-3 {
+            width: 30vw;
+            height: 30vw;
+            background: radial-gradient(circle, rgba(184, 157, 112, 0.15) 0%, rgba(184, 157, 112, 0) 70%); /* Primary Soft Glow */
+            top: 20%;
+            right: 15%;
+        }
+
+        /* =========================================
+           BUTTONS & INTERACTIONS
+           ========================================= */
+        .btn-premium {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-premium::after {
+            content: ''; 
+            position: absolute; 
+            top: -50%; 
+            left: -50%;
+            width: 200%; 
+            height: 200%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(45deg) translateY(-100%);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .btn-premium:hover::after {
+            transform: rotate(45deg) translateY(100%);
+        }
+        
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(28, 25, 23, 0.2);
+        }
+
+        .btn-secondary {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(28, 25, 23, 0.05);
+            transform: translateY(-2px);
+        }
+
+        /* =========================================
+           UTILITIES & HELPERS
+           ========================================= */
+        .hw-accel, .gs-parallax-img, .gs-float-card, .gs-float-card-alt, .gs-float-slow {
+            transform: translateZ(0);
+            will-change: transform;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        .invisible-start {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #1c1917 0%, #57534e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Mascara suave para a imagem principal */
+        .img-mask {
+            mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+        }
+
+        /* =========================================
+           TEAM CARDS — Selection & Animations
+           ========================================= */
+        .team-card {
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .team-card__inner {
+            border: 2px solid transparent;
+        }
+
+        /* Card NÃO selecionado */
+        .team-card:not(.is-selected) .team-card__inner {
+            opacity: 0.85;
+            border-color: rgba(28, 25, 23, 0.06);
+        }
+        .team-card:not(.is-selected):hover .team-card__inner {
+            opacity: 1;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px -8px rgba(28, 25, 23, 0.12);
+        }
+        .team-card:not(.is-selected) .team-card__badge,
+        .team-card:not(.is-selected) .team-card__star {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        /* Card SELECIONADO — cor primária laranja/dourada */
+        .team-card.is-selected {
+            z-index: 10;
+        }
+        .team-card.is-selected .team-card__inner {
+            opacity: 1;
+            border-color: #b89d70;
+            box-shadow: 0 20px 50px -12px rgba(184, 157, 112, 0.4), 0 8px 20px -4px rgba(184, 157, 112, 0.2);
+            transform: translateY(-8px);
+        }
+        .team-card.is-selected .team-card__badge,
+        .team-card.is-selected .team-card__star {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .team-card.is-selected .team-card__info {
+            background: linear-gradient(135deg, #b89d70 0%, #c4ad82 100%);
+            border-top: none;
+        }
+        .team-card.is-selected .team-card__info h4 {
+            color: #fff;
+        }
+        .team-card.is-selected .team-card__info .team-card__role-text {
+            color: rgba(255,255,255,0.9);
+        }
+        .team-card.is-selected .team-card__info .team-card__crm {
+            color: rgba(255,255,255,0.65);
+        }
+        
+        /* Shine effect on selected */
+        .team-card.is-selected .team-card__inner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            z-index: 30;
+            animation: shine-sweep 2s ease-in-out 0.3s;
+            pointer-events: none;
+        }
+        @keyframes shine-sweep {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+
+        
+        /* Título Corpo Clínico shimmer */
+        @keyframes shimmer-text {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        .shimmer-title {
+            background: linear-gradient(90deg, #1c1917 0%, #1c1917 40%, #b89d70 50%, #1c1917 60%, #1c1917 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer-text 5s ease-in-out infinite;
+        }
+
+        /* =========================================
+           EXAM CARDS (Efeito Lava)
+           ========================================= */
+        .ds-card {
+            border-radius: 1.5rem;
+            overflow: hidden;
+            background: #1c1917;
+            color: #E6E3D6;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        .ds-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
+        }
+        .ds-card__image {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            object-fit: cover; opacity: 0.5; filter: grayscale(50%);
+            transition: transform 0.8s ease, filter 0.5s ease, opacity 0.5s ease;
+        }
+        .ds-card:hover .ds-card__image {
+            transform: scale(1.05);
+            opacity: 0.3;
+            filter: grayscale(0%);
+        }
+        .ds-card__content {
+            position: relative; z-index: 10;
+            height: 100%; display: flex; flex-direction: column; justify-content: space-between;
+            background: linear-gradient(to top, rgba(28,25,23,0.95) 0%, rgba(28,25,23,0.1) 60%, transparent 100%);
+        }
+        .ds-card__icon-btn {
+            width: 3rem; height: 3rem; border-radius: 50%;
+            background: #D4F268; color: #1c1917;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.4s ease; transform: rotate(0deg);
+        }
+        .ds-card:hover .ds-card__icon-btn {
+            transform: rotate(45deg) scale(1.1);
+            background: #C3E354;
+            box-shadow: 0 0 15px rgba(212, 242, 104, 0.3);
+        }
+
+        
+        /* =========================================
+           SCROLLBAR GLOBAL (Body)
+           ========================================= */
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #c4b99a #E6E3D6;
+            transition: scrollbar-color 0.5s ease;
+        }
+        html::-webkit-scrollbar {
+            width: 8px;
+        }
+        html::-webkit-scrollbar-track {
+            background: #E6E3D6;
+            transition: background 0.5s ease;
+        }
+        html::-webkit-scrollbar-thumb {
+            background: #c4b99a;
+            border-radius: 10px;
+            border: 2px solid #E6E3D6;
+            transition: background 0.5s ease, border-color 0.5s ease;
+        }
+        html::-webkit-scrollbar-thumb:hover {
+            background: #b89d70;
+        }
+
+        /* Scrollbar Dark Mode (seções escuras) */
+        html.scrollbar-dark {
+            scrollbar-color: #57534e #1c1917;
+        }
+        html.scrollbar-dark::-webkit-scrollbar-track {
+            background: #1c1917;
+        }
+        html.scrollbar-dark::-webkit-scrollbar-thumb {
+            background: #57534e;
+            border-color: #1c1917;
+        }
+        html.scrollbar-dark::-webkit-scrollbar-thumb:hover {
+            background: #b89d70;
+        }
+
+        /* =========================================
+           SCROLLBAR MODAL
+           ========================================= */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f5f5f4; 
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d6d3d1; 
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a8a29e; 
+        }
+
+        /* Transição suave claro → escuro (imperceptível) */
+        .section-fade-out {
+            position: relative;
+        }
+        .section-fade-out::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 250px;
+            background: linear-gradient(
+                to bottom,
+                rgba(28, 25, 23, 0) 0%,
+                rgba(28, 25, 23, 0.01) 10%,
+                rgba(28, 25, 23, 0.04) 22%,
+                rgba(28, 25, 23, 0.08) 33%,
+                rgba(28, 25, 23, 0.16) 44%,
+                rgba(28, 25, 23, 0.3) 55%,
+                rgba(28, 25, 23, 0.5) 66%,
+                rgba(28, 25, 23, 0.72) 77%,
+                rgba(28, 25, 23, 0.9) 88%,
+                rgba(28, 25, 23, 1) 100%
+            );
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* =========================================
+           AMBIENT BACKGROUND ANIMATIONS
+           ========================================= */
+        @keyframes ambient-drift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -20px) scale(1.05); }
+            50% { transform: translate(-20px, 15px) scale(0.95); }
+            75% { transform: translate(15px, 25px) scale(1.02); }
+        }
+        @keyframes ambient-drift-reverse {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(-25px, 20px) scale(0.97); }
+            50% { transform: translate(20px, -15px) scale(1.04); }
+            75% { transform: translate(-10px, -25px) scale(1); }
+        }
+        @keyframes ambient-pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        @keyframes ambient-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .ambient-orb--1 {
+            animation: ambient-drift 20s ease-in-out infinite;
+        }
+        .ambient-orb--2 {
+            animation: ambient-drift-reverse 25s ease-in-out infinite;
+        }
+        .ambient-orb--3 {
+            animation: ambient-drift 30s ease-in-out infinite;
+            animation-delay: -10s;
+        }
+        .ambient-orb--pulse {
+            animation: ambient-pulse 8s ease-in-out infinite;
+        }
+        .ambient-grid-shift {
+            animation: ambient-drift 40s ease-in-out infinite;
+        }
+
+        /* =========================================
+           MARQUEE ANIMATION (Convênios)
+           ========================================= */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .animate-marquee {
+            animation: marquee 40s linear infinite;
+        }
+        .marquee-container {
+            display: flex;
+            width: max-content;
+        }
+        /* Navbar Dark Mode (quando sobre seções escuras) */
+        #main-nav.nav-dark {
+            background: linear-gradient(to right, rgba(28,25,23,0.85), rgba(28,25,23,0.65)) !important;
+            border-color: rgba(255,255,255,0.08) !important;
+            box-shadow: 0 8px 32px -8px rgba(0,0,0,0.3) !important;
+        }
+        #main-nav.nav-dark .nav-link {
+            color: rgba(255,255,255,0.7) !important;
+        }
+        #main-nav.nav-dark .nav-link:hover {
+            color: #b89d70 !important;
+        }
+        #main-nav.nav-dark .nav-logo {
+            filter: brightness(10) !important;
+        }
+
+        /* Section Divider — gradiente suave */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(184,157,112,0.3), transparent);
+            border: none;
+            margin: 0;
+        }
+
+        /* Micro-animações — Hover glow em ícones */
+        .icon-glow {
+            transition: all 0.4s ease;
+        }
+        .icon-glow:hover {
+            filter: drop-shadow(0 0 8px rgba(184,157,112,0.6));
+        }
+
+        /* Float sutil para elementos decorativos */
+        @keyframes float-gentle {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float-gentle {
+            animation: float-gentle 6s ease-in-out infinite;
+        }
+
+        /* Pulse sutil para badges */
+        @keyframes badge-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(184,157,112,0.2); }
+            50% { box-shadow: 0 0 0 6px rgba(184,157,112,0); }
+        }
+        .badge-pulse {
+            animation: badge-pulse 3s ease-in-out infinite;
+        }
+
+        /* Gradient border hover para cards */
+        .card-hover-glow {
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-hover-glow:hover {
+            box-shadow: 0 0 30px -5px rgba(184,157,112,0.15);
+        }
+
+        /* Smooth reveal para texto */
+        @keyframes text-reveal {
+            from { opacity: 0; transform: translateY(10px); filter: blur(4px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        /* Link underline animação elegante */
+        .link-fancy {
+            position: relative;
+        }
+        .link-fancy::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #b89d70;
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .link-fancy:hover::after {
+            width: 100%;
+        }

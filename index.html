@@ -6,7 +6,7 @@
     <title>Dimagem — Clínica de Diagnóstico por Imagem | Ijuí/RS</title>
     <meta name="description" content="Dimagem — Referência em diagnóstico por imagem desde 1984. Ressonância Magnética, Tomografia, Ecografia, Raios-X, Mamografia e mais. Ijuí, RS.">
     <meta name="theme-color" content="#E6E3D6">
-    <link rel="icon" type="image/x-icon" href="assets/raw_files/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
     
     <!-- Preconnect (DNS + TCP antecipado) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     
     <!-- Preload das imagens críticas LCP -->
-    <link rel="preload" as="image" href="assets/raw_files/frente-dimagem.webp">
+    <link rel="preload" as="image" href="assets/images/frente-dimagem.webp">
     
     <!-- Fonts com display=swap (não bloqueia renderização) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -65,577 +65,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js" defer></script>
 
-    <style>
-        /* =========================================
-           GLOBAL & VARIABLES (Design System)
-           ========================================= */
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #E6E3D6; /* Warm Beige da Paleta */
-            color: #1c1917; 
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* Textura Noise Global */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 0.025;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            background-repeat: repeat;
-            background-size: 256px 256px;
-        }
-
-        /* Scroll Progress Bar */
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #b89d70, #c4ad82, #b89d70);
-            z-index: 9998;
-            transform-origin: left;
-            transform: scaleX(0);
-            will-change: transform;
-            box-shadow: 0 0 10px rgba(184,157,112,0.5);
-        }
-
-        /* Tipografia de Títulos */
-        h1, h2, h3, h4, h5, h6 { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-        }
-
-        /* =========================================
-           GLASS EFFECT & GLOW
-           ========================================= */
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 8px 32px 0 rgba(28, 25, 23, 0.05);
-            transform: translateZ(0);
-            will-change: transform, backdrop-filter;
-        }
-        
-        .glass-dark {
-            background: rgba(28, 25, 23, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
-            transform: translateZ(0);
-            will-change: transform, backdrop-filter;
-        }
-
-        .glow-pulse {
-            box-shadow: 0 0 25px rgba(184, 157, 112, 0.4);
-            animation: pulse-glow 3s infinite alternate;
-            will-change: box-shadow;
-        }
-
-        @keyframes pulse-glow {
-            from { box-shadow: 0 0 15px rgba(184, 157, 112, 0.15); }
-            to { box-shadow: 0 0 35px rgba(184, 157, 112, 0.6); }
-        }
-
-        @keyframes pulse-glow-gold {
-            from { box-shadow: 0 0 15px rgba(184, 157, 112, 0.15); }
-            to { box-shadow: 0 0 35px rgba(184, 157, 112, 0.5); }
-        }
-
-        /* =========================================
-           BACKGROUND ELEMENTS
-           ========================================= */
-        .bg-mesh {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-            overflow: hidden;
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        /* Otimização de Performance (Lazy Rendering) */
-        .section-optimized {
-            content-visibility: auto;
-            contain-intrinsic-size: 1000px;
-            contain: paint layout;
-        }
-        
-        /* Reduzir repaints de animações de orb */
-        .ambient-orb {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-            will-change: transform, opacity;
-            filter: blur(60px);
-            transform: translateZ(0); /* Força GPU HW Accel */
-        }
-        .bg-blob {
-            position: absolute;
-            border-radius: 50%;
-            z-index: 0;
-            opacity: 0.5;
-            will-change: transform;
-            transform: translateZ(0);
-        }
-
-        .blob-1 {
-            width: 40vw;
-            height: 40vw;
-            background: radial-gradient(circle, #EAE8DE 0%, rgba(234, 232, 222, 0) 70%);
-            top: -10vw;
-            left: -10vw;
-        }
-
-        .blob-2 {
-            width: 50vw;
-            height: 50vw;
-            background: radial-gradient(circle, #d2d0c2 0%, rgba(210, 208, 194, 0) 70%);
-            bottom: -20vw;
-            right: -10vw;
-        }
-
-        .blob-3 {
-            width: 30vw;
-            height: 30vw;
-            background: radial-gradient(circle, rgba(184, 157, 112, 0.15) 0%, rgba(184, 157, 112, 0) 70%); /* Primary Soft Glow */
-            top: 20%;
-            right: 15%;
-        }
-
-        /* =========================================
-           BUTTONS & INTERACTIONS
-           ========================================= */
-        .btn-premium {
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn-premium::after {
-            content: ''; 
-            position: absolute; 
-            top: -50%; 
-            left: -50%;
-            width: 200%; 
-            height: 200%;
-            background: rgba(255,255,255,0.1);
-            transform: rotate(45deg) translateY(-100%);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .btn-premium:hover::after {
-            transform: rotate(45deg) translateY(100%);
-        }
-        
-        .btn-premium:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(28, 25, 23, 0.2);
-        }
-
-        .btn-secondary {
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary:hover {
-            background-color: rgba(28, 25, 23, 0.05);
-            transform: translateY(-2px);
-        }
-
-        /* =========================================
-           UTILITIES & HELPERS
-           ========================================= */
-        .hw-accel, .gs-parallax-img, .gs-float-card, .gs-float-card-alt, .gs-float-slow {
-            transform: translateZ(0);
-            will-change: transform;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-        }
-
-        .invisible-start {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #1c1917 0%, #57534e 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Mascara suave para a imagem principal */
-        .img-mask {
-            mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
-        }
-
-        /* =========================================
-           TEAM CARDS — Selection & Animations
-           ========================================= */
-        .team-card {
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .team-card__inner {
-            border: 2px solid transparent;
-        }
-
-        /* Card NÃO selecionado */
-        .team-card:not(.is-selected) .team-card__inner {
-            opacity: 0.85;
-            border-color: rgba(28, 25, 23, 0.06);
-        }
-        .team-card:not(.is-selected):hover .team-card__inner {
-            opacity: 1;
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px -8px rgba(28, 25, 23, 0.12);
-        }
-        .team-card:not(.is-selected) .team-card__badge,
-        .team-card:not(.is-selected) .team-card__star {
-            opacity: 0;
-            transform: scale(0.8);
-        }
-
-        /* Card SELECIONADO — cor primária laranja/dourada */
-        .team-card.is-selected {
-            z-index: 10;
-        }
-        .team-card.is-selected .team-card__inner {
-            opacity: 1;
-            border-color: #b89d70;
-            box-shadow: 0 20px 50px -12px rgba(184, 157, 112, 0.4), 0 8px 20px -4px rgba(184, 157, 112, 0.2);
-            transform: translateY(-8px);
-        }
-        .team-card.is-selected .team-card__badge,
-        .team-card.is-selected .team-card__star {
-            opacity: 1;
-            transform: scale(1);
-        }
-        .team-card.is-selected .team-card__info {
-            background: linear-gradient(135deg, #b89d70 0%, #c4ad82 100%);
-            border-top: none;
-        }
-        .team-card.is-selected .team-card__info h4 {
-            color: #fff;
-        }
-        .team-card.is-selected .team-card__info .team-card__role-text {
-            color: rgba(255,255,255,0.9);
-        }
-        .team-card.is-selected .team-card__info .team-card__crm {
-            color: rgba(255,255,255,0.65);
-        }
-        
-        /* Shine effect on selected */
-        .team-card.is-selected .team-card__inner::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-            z-index: 30;
-            animation: shine-sweep 2s ease-in-out 0.3s;
-            pointer-events: none;
-        }
-        @keyframes shine-sweep {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-
-        
-        /* Título Corpo Clínico shimmer */
-        @keyframes shimmer-text {
-            0% { background-position: -200% center; }
-            100% { background-position: 200% center; }
-        }
-        .shimmer-title {
-            background: linear-gradient(90deg, #1c1917 0%, #1c1917 40%, #b89d70 50%, #1c1917 60%, #1c1917 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer-text 5s ease-in-out infinite;
-        }
-
-        /* =========================================
-           EXAM CARDS (Efeito Lava)
-           ========================================= */
-        .ds-card {
-            border-radius: 1.5rem;
-            overflow: hidden;
-            background: #1c1917;
-            color: #E6E3D6;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-        }
-        .ds-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
-        }
-        .ds-card__image {
-            position: absolute; inset: 0; width: 100%; height: 100%;
-            object-fit: cover; opacity: 0.5; filter: grayscale(50%);
-            transition: transform 0.8s ease, filter 0.5s ease, opacity 0.5s ease;
-        }
-        .ds-card:hover .ds-card__image {
-            transform: scale(1.05);
-            opacity: 0.3;
-            filter: grayscale(0%);
-        }
-        .ds-card__content {
-            position: relative; z-index: 10;
-            height: 100%; display: flex; flex-direction: column; justify-content: space-between;
-            background: linear-gradient(to top, rgba(28,25,23,0.95) 0%, rgba(28,25,23,0.1) 60%, transparent 100%);
-        }
-        .ds-card__icon-btn {
-            width: 3rem; height: 3rem; border-radius: 50%;
-            background: #D4F268; color: #1c1917;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.4s ease; transform: rotate(0deg);
-        }
-        .ds-card:hover .ds-card__icon-btn {
-            transform: rotate(45deg) scale(1.1);
-            background: #C3E354;
-            box-shadow: 0 0 15px rgba(212, 242, 104, 0.3);
-        }
-
-        
-        /* =========================================
-           SCROLLBAR GLOBAL (Body)
-           ========================================= */
-        html {
-            scrollbar-width: thin;
-            scrollbar-color: #c4b99a #E6E3D6;
-            transition: scrollbar-color 0.5s ease;
-        }
-        html::-webkit-scrollbar {
-            width: 8px;
-        }
-        html::-webkit-scrollbar-track {
-            background: #E6E3D6;
-            transition: background 0.5s ease;
-        }
-        html::-webkit-scrollbar-thumb {
-            background: #c4b99a;
-            border-radius: 10px;
-            border: 2px solid #E6E3D6;
-            transition: background 0.5s ease, border-color 0.5s ease;
-        }
-        html::-webkit-scrollbar-thumb:hover {
-            background: #b89d70;
-        }
-
-        /* Scrollbar Dark Mode (seções escuras) */
-        html.scrollbar-dark {
-            scrollbar-color: #57534e #1c1917;
-        }
-        html.scrollbar-dark::-webkit-scrollbar-track {
-            background: #1c1917;
-        }
-        html.scrollbar-dark::-webkit-scrollbar-thumb {
-            background: #57534e;
-            border-color: #1c1917;
-        }
-        html.scrollbar-dark::-webkit-scrollbar-thumb:hover {
-            background: #b89d70;
-        }
-
-        /* =========================================
-           SCROLLBAR MODAL
-           ========================================= */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f5f5f4; 
-            border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #d6d3d1; 
-            border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #a8a29e; 
-        }
-
-        /* Transição suave claro → escuro (imperceptível) */
-        .section-fade-out {
-            position: relative;
-        }
-        .section-fade-out::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 250px;
-            background: linear-gradient(
-                to bottom,
-                rgba(28, 25, 23, 0) 0%,
-                rgba(28, 25, 23, 0.01) 10%,
-                rgba(28, 25, 23, 0.04) 22%,
-                rgba(28, 25, 23, 0.08) 33%,
-                rgba(28, 25, 23, 0.16) 44%,
-                rgba(28, 25, 23, 0.3) 55%,
-                rgba(28, 25, 23, 0.5) 66%,
-                rgba(28, 25, 23, 0.72) 77%,
-                rgba(28, 25, 23, 0.9) 88%,
-                rgba(28, 25, 23, 1) 100%
-            );
-            pointer-events: none;
-            z-index: 20;
-        }
-
-        /* =========================================
-           AMBIENT BACKGROUND ANIMATIONS
-           ========================================= */
-        @keyframes ambient-drift {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(30px, -20px) scale(1.05); }
-            50% { transform: translate(-20px, 15px) scale(0.95); }
-            75% { transform: translate(15px, 25px) scale(1.02); }
-        }
-        @keyframes ambient-drift-reverse {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(-25px, 20px) scale(0.97); }
-            50% { transform: translate(20px, -15px) scale(1.04); }
-            75% { transform: translate(-10px, -25px) scale(1); }
-        }
-        @keyframes ambient-pulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.1); }
-        }
-        @keyframes ambient-rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .ambient-orb--1 {
-            animation: ambient-drift 20s ease-in-out infinite;
-        }
-        .ambient-orb--2 {
-            animation: ambient-drift-reverse 25s ease-in-out infinite;
-        }
-        .ambient-orb--3 {
-            animation: ambient-drift 30s ease-in-out infinite;
-            animation-delay: -10s;
-        }
-        .ambient-orb--pulse {
-            animation: ambient-pulse 8s ease-in-out infinite;
-        }
-        .ambient-grid-shift {
-            animation: ambient-drift 40s ease-in-out infinite;
-        }
-
-        /* =========================================
-           MARQUEE ANIMATION (Convênios)
-           ========================================= */
-        @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
-        }
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        .animate-marquee {
-            animation: marquee 40s linear infinite;
-        }
-        .marquee-container {
-            display: flex;
-            width: max-content;
-        }
-        /* Navbar Dark Mode (quando sobre seções escuras) */
-        #main-nav.nav-dark {
-            background: linear-gradient(to right, rgba(28,25,23,0.85), rgba(28,25,23,0.65)) !important;
-            border-color: rgba(255,255,255,0.08) !important;
-            box-shadow: 0 8px 32px -8px rgba(0,0,0,0.3) !important;
-        }
-        #main-nav.nav-dark .nav-link {
-            color: rgba(255,255,255,0.7) !important;
-        }
-        #main-nav.nav-dark .nav-link:hover {
-            color: #b89d70 !important;
-        }
-        #main-nav.nav-dark .nav-logo {
-            filter: brightness(10) !important;
-        }
-
-        /* Section Divider — gradiente suave */
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(184,157,112,0.3), transparent);
-            border: none;
-            margin: 0;
-        }
-
-        /* Micro-animações — Hover glow em ícones */
-        .icon-glow {
-            transition: all 0.4s ease;
-        }
-        .icon-glow:hover {
-            filter: drop-shadow(0 0 8px rgba(184,157,112,0.6));
-        }
-
-        /* Float sutil para elementos decorativos */
-        @keyframes float-gentle {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-        }
-        .animate-float-gentle {
-            animation: float-gentle 6s ease-in-out infinite;
-        }
-
-        /* Pulse sutil para badges */
-        @keyframes badge-pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(184,157,112,0.2); }
-            50% { box-shadow: 0 0 0 6px rgba(184,157,112,0); }
-        }
-        .badge-pulse {
-            animation: badge-pulse 3s ease-in-out infinite;
-        }
-
-        /* Gradient border hover para cards */
-        .card-hover-glow {
-            position: relative;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .card-hover-glow:hover {
-            box-shadow: 0 0 30px -5px rgba(184,157,112,0.15);
-        }
-
-        /* Smooth reveal para texto */
-        @keyframes text-reveal {
-            from { opacity: 0; transform: translateY(10px); filter: blur(4px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
-
-        /* Link underline animação elegante */
-        .link-fancy {
-            position: relative;
-        }
-        .link-fancy::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: #b89d70;
-            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .link-fancy:hover::after {
-            width: 100%;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="bg-beige-200 text-stone-900 min-h-screen w-full antialiased overflow-x-hidden">
 
@@ -646,7 +76,7 @@
     <header id="main-nav" class="absolute top-5 left-1/2 -translate-x-1/2 w-[95%] max-w-[1280px] z-50 transition-all duration-500 backdrop-blur-[16px] bg-gradient-to-r from-white/80 to-white/40 border-t border-l border-white/80 border-b border-r border-white/30 rounded-full shadow-[0_8px_32px_-8px_rgba(28,25,23,0.08)] invisible-start gs-nav lg:fixed">
         <div class="px-7 py-3.5 md:py-4 flex items-center justify-between w-full">
             <div class="flex items-center shrink-0 pl-1">
-                <img src="assets/raw_files/logodimagem.webp" alt="Dimagem" class="nav-logo h-8 md:h-9 lg:h-10 object-contain drop-shadow-sm transition-all duration-500">
+                <img src="assets/images/logodimagem.webp" alt="Dimagem" class="nav-logo h-8 md:h-9 lg:h-10 object-contain drop-shadow-sm transition-all duration-500">
             </div>
             
             <div class="hidden lg:flex flex-1 justify-center items-center gap-8 xl:gap-12 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.12em] text-stone-700/80 whitespace-nowrap">
@@ -719,22 +149,22 @@
                     </button>
                 </div>
 
-                <!-- Info Trust -->
-                <div class="gs-reveal mt-12 flex items-center gap-6">
-                    <div class="flex -space-x-3">
-                        <div class="w-10 h-10 rounded-full border-2 border-beige-200 bg-stone-300 overflow-hidden"><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=100" class="w-full h-full object-cover"></div>
-                        <div class="w-10 h-10 rounded-full border-2 border-beige-200 bg-stone-300 overflow-hidden"><img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=100" class="w-full h-full object-cover"></div>
-                        <div class="w-10 h-10 rounded-full border-2 border-beige-200 bg-stone-900 text-white flex items-center justify-center text-xs font-bold">+50</div>
+                <!-- Info Trust - Especialistas Renomados -->
+                <div class="gs-reveal mt-12 flex flex-col sm:flex-row items-center gap-4 bg-white/50 backdrop-blur-md border border-white/60 p-2 sm:pr-6 rounded-full shadow-sm w-max transition-all duration-300 hover:bg-white/70 hover:-translate-y-1 hover:shadow-md cursor-default">
+                    <div class="flex -space-x-3 shrink-0">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-stone-300 overflow-hidden shadow-sm hover:scale-105 transition-transform"><img src="assets/images/dr-celso-vedolin.webp" onerror="this.src='https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=100'" class="w-full h-full object-cover" alt="Especialista"></div>
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-stone-300 overflow-hidden shadow-sm hover:scale-105 transition-transform"><img src="assets/images/dr-marcelo-g-oliveira.webp" onerror="this.src='https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=100'" class="w-full h-full object-cover" alt="Especialista"></div>
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-stone-900 text-white flex items-center justify-center text-[10px] sm:text-xs font-bold shadow-sm z-10 hover:scale-105 transition-transform">+50</div>
                     </div>
-                    <div>
-                        <div class="text-sm font-bold text-stone-900 flex items-center gap-1">
-                            <iconify-icon icon="solar:star-bold" class="text-primary" width="16"></iconify-icon>
-                            <iconify-icon icon="solar:star-bold" class="text-primary" width="16"></iconify-icon>
-                            <iconify-icon icon="solar:star-bold" class="text-primary" width="16"></iconify-icon>
-                            <iconify-icon icon="solar:star-bold" class="text-primary" width="16"></iconify-icon>
-                            <iconify-icon icon="solar:star-bold" class="text-primary" width="16"></iconify-icon>
+                    <div class="text-center sm:text-left pb-2 sm:pb-0">
+                        <div class="flex items-center justify-center sm:justify-start gap-1 mb-1">
+                            <iconify-icon icon="solar:star-bold" class="text-[#B89D70]" width="14"></iconify-icon>
+                            <iconify-icon icon="solar:star-bold" class="text-[#B89D70]" width="14"></iconify-icon>
+                            <iconify-icon icon="solar:star-bold" class="text-[#B89D70]" width="14"></iconify-icon>
+                            <iconify-icon icon="solar:star-bold" class="text-[#B89D70]" width="14"></iconify-icon>
+                            <iconify-icon icon="solar:star-bold" class="text-[#B89D70]" width="14"></iconify-icon>
                         </div>
-                        <div class="text-xs font-semibold text-stone-500 uppercase tracking-wider mt-1">Especialistas Renomados</div>
+                        <div class="text-[10px] font-bold text-stone-600 uppercase tracking-widest leading-none">Especialistas Renomados</div>
                     </div>
                 </div>
 
@@ -747,7 +177,7 @@
                 <div class="relative w-full lg:w-[85%] h-full rounded-[2.5rem] overflow-hidden shadow-2xl glass-effect border-2 border-white gs-main-img-wrapper z-10" style="transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);">
                     <div class="absolute inset-0 bg-stone-900/5 z-10 pointer-events-none mix-blend-multiply"></div>
                     <img 
-                        src="assets/raw_files/frente-dimagem.webp" 
+                        src="assets/images/frente-dimagem.webp" 
                         alt="Fachada Clínica Dimagem" 
                         class="w-full h-full object-cover scale-[1.05] gs-parallax-img hover:scale-110 transition-transform duration-[1.5s] ease-out img-mask"
                         loading="lazy"
@@ -763,7 +193,7 @@
                     <div class="glass-effect rounded-2xl p-4 pr-6 flex items-center gap-4 border border-white/60 backdrop-blur-xl group hover:bg-white/60 transition-colors duration-300">
                         <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shadow-inner border-2 border-white relative group-hover:scale-105 transition-transform duration-500">
                             <!-- Fallback emborrachado se a imagem não carregar localmente -->
-                            <img src="assets/raw_files/Dr.-CELSO-VEDOLIN.webp" alt="Dr. Celso Vedolin" class="w-full h-full object-cover object-top" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400'">
+                            <img src="assets/images/Dr.-CELSO-VEDOLIN.webp" alt="Dr. Celso Vedolin" class="w-full h-full object-cover object-top" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400'">
                         </div>
                         <div class="flex flex-col">
                             <span class="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-primary font-bold mb-1 flex items-center gap-1">
@@ -869,7 +299,7 @@
                     <div class="absolute inset-4 md:inset-8 z-10 flex items-center justify-center">
                         <!-- FOTO Base -->
                         <div class="absolute inset-0 rounded-[1.5rem] overflow-hidden shadow-inner border border-white/60 bg-white">
-                            <img src="assets/raw_files/frente-dimagem.webp" alt="Dimagem Fachada" loading="lazy" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-[2s] ease-out">
+                            <img src="assets/images/frente-dimagem.webp" alt="Dimagem Fachada" loading="lazy" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-[2s] ease-out">
                             <!-- Clareamento elegante por cima da foto ao invés de escurecer -->
                             <div class="absolute inset-0 bg-gradient-to-b from-stone-900/10 via-transparent to-stone-900/20 z-20 pointer-events-none mix-blend-overlay"></div>
                         </div>
@@ -1066,7 +496,7 @@
                             </div>
                             <!-- Imagem -->
                             <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
-                                <img src="assets/raw_files/Dr.-CELSO-VEDOLIN.webp" alt="Dr. Celso Vedolin" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
+                                <img src="assets/images/Dr.-CELSO-VEDOLIN.webp" alt="Dr. Celso Vedolin" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent transition-opacity duration-500"></div>
                             </div>
                             <div class="team-card__info p-5 bg-white transition-all duration-500 flex flex-col items-center justify-center text-center min-h-[160px]">
@@ -1083,7 +513,7 @@
                     <div class="team-card shrink-0 w-[220px] sm:w-[240px] lg:w-[260px] cursor-pointer select-none" data-index="1" data-name="Dra. Emanuelle Gobbo Simon" data-role="Radiologista" data-sub="Saúde da Mulher" data-crm="CREMERS 40050">
                         <div class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
                             <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
-                                <img src="assets/raw_files/Dra-EMANUELLE-GOBBO-SIMON.webp" alt="Dra. Emanuelle Gobbo Simon" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
+                                <img src="assets/images/Dra-EMANUELLE-GOBBO-SIMON.webp" alt="Dra. Emanuelle Gobbo Simon" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent transition-opacity duration-500"></div>
                             </div>
                             <div class="team-card__info p-5 bg-white transition-all duration-500 flex flex-col items-center justify-center text-center min-h-[160px]">
@@ -1100,7 +530,7 @@
                     <div class="team-card shrink-0 w-[220px] sm:w-[240px] lg:w-[260px] cursor-pointer select-none" data-index="2" data-name="Dr. Henrique da Rosa Sobrinho" data-role="Radiologista" data-sub="" data-crm="CREMERS 33250">
                         <div class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
                             <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
-                                <img src="assets/raw_files/Dr.-HENRIQUE-DA-ROSA-SOBRINHO.webp" alt="Dr. Henrique da Rosa Sobrinho" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
+                                <img src="assets/images/Dr.-HENRIQUE-DA-ROSA-SOBRINHO.webp" alt="Dr. Henrique da Rosa Sobrinho" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent transition-opacity duration-500"></div>
                             </div>
                             <div class="team-card__info p-5 bg-white transition-all duration-500 flex flex-col items-center justify-center text-center min-h-[160px]">
@@ -1117,7 +547,7 @@
                     <div class="team-card shrink-0 w-[220px] sm:w-[240px] lg:w-[260px] cursor-pointer select-none" data-index="3" data-name="Dra. Janize Regiane Paslowski" data-role="Radiologista" data-sub="Saúde da Mulher" data-crm="CREMERS 39882">
                         <div class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
                             <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
-                                <img src="assets/raw_files/Dra-JANIZE-REGIANE-PASLOWSKI.webp" alt="Dra. Janize Regiane Paslowski" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
+                                <img src="assets/images/Dra-JANIZE-REGIANE-PASLOWSKI.webp" alt="Dra. Janize Regiane Paslowski" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent transition-opacity duration-500"></div>
                             </div>
                             <div class="team-card__info p-5 bg-white transition-all duration-500 flex flex-col items-center justify-center text-center min-h-[160px]">
@@ -1134,7 +564,7 @@
                     <div class="team-card shrink-0 w-[220px] sm:w-[240px] lg:w-[260px] cursor-pointer select-none" data-index="4" data-name="Dr. Vinicius Cardoso dos Santos" data-role="Radiologia Oncológica" data-sub="" data-crm="CREMERS 30143">
                         <div class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
                             <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
-                                <img src="assets/raw_files/Dr.-VINICIUS-CARDOSO-DOS-SANTOS.webp" alt="Dr. Vinicius Cardoso dos Santos" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
+                                <img src="assets/images/Dr.-VINICIUS-CARDOSO-DOS-SANTOS.webp" alt="Dr. Vinicius Cardoso dos Santos" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent transition-opacity duration-500"></div>
                             </div>
                             <div class="team-card__info p-5 bg-white transition-all duration-500 flex flex-col items-center justify-center text-center min-h-[160px]">
@@ -1151,7 +581,7 @@
                     <div class="team-card shrink-0 w-[220px] sm:w-[240px] lg:w-[260px] cursor-pointer select-none" data-index="5" data-name="Dr. Eduardo Tomasi" data-role="Ecografista" data-sub="" data-crm="CREMERS 32128">
                         <div class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
                             <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
-                                <img src="assets/raw_files/Dr.-EDUARDO-TOMASI.webp" alt="Dr. Eduardo Tomasi" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
+                                <img src="assets/images/Dr.-EDUARDO-TOMASI.webp" alt="Dr. Eduardo Tomasi" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent transition-opacity duration-500"></div>
                             </div>
                             <div class="team-card__info p-5 bg-white transition-all duration-500 flex flex-col items-center justify-center text-center min-h-[160px]">
@@ -1168,7 +598,7 @@
                     <div class="team-card shrink-0 w-[220px] sm:w-[240px] lg:w-[260px] cursor-pointer select-none" data-index="6" data-name="Dr. Kilian Christmann" data-role="Radiologista" data-sub="" data-crm="CREMERS 61172">
                         <div class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
                             <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
-                                <img src="assets/raw_files/D.r-KILIAN-CHRISTMANN.webp" alt="Dr. Kilian Christmann" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
+                                <img src="assets/images/D.r-KILIAN-CHRISTMANN.webp" alt="Dr. Kilian Christmann" class="w-full h-full object-cover object-top transition-all duration-700" loading="lazy">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent transition-opacity duration-500"></div>
                             </div>
                             <div class="team-card__info p-5 bg-white transition-all duration-500 flex flex-col items-center justify-center text-center min-h-[160px]">
@@ -1340,7 +770,7 @@
                 
                 <!-- RM -->
                 <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="RM">
-                    <img src="assets/raw_files/RM.webp" alt="Ressonância Magnética" class="ds-card__image" loading="lazy">
+                    <img src="assets/images/RM.webp" alt="Ressonância Magnética" class="ds-card__image" loading="lazy">
                     <div class="ds-card__content p-5 lg:p-6">
                         <div class="flex justify-between w-full">
                             <span class="text-lime-400 font-mono text-sm">01</span>
@@ -1356,7 +786,7 @@
 
                 <!-- TC -->
                 <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="TC">
-                    <img src="assets/raw_files/TC.webp" alt="Tomografia Computadorizada" class="ds-card__image" loading="lazy">
+                    <img src="assets/images/TC.webp" alt="Tomografia Computadorizada" class="ds-card__image" loading="lazy">
                     <div class="ds-card__content p-5 lg:p-6">
                         <div class="flex justify-between w-full">
                             <span class="text-lime-400 font-mono text-sm">02</span>
@@ -1372,7 +802,7 @@
 
                 <!-- ECO -->
                 <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="ECO">
-                    <img src="assets/raw_files/ECO.webp" alt="Ecografia" class="ds-card__image" loading="lazy">
+                    <img src="assets/images/ECO.webp" alt="Ecografia" class="ds-card__image" loading="lazy">
                     <div class="ds-card__content p-5 lg:p-6">
                         <div class="flex justify-between w-full">
                             <span class="text-lime-400 font-mono text-sm">03</span>
@@ -1388,7 +818,7 @@
 
                 <!-- RX -->
                 <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="RX">
-                    <img src="assets/raw_files/RX.webp" alt="Raios-X Digital" class="ds-card__image" loading="lazy">
+                    <img src="assets/images/RX.webp" alt="Raios-X Digital" class="ds-card__image" loading="lazy">
                     <div class="ds-card__content p-5 lg:p-6">
                         <div class="flex justify-between w-full">
                             <span class="text-lime-400 font-mono text-sm">04</span>
@@ -1404,7 +834,7 @@
 
                 <!-- MAMOGRAFIA -->
                 <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="MAMOGRAFIA">
-                    <img src="assets/raw_files/MAMOGRAFIA.webp" alt="Mamografia" class="ds-card__image" loading="lazy">
+                    <img src="assets/images/MAMOGRAFIA.webp" alt="Mamografia" class="ds-card__image" loading="lazy">
                     <div class="ds-card__content p-5 lg:p-6">
                         <div class="flex justify-between w-full">
                             <span class="text-lime-400 font-mono text-sm">05</span>
@@ -1420,7 +850,7 @@
 
                 <!-- D.O -->
                 <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="DO">
-                    <img src="assets/raw_files/D.O.webp" alt="Densitometria Óssea" class="ds-card__image" loading="lazy">
+                    <img src="assets/images/D.O.webp" alt="Densitometria Óssea" class="ds-card__image" loading="lazy">
                     <div class="ds-card__content p-5 lg:p-6">
                         <div class="flex justify-between w-full">
                             <span class="text-lime-400 font-mono text-sm">06</span>
@@ -1436,7 +866,7 @@
 
                 <!-- BIOPSIA -->
                 <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="BIOPSIA">
-                    <img src="assets/raw_files/BIOPSIA.webp" alt="Biópsia" class="ds-card__image" loading="lazy">
+                    <img src="assets/images/BIOPSIA.webp" alt="Biópsia" class="ds-card__image" loading="lazy">
                     <div class="ds-card__content p-5 lg:p-6">
                         <div class="flex justify-between w-full">
                             <span class="text-lime-400 font-mono text-sm">07</span>
@@ -1452,7 +882,7 @@
 
                 <!-- ODONTOLÓGICA -->
                 <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="ODONTOLOGICA">
-                    <img src="assets/raw_files/ODONTOLÓGICA.webp" alt="Radiologia Odontológica" class="ds-card__image" loading="lazy">
+                    <img src="assets/images/ODONTOLÓGICA.webp" alt="Radiologia Odontológica" class="ds-card__image" loading="lazy">
                     <div class="ds-card__content p-5 lg:p-6">
                         <div class="flex justify-between w-full">
                             <span class="text-lime-400 font-mono text-sm">08</span>
@@ -1709,7 +1139,7 @@
             </div>
             
             <!-- Body (Scrollable) -->
-            <div class="p-6 md:p-8 overflow-y-auto w-full custom-scrollbar text-stone-700 font-sans leading-relaxed text-sm md:text-base bg-beige-100" id="modal-body">
+            <div class="flex-1 min-h-0 p-6 md:p-8 overflow-y-auto w-full custom-scrollbar text-stone-700 font-sans leading-relaxed text-sm md:text-base bg-beige-100" id="modal-body">
                 <!-- Content injected via JS -->
             </div>
 
@@ -1728,7 +1158,7 @@
     <!-- 8️⃣ MODAL DE CADASTRO MÉDICO PACS -->
     <div id="pacs-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 invisible opacity-0 pointer-events-none">
         <!-- Overlay -->
-        <div id="pacs-overlay" class="absolute inset-0 bg-stone-900/40 backdrop-blur-sm cursor-pointer"></div>
+        <div id="pacs-overlay" class="absolute inset-0 bg-stone-900/60 backdrop-blur-md cursor-pointer"></div>
         
         <!-- Content Box Glass Premium -->
         <div id="pacs-content" class="relative bg-white/95 backdrop-blur-3xl border border-white/60 w-full max-w-xl max-h-[90vh] rounded-[2rem] shadow-[0_25px_80px_-15px_rgba(0,0,0,0.25)] overflow-hidden flex flex-col transform scale-95 opacity-0">
@@ -1745,7 +1175,7 @@
             </button>
 
             <!-- Body do Formulário -->
-            <div class="p-8 md:p-10 w-full overflow-y-auto custom-scrollbar relative z-10">
+            <div class="flex-1 min-h-0 p-8 md:p-10 w-full overflow-y-auto custom-scrollbar relative z-10">
                 <div class="text-center mb-8">
                     <!-- Ícone com glow -->
                     <div class="relative inline-flex mb-5">
@@ -1807,782 +1237,6 @@
             </div>
         </div>
     </div>    <!-- Scripts de Animação (GSAP + Lenis) -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            
-            // 1. Configurar Lenis (Smooth Scroll Premium)
-            const lenis = new Lenis({
-                duration: 1.2,
-                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-                direction: 'vertical',
-                gestureDirection: 'vertical',
-                smooth: true,
-                mouseMultiplier: 1,
-                smoothTouch: false,
-                touchMultiplier: 2,
-            });
-
-            function raf(time) {
-                lenis.raf(time);
-                requestAnimationFrame(raf);
-            }
-            requestAnimationFrame(raf);
-
-            // 2. Timeline GSAP (Entrada inicial)
-            // Remover invisibilidade inicial antes da animação
-            document.querySelectorAll('.invisible-start').forEach(el => {
-                el.classList.remove('invisible-start');
-                gsap.set(el, { autoAlpha: 0 }); // Prepara com autoAlpha
-            });
-
-            const initTl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-            // Navbar Fade In
-            initTl.to('.gs-nav', {
-                autoAlpha: 1,
-                y: 0,
-                duration: 1
-            }, 0.2);
-
-            // Título Stagger
-            gsap.set('.gs-title', { yPercent: 100, autoAlpha: 0 });
-            initTl.to('.gs-title', {
-                yPercent: 0,
-                autoAlpha: 1,
-                stagger: 0.15,
-                duration: 1.2,
-                ease: "power4.out"
-            }, 0.3);
-
-            // Resto do texto e botões
-            gsap.set('.gs-reveal', { y: 30, autoAlpha: 0 });
-            initTl.to('.gs-reveal', {
-                y: 0,
-                autoAlpha: 1,
-                stagger: 0.1,
-                duration: 1
-            }, 0.7);
-
-            // Container visual direito fade e scale
-            gsap.set('.gs-visual-container', { x: 40, autoAlpha: 0, scale: 0.95 });
-            initTl.to('.gs-visual-container', {
-                x: 0,
-                autoAlpha: 1,
-                scale: 1,
-                duration: 1.5,
-                ease: "power2.out"
-            }, 0.5);
-
-            // Cards flutuantes pop
-            gsap.set('.gs-float-card, .gs-float-card-alt', { scale: 0.8, autoAlpha: 0, y: 30 });
-            initTl.to('.gs-float-card, .gs-float-card-alt', {
-                scale: 1,
-                autoAlpha: 1,
-                y: 0,
-                stagger: 0.2,
-                duration: 1,
-                ease: "back.out(1.5)"
-            }, 1);
-
-            // 3. Efeitos Contínuos (Float e Parallax sutil com Scroll)
-            gsap.to('.gs-float-card', {
-                y: "-=15",
-                duration: 3,
-                yoyo: true,
-                repeat: -1,
-                ease: "sine.inOut"
-            });
-            
-            gsap.to('.gs-float-card-alt', {
-                y: "+=12",
-                duration: 3.5,
-                yoyo: true,
-                repeat: -1,
-                ease: "sine.inOut",
-                delay: 0.5
-            });
-
-            gsap.to('.gs-float-slow', {
-                y: "-=20",
-                rotation: 5,
-                duration: 6,
-                yoyo: true,
-                repeat: -1,
-                ease: "sine.inOut"
-            });
-
-            // Parallax na imagem principal ao scrollar (ScrollTrigger)
-            gsap.registerPlugin(ScrollTrigger);
-            
-            gsap.to('.gs-parallax-img', {
-                yPercent: 15,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: "#hero",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true
-                }
-            });
-            
-            // Mouse Move Parallax na Section Inteira (Otimizado com quickTo e requestAnimationFrame)
-            const heroSection = document.getElementById('hero');
-            
-            const xToImg = gsap.quickTo('.gs-main-img-wrapper', 'rotationY', {duration: 1, ease: 'power2.out'});
-            const yToImg = gsap.quickTo('.gs-main-img-wrapper', 'rotationX', {duration: 1, ease: 'power2.out'});
-            const xToCard = gsap.quickTo('.gs-float-card', 'x', {duration: 1, ease: 'power2.out'});
-            const yToCard = gsap.quickTo('.gs-float-card', 'y', {duration: 1, ease: 'power2.out'});
-            const xToCardAlt = gsap.quickTo('.gs-float-card-alt', 'x', {duration: 1, ease: 'power2.out'});
-            const yToCardAlt = gsap.quickTo('.gs-float-card-alt', 'y', {duration: 1, ease: 'power2.out'});
-
-            let ticking = false;
-
-            heroSection.addEventListener('mousemove', (e) => {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        const x = (e.clientX / window.innerWidth - 0.5) * 20; // range -10 to 10
-                        const y = (e.clientY / window.innerHeight - 0.5) * 20;
-
-                        xToImg(-5 + x * 0.5);
-                        yToImg(2 - y * 0.5);
-                        xToCard(x * -1.5);
-                        yToCard(y * -1.5);
-                        xToCardAlt(x * 1.2);
-                        yToCardAlt(y * 1.2);
-                        
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            }, { passive: true });
-            
-            heroSection.addEventListener('mouseleave', () => {
-                xToImg(-5);
-                yToImg(2);
-                xToCard(0);
-                yToCard(0);
-                xToCardAlt(0);
-                yToCardAlt(0);
-            });
-
-            // 4. Seção Neural/Dark Animada
-            const aboutTl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: "#about",
-                    start: "top 70%",
-                    end: "bottom bottom",
-                    toggleActions: "play none none reverse"
-                }
-            });
-
-            gsap.set('.gs-about-reveal', { autoAlpha: 0, y: 30 });
-            gsap.set('.gs-about-visual', { autoAlpha: 0, scale: 0.95, x: -30 });
-            gsap.set('.gs-about-list > div', { autoAlpha: 0, x: 30 });
-
-            aboutTl.to('.gs-about-reveal', { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out' })
-                   .to('.gs-about-visual', { autoAlpha: 1, scale: 1, x: 0, duration: 1.2, ease: 'power3.out' }, "-=0.6")
-                   .to('.gs-about-list > div', { autoAlpha: 1, x: 0, duration: 0.8, stagger: 0.15, ease: 'power2.out' }, "-=0.8");
-
-            // =============================================
-            // 4.5 EXAMES SECTION (Reveal & Delay stagger)
-            // =============================================
-            
-            const examsTl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: "#exams",
-                    start: "top 75%",
-                    end: "bottom bottom",
-                    toggleActions: "play none none reverse"
-                }
-            });
-
-            gsap.set('.gs-exams-header', { autoAlpha: 0, y: 30 });
-            gsap.set('.gs-exam-card', { autoAlpha: 0, y: 40, scale: 0.95 });
-
-            examsTl.to('.gs-exams-header', { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out' })
-                   .to('.gs-exam-card', { 
-                       autoAlpha: 1, y: 0, scale: 1, 
-                       duration: 0.8, 
-                       stagger: 0.08, 
-                       ease: 'back.out(1.2)' 
-                   }, "-=0.5");
-
-            // =============================================
-            // 4.6 CONTATO SECTION (Reveal animations)
-            // =============================================
-            
-            const contactTl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: "#contact",
-                    start: "top 75%",
-                    end: "bottom bottom",
-                    toggleActions: "play none none reverse"
-                }
-            });
-
-            gsap.set('.gs-contact-badge', { autoAlpha: 0, x: -20 });
-            gsap.set('.gs-contact-title', { autoAlpha: 0, y: 40 });
-            gsap.set('.gs-contact-subtitle', { autoAlpha: 0, y: 25 });
-            gsap.set('.gs-contact-info > *', { autoAlpha: 0, y: 30, scale: 0.95 });
-            gsap.set('.gs-contact-form-area', { autoAlpha: 0, y: 40 });
-            gsap.set('.gs-contact-footer', { autoAlpha: 0, y: 20 });
-
-            contactTl
-                .to('.gs-contact-badge', { autoAlpha: 1, x: 0, duration: 0.7, ease: 'power3.out' })
-                .to('.gs-contact-title', { autoAlpha: 1, y: 0, duration: 1, ease: 'power4.out' }, "-=0.4")
-                .to('.gs-contact-subtitle', { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out' }, "-=0.5")
-                .to('.gs-contact-info > *', { 
-                    autoAlpha: 1, y: 0, scale: 1, 
-                    duration: 0.7, stagger: 0.1, 
-                    ease: 'back.out(1.2)' 
-                }, "-=0.5")
-                .to('.gs-contact-form-area', { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out' }, "-=0.4")
-                .to('.gs-contact-footer', { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' }, "-=0.3");
-
-            // =============================================
-            // 5. CORPO CLÍNICO — Animações + Carrossel
-            // =============================================
-            
-            // Animação de entrada com stagger individual
-            gsap.set('.gs-team-badge', { autoAlpha: 0, x: -20 });
-            gsap.set('.gs-team-title', { autoAlpha: 0, y: 40 });
-            gsap.set('.gs-team-subtitle', { autoAlpha: 0, y: 30 });
-            gsap.set('.team-card', { autoAlpha: 0, y: 60, rotationY: 8, scale: 0.88 });
-            gsap.set('.gs-team-dots', { autoAlpha: 0, y: 15 });
-
-            const teamTl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: "#team",
-                    start: "top 78%",
-                    end: "bottom bottom",
-                    toggleActions: "play none none reverse"
-                }
-            });
-
-            teamTl
-                .to('.gs-team-badge', { autoAlpha: 1, x: 0, duration: 0.8, ease: 'power3.out' })
-                .to('.gs-team-title', { autoAlpha: 1, y: 0, duration: 1, ease: 'power4.out' }, "-=0.5")
-                .to('.gs-team-subtitle', { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power3.out' }, "-=0.6")
-                .to('.team-card', { 
-                    autoAlpha: 1, y: 0, rotationY: 0, scale: 1,
-                    duration: 0.9, stagger: 0.1, 
-                    ease: 'power3.out'
-                }, "-=0.6")
-                .to('.gs-team-dots', { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, "-=0.3");
-
-            // Carrossel Logic
-            const track = document.getElementById('team-track');
-            const cards = document.querySelectorAll('.team-card');
-            const prevBtn = document.getElementById('team-prev');
-            const nextBtn = document.getElementById('team-next');
-            const dots = document.querySelectorAll('.team-dot');
-            let currentSlide = 0;
-            const totalCards = cards.length;
-
-            function getCardGap() {
-                return window.innerWidth >= 1024 ? 24 : 20;
-            }
-
-            function getVisibleCards() {
-                if (window.innerWidth >= 1024) return 4;
-                if (window.innerWidth >= 640) return 3;
-                return 2;
-            }
-
-            function getMaxSlide() {
-                return Math.max(0, totalCards - getVisibleCards());
-            }
-
-            function updateCarousel(animated = true) {
-                const gap = getCardGap();
-                const cardWidth = cards[0].offsetWidth + gap;
-                const offset = -currentSlide * cardWidth;
-                
-                if (animated) {
-                    gsap.to(track, {
-                        x: offset,
-                        duration: 0.7,
-                        ease: 'power3.out'
-                    });
-                } else {
-                    gsap.set(track, { x: offset });
-                }
-                
-                // Update dots
-                const maxSlide = getMaxSlide();
-                dots.forEach((dot, i) => {
-                    const zone = maxSlide > 0 ? Math.floor(currentSlide / (maxSlide / dots.length + 0.001)) : 0;
-                    const isActive = i === Math.min(zone, dots.length - 1);
-                    dot.classList.toggle('bg-primary', isActive);
-                    dot.classList.toggle('bg-stone-300', !isActive);
-                    dot.style.width = isActive ? '2rem' : '1rem';
-                });
-
-                // Arrow state
-                gsap.to(prevBtn, { opacity: currentSlide === 0 ? 0.35 : 1, duration: 0.3 });
-                gsap.to(nextBtn, { opacity: currentSlide >= getMaxSlide() ? 0.35 : 1, duration: 0.3 });
-            }
-
-            // Seleção por Clique
-            function selectCard(card) {
-                // Desselecionar todos
-                cards.forEach(c => {
-                    if (c !== card && c.classList.contains('is-selected')) {
-                        c.classList.remove('is-selected');
-                        // Libera do controle do GSAP para o CSS puramente transicionar o off-state sem embaçar
-                        gsap.set(c.querySelector('.team-card__inner'), { clearProps: "all" });
-                    }
-                });
-                
-                // Selecionar o novo
-                if (!card.classList.contains('is-selected')) {
-                    card.classList.add('is-selected');
-                    const inner = card.querySelector('.team-card__inner');
-                    // Libera de transform styles inliens para evitar borrões
-                    gsap.set(inner, { clearProps: "all" });
-                }
-                
-                // Melhorando a lógica de balanceamento
-                const cardIndex = parseInt(card.dataset.index);
-                const max = getMaxSlide();
-                const visible = getVisibleCards();
-                
-                // Nós só queremos mover se o card clicado estiver fora de visão (nas pontas)
-                if (cardIndex < currentSlide) {
-                    currentSlide = cardIndex;
-                    updateCarousel();
-                } else if (cardIndex >= currentSlide + visible - 1) {
-                    currentSlide = cardIndex - visible + 1;
-                    if (currentSlide > max) currentSlide = max;
-                    updateCarousel();
-                }
-            }
-
-            // Click events nos cards
-            cards.forEach(card => {
-                card.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    selectCard(card);
-                });
-            });
-
-            // Navegação setas
-            nextBtn.addEventListener('click', () => {
-                if (currentSlide < getMaxSlide()) {
-                    currentSlide++;
-                    updateCarousel();
-                }
-            });
-
-            prevBtn.addEventListener('click', () => {
-                if (currentSlide > 0) {
-                    currentSlide--;
-                    updateCarousel();
-                }
-            });
-
-            // Touch events (mobile only)
-            let touchStartX = 0;
-            track.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
-            track.addEventListener('touchend', (e) => {
-                const diff = e.changedTouches[0].clientX - touchStartX;
-                if (Math.abs(diff) > 50) {
-                    if (diff < 0 && currentSlide < getMaxSlide()) currentSlide++;
-                    if (diff > 0 && currentSlide > 0) currentSlide--;
-                    updateCarousel();
-                }
-            });
-
-            // Resize handler
-            window.addEventListener('resize', () => {
-                if (currentSlide > getMaxSlide()) currentSlide = getMaxSlide();
-                updateCarousel(false);
-            });
-
-            // Initial state
-            updateCarousel(false);
-
-            // =============================================
-            // 6. MODAL DE EXAMES LOGIC
-            // =============================================
-            const examsData = {
-                'RM': {
-                    title: 'Ressonância Magnética',
-                    formLink: 'https://www.dimagem.com.br/files/frm.pdf',
-                    content: `
-                        <p class="font-bold text-stone-900 text-lg uppercase mb-4 text-primary">Trazer exames anteriores!</p>
-                        
-                        <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm mb-6">
-                            <h4 class="font-heading font-bold text-stone-800 mb-2">ABDÔMEN / APARELHO URINÁRIO / URORESSONÂNCIA / VIAS BILIARES / COLANGIORESSONÂNCIA</h4>
-                            <p>6 horas de jejum.</p>
-                        </div>
-
-                        <h4 class="font-heading font-bold text-stone-900 mb-3 text-lg">Não podem realizar exames, pacientes com:</h4>
-                        <ul class="list-disc pl-5 space-y-2 mb-6">
-                            <li>Marca-passo;</li>
-                            <li>Implantes de estribo no ouvido;</li>
-                            <li>Reconstrução de CAI com metal (CÓCLEA);</li>
-                            <li>Clipes cerebrais para aneurisma (e quando ferrometálicos);</li>
-                            <li>Febre;</li>
-                            <li>Válvulas Liquóricas antigas;</li>
-                            <li>Válvula mitral metálica;</li>
-                            <li>Gravidez de até 4 meses;</li>
-                            <li>Peso superior a 130kg ou com Circunferência abdominal acima de 1,40m;</li>
-                            <li>Profissão que envolva manipulação de limalha de ferro.</li>
-                        </ul>
-
-                        <div class="p-4 bg-orange-50/50 border border-orange-200 rounded-xl mb-6">
-                            <p class="text-orange-800 text-sm italic">P.S.: Pacientes com implantes metálicos devem ser analisados para ver a viabilidade do exame.</p>
-                        </div>
-
-                        <div class="pt-6 border-t border-stone-200">
-                            <h4 class="font-heading font-bold text-stone-800 mb-2">DEMAIS EXAMES</h4>
-                            <p>Sem preparo prévio.</p>
-                        </div>
-                    `
-                },
-                'TC': {
-                    title: 'Tomografia Computadorizada',
-                    formLink: 'https://www.dimagem.com.br/files/fct.pdf',
-                    content: `
-                        <div class="inline-flex items-center gap-2 mb-4 px-3 py-1 bg-stone-200 text-stone-700 text-xs font-bold rounded-full">MULTISLICE - 16 CANAIS</div>
-                        <p class="font-bold text-stone-900 text-lg uppercase mb-4 text-primary">Trazer exames anteriores!</p>
-
-                        <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm mb-6">
-                            <h4 class="font-heading font-bold text-stone-800 mb-2">Sem contraste</h4>
-                            <p>Sem preparo prévio.</p>
-                        </div>
-
-                        <h4 class="font-heading font-bold text-stone-900 mb-4 text-lg border-b border-stone-200 pb-2">Exames em geral com contraste</h4>
-                        <ul class="list-disc pl-5 space-y-3 mb-6">
-                            <li><strong class="text-stone-800">4 horas de jejum;</strong></li>
-                            <li>Se o paciente for <strong>DIABÉTICO</strong> e utilizar os seguintes medicamentos, deve suspendê-los por 48 horas (antes do exame) sob orientação de seu médico: (Metformin, Metformina, Cloridrato de Metformina, Glucophage, Glucoformin, Glifage, Fortamet, Riomet, Alti-Metformin, Apo-Metfotmin, Gen-Metformin, Glycon, Novo-Metformin, Nu-Metformin, PMS-Metformin, Rhoxal-Metformin FC, Rho-Metformin, Dabex e Dimefor);</li>
-                            <li><strong>PACIENTE ALÉRGICO:</strong> Passar preparo para o paciente.</li>
-                        </ul>
-
-                        <h4 class="font-heading font-bold text-stone-900 mb-4 text-lg border-b border-stone-200 pb-2">Abdômen com contraste</h4>
-                        <ul class="list-disc pl-5 space-y-3 mb-6">
-                            <li><strong class="text-stone-800">CRIANÇAS (Até 12 anos):</strong> Jejum completo de 4 horas;</li>
-                            <li><strong class="text-stone-800">ADULTOS:</strong> Jejum completo de 6 horas.</li>
-                            <li>A mesma orientação para <strong>DIABÉTICOS</strong> (suspender medicamentos 48h antes sob orientação médica).</li>
-                            <li><strong>PACIENTE ALÉRGICO:</strong> Passar preparo para o paciente.</li>
-                        </ul>
-                    `
-                },
-                'DO': {
-                    title: 'Densitometria Óssea',
-                    content: `
-                        <p class="font-bold text-stone-900 text-lg uppercase mb-6 text-primary">Trazer exames anteriores!</p>
-
-                        <h4 class="font-heading font-bold text-rose-600 mb-3 text-lg flex items-center gap-2">
-                            <iconify-icon icon="solar:danger-triangle-bold"></iconify-icon> O PACIENTE NÃO PODE:
-                        </h4>
-                        <ul class="list-disc pl-5 space-y-3 mb-6">
-                            <li>Ter recebido injeção de radio-isótopos (Exame de Medicina Nuclear) 72 horas antes do exame;</li>
-                            <li>Ter ingerido comprimidos com cálcio 48 horas antes do exame;</li>
-                            <li>Ter realizado exames com contraste via oral com sulfato de bário nos 7 (sete) dias que antecedem a data prevista para a realização do exame (exames como: Trânsito Intestinal, Enema Opaco, Esôfago e Raio X de Tórax);</li>
-                            <li>Ter realizado exames de Tomografia Computadorizada com o uso de contraste à base de Iodo ou Bário.</li>
-                        </ul>
-                    `
-                },
-                'RX': {
-                    title: 'Raio-X Digital',
-                    content: `
-                        <p class="font-bold text-stone-900 text-lg uppercase mb-6 text-primary">Trazer exames anteriores!</p>
-
-                        <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm mb-6">
-                            <h4 class="font-heading font-bold text-stone-900 mb-2 text-lg">Coluna Lombo-Sacra ou Coluna Total</h4>
-                            <div class="p-3 bg-stone-50 border border-stone-100 rounded-lg mb-4 text-sm text-stone-600">
-                                <p class="mb-1"><strong>Nota:</strong> Fratura de coluna ou acidentados não necessitam do preparo.</p>
-                                <p>Até 14 anos não precisa de preparo.</p>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                                <div class="p-4 bg-stone-100/50 rounded-xl">
-                                    <strong class="block text-stone-800 mb-1">DULCOLAX</strong>
-                                    <ul class="list-disc pl-4 text-sm space-y-1">
-                                        <li>Até 80 kg: tomar 2 comprimidos.</li>
-                                        <li>Acima de 80 kg: tomar 4 comprimidos.</li>
-                                    </ul>
-                                </div>
-                                <div class="p-4 bg-stone-100/50 rounded-xl">
-                                    <strong class="block text-stone-800 mb-1">LUFTAL ou FLAGASS</strong>
-                                    <ul class="list-disc pl-4 text-sm space-y-1">
-                                        <li>Até 80 kg: tomar 30 gotas.</li>
-                                        <li>Acima de 80 kg: tomar 40 gotas.</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <h5 class="font-bold text-stone-800 mb-3 uppercase tracking-wider text-sm">Cronograma de Preparo</h5>
-                            
-                            <div class="space-y-4">
-                                <div class="border-l-2 border-primary pl-4">
-                                    <strong class="text-stone-900 block mb-1">Na véspera:</strong>
-                                    <p class="text-sm">Às 17 horas tomar [qtd] comprimidos de DULCOLAX (Laxante) e [qtd] gotas de LUFTAL;<br>4 horas após, tomar [qtd] gotas de LUFTAL.</p>
-                                    <p class="text-sm mt-2"><strong>No jantar:</strong> Caldo, sopa, bolacha água e sal, pão torrado e chá.</p>
-                                </div>
-
-                                <div class="border-l-2 border-primary pl-4">
-                                    <strong class="text-stone-900 block mb-1">No dia do exame:</strong>
-                                    <p class="text-sm"><strong>PELA MANHÃ:</strong> Bolacha água e sal, pão torrado e chá.<br>Se o exame for realizado à tarde, tomar um caldo ou sopa no almoço.</p>
-                                </div>
-                            </div>
-
-                            <div class="mt-4 p-4 bg-orange-50/50 border border-orange-200 rounded-xl">
-                                <p class="text-orange-800 text-sm font-medium">OBS: Beber água à vontade. Não comer frutas, verduras, pão, arroz ou bolacha integral. Não tomar leite.</p>
-                            </div>
-                        </div>
-
-                        <div class="pt-4 border-t border-stone-200">
-                            <h4 class="font-heading font-bold text-stone-800 mb-2">Demais exames</h4>
-                            <p>Sem preparo.</p>
-                        </div>
-                    `
-                },
-                'ECO': {
-                    title: 'Ecografia',
-                    content: `
-                        <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm mb-4">
-                            <h4 class="font-heading font-bold text-stone-800 mb-2">Abdômen Superior</h4>
-                            <p class="mb-3 text-stone-600">Pode tomar água à vontade.</p>
-                            <ul class="space-y-2">
-                                <li><strong class="text-stone-800">ADULTOS:</strong> Jejum de 8 horas;</li>
-                                <li><strong class="text-stone-800">CRIANÇAS:</strong> Jejum de 4 horas.</li>
-                            </ul>
-                        </div>
-
-                        <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm mb-4">
-                            <h4 class="font-heading font-bold text-stone-800 mb-3 text-sm md:text-base leading-snug">Abdômen Total / Aparelho urinário / Obstétrica / Pélvica / Próstata</h4>
-                            <ul class="space-y-3">
-                                <li><strong class="text-stone-800">ADULTOS:</strong> Jejum de 8 horas. Tomar 4 copos de água 1 hora antes e permanecer com a bexiga cheia.</li>
-                                <li><strong class="text-stone-800">CRIANÇAS:</strong> Jejum de 4 horas. Tomar 2 copos de água 1 hora antes e permanecer com a bexiga cheia.</li>
-                            </ul>
-                        </div>
-
-                        <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm mb-6">
-                            <h4 class="font-heading font-bold text-stone-800 mb-2">EcoDoppler Aorta e Artérias Renais</h4>
-                            <p>Jejum de 6 horas.</p>
-                        </div>
-
-                        <div class="pt-4 border-t border-stone-200">
-                            <h4 class="font-heading font-bold text-stone-800 mb-2">Demais exames</h4>
-                            <p>Sem preparo.</p>
-                        </div>
-                    `
-                },
-                'MAMOGRAFIA': {
-                    title: 'Mamografia',
-                    content: `
-                        <p class="font-bold text-stone-900 text-lg uppercase mb-4 text-primary">Trazer exames anteriores!</p>
-                        <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
-                            <p class="text-stone-600 mb-4">A mamografia é um exame rápido e seguro. Para garantir o melhor resultado, siga estas orientações:</p>
-                            <ul class="list-disc pl-5 space-y-3">
-                                <li>Recomenda-se agendar preferencialmente na segunda ou terceira semana do ciclo menstrual (após a menstruação), quando as mamas estão menos sensíveis.</li>
-                                <li>No dia do exame, <strong>não use desodorante, talco, loção ou perfume</strong> nas axilas ou nas mamas, pois esses produtos podem interferir nas imagens.</li>
-                                <li>Use roupas de duas peças (blusa e calça/saia), pois será necessário despir-se da cintura para cima.</li>
-                            </ul>
-                        </div>
-                    `
-                },
-                'BIOPSIA': {
-                    title: 'Punções e Biópsias',
-                    content: `
-                        <p class="font-bold text-stone-900 text-lg uppercase mb-4 text-primary">Trazer exames anteriores!</p>
-                        <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
-                            <h4 class="font-heading font-bold text-stone-900 mb-3 text-lg">Recomendações Gerais</h4>
-                            <ul class="list-disc pl-5 space-y-3">
-                                <li>Consultar o médico solicitante sobre a suspensão de medicamentos anticoagulantes, como Aspirina (AAS), Marevan, Xarelto (devem ser suspensos sob orientação médica).</li>
-                                <li>O teste de coagulação (Coagulograma) recente pode ser exigido dependendo do tipo de punção.</li>
-                                <li>Trazer resultados de ultrassonografias, mamografias ou outros exames recentes.</li>
-                                <li>Recomenda-se vir com acompanhante.</li>
-                            </ul>
-                            <div class="mt-4 p-4 bg-orange-50/50 border border-orange-200 rounded-xl">
-                                <p class="text-orange-800 text-sm italic">Como as instruções exatas podem variar de acordo com o órgão, nossa equipe entrará em contato para confirmar o preparo individual.</p>
-                            </div>
-                        </div>
-                    `
-                },
-                'ODONTOLOGICA': {
-                    title: 'Radiologia Odontológica',
-                    content: `
-                        <p class="font-bold text-stone-900 text-lg uppercase mb-4 text-primary">Trazer exames anteriores!</p>
-                        <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
-                            <h4 class="font-heading font-bold text-stone-800 mb-2">Sem preparo prévio necessário</h4>
-                            <p class="text-stone-600 mb-4">Apenas atente-se para:</p>
-                            <ul class="list-disc pl-5 space-y-2">
-                                <li>Remover óculos, brincos, colares, piercings faciais e próteses dentárias móveis antes do exame.</li>
-                                <li>Informar à técnica sobre possibilidade de gravidez.</li>
-                            </ul>
-                        </div>
-                    `
-                }
-            };
-
-            const modal = document.getElementById('exam-modal');
-            const overlay = document.getElementById('modal-overlay');
-            const modalContent = document.getElementById('modal-content');
-            const closeBtn = document.getElementById('modal-close');
-            
-            const mTitle = document.getElementById('modal-title');
-            const mBody = document.getElementById('modal-body');
-            const mFooter = document.getElementById('modal-footer');
-            const mFormBtn = document.getElementById('modal-form-btn');
-
-            function openModal(examKey) {
-                const data = examsData[examKey];
-                if (!data) return;
-
-                mTitle.innerText = data.title;
-                mBody.innerHTML = data.content;
-
-                if (data.formLink) {
-                    mFormBtn.href = data.formLink;
-                    mFooter.classList.remove('hidden');
-                    mFooter.classList.add('flex');
-                } else {
-                    mFooter.classList.add('hidden');
-                    mFooter.classList.remove('flex');
-                }
-
-                modal.classList.remove('invisible', 'pointer-events-none');
-                
-                // Animate In via GSAP for smoothness
-                gsap.to(modal, { autoAlpha: 1, duration: 0.3 });
-                gsap.fromTo(modalContent, 
-                    { scale: 0.95, y: 15, autoAlpha: 0 },
-                    { scale: 1, y: 0, autoAlpha: 1, duration: 0.4, ease: "back.out(1.5)" }
-                );
-                
-                // Pause smoot scroll so user can scroll the modal
-                lenis.stop();
-            }
-
-            function closeModal() {
-                gsap.to(modalContent, { scale: 0.95, y: 15, autoAlpha: 0, duration: 0.3, ease: "power2.inOut" });
-                gsap.to(modal, { autoAlpha: 0, duration: 0.3, onComplete: () => {
-                    modal.classList.add('invisible', 'pointer-events-none');
-                    lenis.start();
-                }});
-            }
-
-            document.querySelectorAll('.gs-exam-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const preparo = card.getAttribute('data-preparo');
-                    if (preparo) openModal(preparo);
-                });
-            });
-
-            closeBtn.addEventListener('click', closeModal);
-            overlay.addEventListener('click', closeModal);
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') closeModal();
-            });
-
-            // ====== LÓGICA DO MODAL PACS ======
-            const pacsModal = document.getElementById('pacs-modal');
-            const pacsOverlay = document.getElementById('pacs-overlay');
-            const pacsContent = document.getElementById('pacs-content');
-            const pacsCloseBtn = document.getElementById('pacs-close');
-
-            window.openPacsModal = function() {
-                pacsModal.classList.remove('invisible', 'pointer-events-none');
-                
-                // GSAP animation
-                gsap.to(pacsModal, { autoAlpha: 1, duration: 0.3 });
-                gsap.fromTo(pacsContent, 
-                    { scale: 0.95, y: -20, autoAlpha: 0 },
-                    { scale: 1, y: 0, autoAlpha: 1, duration: 0.4, ease: "back.out(1.2)" }
-                );
-                
-                if(typeof lenis !== 'undefined') lenis.stop();
-            }
-
-            window.closePacsModal = function() {
-                gsap.to(pacsContent, { scale: 0.95, y: -20, autoAlpha: 0, duration: 0.3, ease: "power2.inOut" });
-                gsap.to(pacsModal, { autoAlpha: 0, duration: 0.3, onComplete: () => {
-                    pacsModal.classList.add('invisible', 'pointer-events-none');
-                    if(typeof lenis !== 'undefined') lenis.start();
-                }});
-            }
-
-            if(pacsCloseBtn) pacsCloseBtn.addEventListener('click', closePacsModal);
-            if(pacsOverlay) pacsOverlay.addEventListener('click', closePacsModal);
-            
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !pacsModal.classList.contains('invisible')) closePacsModal();
-            });
-
-            // =============================================
-            // NAVBAR DARK MODE — Detecção de seções escuras
-            // =============================================
-            const mainNav = document.getElementById('main-nav');
-            const htmlEl = document.documentElement;
-            const darkSections = document.querySelectorAll('#convenios, #exams, #contact');
-            
-            darkSections.forEach(section => {
-                ScrollTrigger.create({
-                    trigger: section,
-                    start: 'top 80px',
-                    end: 'bottom 80px',
-                    onEnter: () => { mainNav.classList.add('nav-dark'); htmlEl.classList.add('scrollbar-dark'); },
-                    onLeave: () => { mainNav.classList.remove('nav-dark'); htmlEl.classList.remove('scrollbar-dark'); },
-                    onEnterBack: () => { mainNav.classList.add('nav-dark'); htmlEl.classList.add('scrollbar-dark'); },
-                    onLeaveBack: () => { mainNav.classList.remove('nav-dark'); htmlEl.classList.remove('scrollbar-dark'); },
-                });
-            });
-
-            // =============================================
-            // SCROLL PROGRESS BAR
-            // =============================================
-            const scrollProgress = document.getElementById('scroll-progress');
-            gsap.to(scrollProgress, {
-                scaleX: 1,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: document.documentElement,
-                    start: 'top top',
-                    end: 'bottom bottom',
-                    scrub: 0.3,
-                }
-            });
-
-            // =============================================
-            // SECTION DIVIDERS — Reveal animation
-            // =============================================
-            document.querySelectorAll('.section-divider').forEach(divider => {
-                gsap.fromTo(divider, 
-                    { scaleX: 0, opacity: 0 },
-                    {
-                        scaleX: 1, opacity: 1,
-                        duration: 1.2,
-                        ease: 'power3.out',
-                        scrollTrigger: {
-                            trigger: divider,
-                            start: 'top 90%',
-                            toggleActions: 'play none none reverse'
-                        }
-                    }
-                );
-            });
-
-            // =============================================
-            // PARALLAX SUTIL nos background glows
-            // =============================================
-            gsap.utils.toArray('.bg-blob').forEach((blob, i) => {
-                gsap.to(blob, {
-                    yPercent: -20 + (i * 10),
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: blob.closest('section') || '#hero',
-                        start: 'top bottom',
-                        end: 'bottom top',
-                        scrub: 1.5
-                    }
-                });
-            });
-
-        });
-    </script>
+    <script src="assets/js/main.js" defer></script>
 </body>
 </html>
