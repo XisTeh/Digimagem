@@ -169,14 +169,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }, "-=0.6")
         .to('.gs-team-dots', { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, "-=0.3");
 
-    // Carrossel Logic
+    // Carrossel Logic infinito aprimorado
     const track = document.getElementById('team-track');
+    let originalCards = Array.from(document.querySelectorAll('.team-card'));
+    const totalOriginalCards = originalCards.length;
+
+    // Precisamos de clones suficientes para encher a tela inteira visível + transbordo
+    // 4 clones p/ direita e 4 clones p/ esquerda garante segurança em qualquer viewport
+    for (let i = 0; i < 4; i++) {
+        // Clone para o final (indo pra direita)
+        let cloneEnd = originalCards[i].cloneNode(true);
+        cloneEnd.classList.remove('is-selected');
+        cloneEnd.dataset.index = totalOriginalCards + i;
+        track.appendChild(cloneEnd);
+    }
+
     const cards = document.querySelectorAll('.team-card');
     const prevBtn = document.getElementById('team-prev');
     const nextBtn = document.getElementById('team-next');
     const dots = document.querySelectorAll('.team-dot');
+
+    // Inicia no 0 (primeiro real)
     let currentSlide = 0;
-    const totalCards = cards.length;
 
     function getCardGap() {
         return window.innerWidth >= 1024 ? 24 : 20;
@@ -184,20 +198,70 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function getVisibleCards() {
         if (window.innerWidth >= 1024) return 4;
-        if (window.innerWidth >= 640) return 3;
-        return 2;
+        if (window.innerWidth >= 768) return 3;
+        if (window.innerWidth >= 540) return 2;
+        return 1;
     }
 
-    function getMaxSlide() {
-        return Math.max(0, totalCards - getVisibleCards());
+    function updateDotsState() {
+        let nIndex = Math.abs(currentSlide) % totalOriginalCards;
+        const maxSlideVirtual = totalOriginalCards - 1;
+        const zone = maxSlideVirtual > 0 ? Math.floor(nIndex / (maxSlideVirtual / dots.length + 0.001)) : 0;
+
+        dots.forEach((dot, i) => {
+            const isActive = i === Math.min(zone, dots.length - 1);
+            dot.classList.toggle('bg-primary', isActive);
+            dot.classList.toggle('bg-stone-300', !isActive);
+            dot.style.width = isActive ? '2rem' : '1rem';
+        });
     }
 
-    function updateCarousel(animated = true) {
+    function updateCarousel(animated = true, forceInstant = false) {
         const gap = getCardGap();
+        // A largura de passo agora é baseada no cartão em si, não na tela.
+        // No mobile, o CSS já deixa os cartões menores que 100vw, então rolar X cartões revela a borda do próximo.
         const cardWidth = cards[0].offsetWidth + gap;
-        const offset = -currentSlide * cardWidth;
 
-        if (animated) {
+        // Centralizador Inteligente para Mobile (quando só 1 card é "ativo" mas os do lado aparecem)
+        let getCalculatedOffset = (slideIndex) => {
+            let baseOffset = -slideIndex * cardWidth;
+            if (window.innerWidth < 540) {
+                const paddingOffset = (window.innerWidth - cards[0].offsetWidth) / 2;
+                return baseOffset + paddingOffset - (getCardGap() * 1.5); // compesação visual para a esquerda
+            }
+            return baseOffset;
+        };
+
+        let offset = getCalculatedOffset(currentSlide);
+
+        // Proteção de limites p/ criar o efeito infinito sem salto visível
+        if (currentSlide >= totalOriginalCards) {
+            // Se passou do último real e já está vendo o clone inteiro, teleporta pro início invisivelmente
+            if (!animated || forceInstant) {
+                currentSlide = currentSlide % totalOriginalCards;
+                offset = getCalculatedOffset(currentSlide);
+            } else {
+                // Anima até o clone e no final reseta por trás das cortinas
+                gsap.to(track, {
+                    x: getCalculatedOffset(currentSlide),
+                    duration: 0.7,
+                    ease: 'power3.out',
+                    onComplete: () => {
+                        currentSlide = currentSlide % totalOriginalCards;
+                        gsap.set(track, { x: getCalculatedOffset(currentSlide) });
+                    }
+                });
+                updateDotsState();
+                return;
+            }
+        } else if (currentSlide < 0) {
+            if (!animated || forceInstant) {
+                currentSlide = totalOriginalCards - 1;
+                offset = getCalculatedOffset(currentSlide);
+            }
+        }
+
+        if (animated && !forceInstant) {
             gsap.to(track, {
                 x: offset,
                 duration: 0.7,
@@ -207,57 +271,42 @@ document.addEventListener("DOMContentLoaded", () => {
             gsap.set(track, { x: offset });
         }
 
-        // Update dots
-        const maxSlide = getMaxSlide();
-        dots.forEach((dot, i) => {
-            const zone = maxSlide > 0 ? Math.floor(currentSlide / (maxSlide / dots.length + 0.001)) : 0;
-            const isActive = i === Math.min(zone, dots.length - 1);
-            dot.classList.toggle('bg-primary', isActive);
-            dot.classList.toggle('bg-stone-300', !isActive);
-            dot.style.width = isActive ? '2rem' : '1rem';
-        });
+        updateDotsState();
 
-        // Arrow state
-        gsap.to(prevBtn, { opacity: currentSlide === 0 ? 0.35 : 1, duration: 0.3 });
-        gsap.to(nextBtn, { opacity: currentSlide >= getMaxSlide() ? 0.35 : 1, duration: 0.3 });
+        // Em um loop verdadeiro as setas nunca somem
+        gsap.to(prevBtn, { opacity: 1, duration: 0.3 });
+        gsap.to(nextBtn, { opacity: 1, duration: 0.3 });
     }
 
     // Seleção por Clique
     function selectCard(card) {
+        let cardIndex = parseInt(card.dataset.index);
+
         // Desselecionar todos
         cards.forEach(c => {
             if (c !== card && c.classList.contains('is-selected')) {
                 c.classList.remove('is-selected');
-                // Libera do controle do GSAP para o CSS puramente transicionar o off-state sem embaçar
                 gsap.set(c.querySelector('.team-card__inner'), { clearProps: "all" });
             }
         });
 
-        // Selecionar o novo
         if (!card.classList.contains('is-selected')) {
             card.classList.add('is-selected');
             const inner = card.querySelector('.team-card__inner');
-            // Libera de transform styles inliens para evitar borrões
             gsap.set(inner, { clearProps: "all" });
         }
 
-        // Melhorando a lógica de balanceamento
-        const cardIndex = parseInt(card.dataset.index);
-        const max = getMaxSlide();
         const visible = getVisibleCards();
 
-        // Nós só queremos mover se o card clicado estiver fora de visão (nas pontas)
         if (cardIndex < currentSlide) {
             currentSlide = cardIndex;
             updateCarousel();
         } else if (cardIndex >= currentSlide + visible - 1) {
             currentSlide = cardIndex - visible + 1;
-            if (currentSlide > max) currentSlide = max;
             updateCarousel();
         }
     }
 
-    // Click events nos cards
     cards.forEach(card => {
         card.addEventListener('click', (e) => {
             e.preventDefault();
@@ -265,18 +314,23 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Navegação setas
     nextBtn.addEventListener('click', () => {
-        if (currentSlide < getMaxSlide()) {
-            currentSlide++;
-            updateCarousel();
-        }
+        currentSlide++;
+        updateCarousel();
     });
 
     prevBtn.addEventListener('click', () => {
         if (currentSlide > 0) {
             currentSlide--;
             updateCarousel();
+        } else {
+            // Se está no primeiro, salta invisível pro último clone real e anima
+            currentSlide = totalOriginalCards;
+            updateCarousel(false, true); // pulo ninja
+            requestAnimationFrame(() => {
+                currentSlide--;
+                updateCarousel(true);
+            });
         }
     });
 
@@ -286,15 +340,27 @@ document.addEventListener("DOMContentLoaded", () => {
     track.addEventListener('touchend', (e) => {
         const diff = e.changedTouches[0].clientX - touchStartX;
         if (Math.abs(diff) > 50) {
-            if (diff < 0 && currentSlide < getMaxSlide()) currentSlide++;
-            if (diff > 0 && currentSlide > 0) currentSlide--;
-            updateCarousel();
+            if (diff < 0) {
+                currentSlide++;
+                updateCarousel();
+            }
+            if (diff > 0) {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateCarousel();
+                } else {
+                    currentSlide = totalOriginalCards;
+                    updateCarousel(false, true);
+                    requestAnimationFrame(() => {
+                        currentSlide--;
+                        updateCarousel(true);
+                    });
+                }
+            }
         }
     });
 
-    // Resize handler
     window.addEventListener('resize', () => {
-        if (currentSlide > getMaxSlide()) currentSlide = getMaxSlide();
         updateCarousel(false);
     });
 
