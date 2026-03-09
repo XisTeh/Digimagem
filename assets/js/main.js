@@ -1,82 +1,54 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // 1. Configurar Lenis (Smooth Scroll Premium)
-    // Lighthouse Optimization: Disable Lenis smooth scrolling on mobile devices to save main thread CPU
+    // 1. Configurar Lenis (Smooth Scroll)
+    // Lighthouse Optimization: Disable Lenis smooth scrolling completely on mobile and when reduced-motion is requested to save CPU/Main Thread.
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        direction: 'vertical',
-        gestureDirection: 'vertical',
-        smooth: !isMobile && !prefersReducedMotion,
-        mouseMultiplier: 1,
-        smoothTouch: false,
-        touchMultiplier: 2,
-    });
+    // Apenas inicializar Lenis em Desktop poderoso
+    let lenis = null;
+    if (!isMobile && !prefersReducedMotion) {
+        lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true
+        });
+    }
 
     function raf(time) {
-        lenis.raf(time);
+        if (lenis) lenis.raf(time);
         requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    if (lenis) {
+        requestAnimationFrame(raf);
+    }
 
-    // 2. Timeline GSAP (Entrada inicial Otimizada)
-    // Remover invisibilidade inicial antes da animação
-    document.querySelectorAll('.invisible-start').forEach(el => {
-        el.classList.remove('invisible-start');
-        gsap.set(el, { autoAlpha: 0 }); // Prepara com autoAlpha
-    });
+    // 2. Animação de Entrada Otimizada (LCP first)
+    // Não escondemos o container visual para não atrasar o LCP da hero image
 
-    const initTl = gsap.timeline({ defaults: { ease: "power2.out" } });
+    // Apenas animar texto da hero (muito leve)
+    if (!prefersReducedMotion) {
+        gsap.set('.gs-title', { y: 20, autoAlpha: 0 });
+        gsap.to('.gs-title', {
+            y: 0, autoAlpha: 1,
+            stagger: 0.1, duration: 0.6, ease: "power2.out", delay: 0.1
+        });
 
-    // Navbar Fade In - Mais rápido e imediato
-    initTl.to('.gs-nav', {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.5
-    }, 0); // Começa instantaneamente
+        gsap.set('.gs-reveal', { y: 10, autoAlpha: 0 });
+        gsap.to('.gs-reveal', {
+            y: 0, autoAlpha: 1,
+            stagger: 0.05, duration: 0.5, ease: "power2.out", delay: 0.3
+        });
 
-    // Título Stagger - Mais ágil
-    gsap.set('.gs-title', { yPercent: 50, autoAlpha: 0 });
-    initTl.to('.gs-title', {
-        yPercent: 0,
-        autoAlpha: 1,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: "power3.out"
-    }, 0.1); // Delay mínimo
-
-    // Resto do texto e botões
-    gsap.set('.gs-reveal', { y: 20, autoAlpha: 0 });
-    initTl.to('.gs-reveal', {
-        y: 0,
-        autoAlpha: 1,
-        stagger: 0.1,
-        duration: 0.6
-    }, 0.3);
-
-    // Container visual direito fade e scale - Acelerado
-    gsap.set('.gs-visual-container', { x: 20, autoAlpha: 0, scale: 0.98 });
-    initTl.to('.gs-visual-container', {
-        x: 0,
-        autoAlpha: 1,
-        scale: 1,
-        duration: 1.5,
-        ease: "power2.out"
-    }, 0.5);
-
-    // Cards flutuantes pop
-    gsap.set('.gs-float-card, .gs-float-card-alt', { scale: 0.8, autoAlpha: 0, y: 30 });
-    initTl.to('.gs-float-card, .gs-float-card-alt', {
-        scale: 1,
-        autoAlpha: 1,
-        y: 0,
-        stagger: 0.2,
-        duration: 1,
-        ease: "back.out(1.5)"
-    }, 1);
+        // Cards flutuantes animam depois que o Hero renderizar
+        gsap.set('.gs-float-card, .gs-float-card-alt', { autoAlpha: 0, y: 15 });
+        gsap.to('.gs-float-card, .gs-float-card-alt', {
+            autoAlpha: 1, y: 0,
+            stagger: 0.1, duration: 0.6, ease: "power2.out", delay: 0.6
+        });
+    }
 
     // 3. Parallax sutil com Scroll (Otimizado)
     gsap.registerPlugin(ScrollTrigger);
@@ -94,47 +66,45 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 4. Seção Neural/Dark Animada
-    const aboutTl = gsap.timeline({
-        scrollTrigger: {
-            trigger: "#about",
-            start: "top 70%",
-            end: "bottom bottom",
-            toggleActions: "play none none reverse"
-        }
-    });
+    if (!prefersReducedMotion) {
+        const aboutTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#about",
+                start: "top 80%",
+                toggleActions: "play none none none" /* Executa só uma vez */
+            }
+        });
 
-    gsap.set('.gs-about-reveal', { autoAlpha: 0, y: 30 });
-    gsap.set('.gs-about-visual', { autoAlpha: 0, scale: 0.95, x: -30 });
-    gsap.set('.gs-about-list > div', { autoAlpha: 0, x: 30 });
+        gsap.set('.gs-about-reveal', { autoAlpha: 0, y: 20 });
+        gsap.set('.gs-about-list > div', { autoAlpha: 0, x: 20 });
 
-    aboutTl.to('.gs-about-reveal', { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out' })
-        .to('.gs-about-visual', { autoAlpha: 1, scale: 1, x: 0, duration: 1.2, ease: 'power3.out' }, "-=0.6")
-        .to('.gs-about-list > div', { autoAlpha: 1, x: 0, duration: 0.8, stagger: 0.15, ease: 'power2.out' }, "-=0.8");
+        aboutTl.to('.gs-about-reveal', { autoAlpha: 1, y: 0, duration: 0.6 })
+            .to('.gs-about-list > div', { autoAlpha: 1, x: 0, duration: 0.5, stagger: 0.05 }, "-=0.3");
+    }
 
     // =============================================
     // 4.5 EXAMES SECTION (Reveal & Delay stagger)
     // =============================================
 
-    const examsTl = gsap.timeline({
-        scrollTrigger: {
-            trigger: "#exams",
-            start: "top 75%",
-            end: "bottom bottom",
-            toggleActions: "play none none reverse"
-        }
-    });
+    if (!prefersReducedMotion) {
+        const examsTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#exams",
+                start: "top 80%",
+                toggleActions: "play none none none"
+            }
+        });
 
-    gsap.set('.gs-exams-header', { autoAlpha: 0, y: 30 });
-    gsap.set('.gs-exam-card', { autoAlpha: 0, y: 40, scale: 0.95 });
+        gsap.set('.gs-exams-header', { autoAlpha: 0 });
+        gsap.set('.gs-exam-card', { autoAlpha: 0, y: 20 });
 
-    examsTl.to('.gs-exams-header', { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out' })
-        .to('.gs-exam-card', {
-            autoAlpha: 1, y: 0, scale: 1,
-            duration: 0.8,
-            stagger: 0.08,
-            ease: 'back.out(1.2)'
-        }, "-=0.5");
+        examsTl.to('.gs-exams-header', { autoAlpha: 1, duration: 0.5 })
+            .to('.gs-exam-card', {
+                autoAlpha: 1, y: 0,
+                duration: 0.5,
+                stagger: 0.05
+            }, "-=0.2");
+    }
 
     // =============================================
     // 4.6 CONTATO SECTION (Reveal animations)

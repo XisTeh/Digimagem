@@ -42,27 +42,24 @@ h6 {
            ========================================= */
 .glass-effect {
     background: rgba(255, 255, 255, 0.45);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0 4px 16px 0 rgba(28, 25, 23, 0.05);
+    box-shadow: 0 4px 12px 0 rgba(28, 25, 23, 0.05);
     transform: translateZ(0);
-    will-change: transform;
 }
 
 .glass-dark {
     background: rgba(28, 25, 23, 0.75);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.25);
     transform: translateZ(0);
-    will-change: transform;
 }
 
 .glow-pulse {
-    box-shadow: 0 0 25px rgba(184, 157, 112, 0.4);
-    will-change: box-shadow;
+    box-shadow: 0 0 10px rgba(184, 157, 112, 0.2);
 }
 
 /* =========================================
@@ -84,24 +81,21 @@ h6 {
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
-    will-change: transform, opacity;
     transform: translateZ(0);
-    /* Força GPU HW Accel */
 }
 
 .bg-blob {
     position: absolute;
     border-radius: 50%;
     z-index: 0;
-    opacity: 0.5;
-    will-change: transform;
+    opacity: 0.3;
     transform: translateZ(0);
 }
 
 .blob-1 {
     width: 40vw;
     height: 40vw;
-    background: radial-gradient(circle, #EAE8DE 0%, rgba(234, 232, 222, 0) 70%);
+    background: radial-gradient(circle, #EAE8DE 0%, rgba(234, 232, 222, 0) 50%);
     top: -10vw;
     left: -10vw;
 }
@@ -109,7 +103,7 @@ h6 {
 .blob-2 {
     width: 50vw;
     height: 50vw;
-    background: radial-gradient(circle, #d2d0c2 0%, rgba(210, 208, 194, 0) 70%);
+    background: radial-gradient(circle, #d2d0c2 0%, rgba(210, 208, 194, 0) 50%);
     bottom: -20vw;
     right: -10vw;
 }
@@ -117,8 +111,7 @@ h6 {
 .blob-3 {
     width: 30vw;
     height: 30vw;
-    background: radial-gradient(circle, rgba(184, 157, 112, 0.15) 0%, rgba(184, 157, 112, 0) 70%);
-    /* Primary Soft Glow */
+    background: radial-gradient(circle, rgba(184, 157, 112, 0.1) 0%, rgba(184, 157, 112, 0) 50%);
     top: 20%;
     right: 15%;
 }
@@ -133,19 +126,11 @@ h6 {
 }
 
 .btn-premium::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: rgba(255, 255, 255, 0.1);
-    transform: rotate(45deg) translateY(-100%);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    display: none;
 }
 
 .btn-premium:hover::after {
-    transform: rotate(45deg) translateY(100%);
+    display: none;
 }
 
 .btn-premium:hover {
@@ -171,13 +156,11 @@ h6 {
 .gs-float-card-alt,
 .gs-float-slow {
     transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
 }
 
 .invisible-start {
-    opacity: 0;
-    visibility: hidden;
+    opacity: 1;
+    visibility: visible;
 }
 
 .text-gradient {
@@ -284,24 +267,12 @@ h6 {
 
 
 
-/* Título Corpo Clínico shimmer */
-@keyframes shimmer-text {
-    0% {
-        background-position: -200% center;
-    }
-
-    100% {
-        background-position: 200% center;
-    }
-}
-
+/* Título Corpo Clínico shimmer (REMOVIDO P/ PERFORMANCE) */
 .shimmer-title {
-    background: linear-gradient(90deg, #1c1917 0%, #1c1917 40%, #b89d70 50%, #1c1917 60%, #1c1917 100%);
-    background-size: 200% auto;
+    background: linear-gradient(135deg, #1c1917 0%, #b89d70 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: shimmer-text 5s ease-in-out infinite;
 }
 
 /* =========================================
@@ -312,15 +283,13 @@ h6 {
     overflow: hidden;
     background: #1c1917;
     color: #E6E3D6;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
-    transform: translateZ(0);
-    will-change: transform;
 }
 
 .ds-card:hover {
-    transform: translateY(-8px) translateZ(0);
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .ds-card__image {
@@ -330,14 +299,12 @@ h6 {
     height: 100%;
     object-fit: cover;
     opacity: 0.4;
-    transform: translateZ(0);
-    will-change: transform, opacity;
-    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+    transition: transform 0.5s ease, opacity 0.3s ease;
 }
 
 .ds-card:hover .ds-card__image {
-    transform: scale(1.08) translateZ(0);
-    opacity: 0.25;
+    transform: scale(1.03);
+    opacity: 0.3;
 }
 
 .ds-card__content {
@@ -490,8 +457,6 @@ html.scrollbar-dark::-webkit-scrollbar-thumb:hover {
 
 .animate-marquee {
     animation: marquee 40s linear infinite;
-    will-change: transform;
-    transform: translateZ(0);
 }
 
 .marquee-container {
@@ -528,55 +493,21 @@ html.scrollbar-dark::-webkit-scrollbar-thumb:hover {
 
 /* Micro-animações — Hover glow em ícones */
 .icon-glow {
-    transition: all 0.4s ease;
+    transition: all 0.3s ease;
 }
 
 .icon-glow:hover {
-    filter: drop-shadow(0 0 8px rgba(184, 157, 112, 0.6));
-}
-
-/* Float sutil para elementos decorativos */
-@keyframes float-gentle {
-
-    0%,
-    100% {
-        transform: translateY(0px);
-    }
-
-    50% {
-        transform: translateY(-8px);
-    }
-}
-
-.animate-float-gentle {
-    animation: float-gentle 6s ease-in-out infinite;
-}
-
-/* Pulse sutil para badges */
-@keyframes badge-pulse {
-
-    0%,
-    100% {
-        box-shadow: 0 0 0 0 rgba(184, 157, 112, 0.2);
-    }
-
-    50% {
-        box-shadow: 0 0 0 6px rgba(184, 157, 112, 0);
-    }
-}
-
-.badge-pulse {
-    animation: badge-pulse 3s ease-in-out infinite;
+    filter: brightness(1.2);
 }
 
 /* Gradient border hover para cards */
 .card-hover-glow {
     position: relative;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.3s ease;
 }
 
 .card-hover-glow:hover {
-    box-shadow: 0 0 30px -5px rgba(184, 157, 112, 0.15);
+    box-shadow: 0 0 15px rgba(184, 157, 112, 0.1);
 }
 
 /* Smooth reveal para texto */
