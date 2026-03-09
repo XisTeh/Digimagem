@@ -317,31 +317,28 @@
 
         
         /* =========================================
-           SCROLLBAR GLOBAL (Body)
+           SCROLLBAR GLOBAL (Static for Performance)
            ========================================= */
         html {
             scrollbar-width: thin;
             scrollbar-color: #c4b99a #E6E3D6;
-            transition: scrollbar-color 0.5s ease;
         }
         html::-webkit-scrollbar {
             width: 8px;
         }
         html::-webkit-scrollbar-track {
             background: #E6E3D6;
-            transition: background 0.5s ease;
         }
         html::-webkit-scrollbar-thumb {
             background: #c4b99a;
             border-radius: 10px;
             border: 2px solid #E6E3D6;
-            transition: background 0.5s ease, border-color 0.5s ease;
         }
         html::-webkit-scrollbar-thumb:hover {
             background: #b89d70;
         }
 
-        /* Scrollbar Dark Mode (seções escuras) */
+        /* Scrollbar Dark Mode (Transição Removida - Renderização Otimizada) */
         html.scrollbar-dark {
             scrollbar-color: #57534e #1c1917;
         }
