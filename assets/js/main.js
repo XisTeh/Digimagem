@@ -18,43 +18,43 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     requestAnimationFrame(raf);
 
-    // 2. Timeline GSAP (Entrada inicial)
+    // 2. Timeline GSAP (Entrada inicial Otimizada)
     // Remover invisibilidade inicial antes da animação
     document.querySelectorAll('.invisible-start').forEach(el => {
         el.classList.remove('invisible-start');
         gsap.set(el, { autoAlpha: 0 }); // Prepara com autoAlpha
     });
 
-    const initTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    const initTl = gsap.timeline({ defaults: { ease: "power2.out" } });
 
-    // Navbar Fade In
+    // Navbar Fade In - Mais rápido e imediato
     initTl.to('.gs-nav', {
         autoAlpha: 1,
         y: 0,
-        duration: 1
-    }, 0.2);
+        duration: 0.5
+    }, 0); // Começa instantaneamente
 
-    // Título Stagger
-    gsap.set('.gs-title', { yPercent: 100, autoAlpha: 0 });
+    // Título Stagger - Mais ágil
+    gsap.set('.gs-title', { yPercent: 50, autoAlpha: 0 });
     initTl.to('.gs-title', {
         yPercent: 0,
         autoAlpha: 1,
-        stagger: 0.15,
-        duration: 1.2,
-        ease: "power4.out"
-    }, 0.3);
+        stagger: 0.1,
+        duration: 0.8,
+        ease: "power3.out"
+    }, 0.1); // Delay mínimo
 
     // Resto do texto e botões
-    gsap.set('.gs-reveal', { y: 30, autoAlpha: 0 });
+    gsap.set('.gs-reveal', { y: 20, autoAlpha: 0 });
     initTl.to('.gs-reveal', {
         y: 0,
         autoAlpha: 1,
         stagger: 0.1,
-        duration: 1
-    }, 0.7);
+        duration: 0.6
+    }, 0.3);
 
-    // Container visual direito fade e scale
-    gsap.set('.gs-visual-container', { x: 40, autoAlpha: 0, scale: 0.95 });
+    // Container visual direito fade e scale - Acelerado
+    gsap.set('.gs-visual-container', { x: 20, autoAlpha: 0, scale: 0.98 });
     initTl.to('.gs-visual-container', {
         x: 0,
         autoAlpha: 1,
