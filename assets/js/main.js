@@ -752,4 +752,121 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // =============================================
+    // HERO IMAGE — Mouse Tilt 3D Effect
+    // =============================================
+    if (!isMobile && !prefersReducedMotion) {
+        const heroImgWrapper = document.querySelector('.gs-main-img-wrapper');
+        const heroVisualContainer = document.querySelector('.gs-visual-container');
+
+        if (heroImgWrapper && heroVisualContainer) {
+            // Criar camada de glow que segue o mouse
+            const glowLayer = document.createElement('div');
+            glowLayer.className = 'hero-mouse-glow';
+            glowLayer.style.cssText = `
+                position: absolute;
+                inset: 0;
+                z-index: 15;
+                pointer-events: none;
+                opacity: 0;
+                transition: opacity 0.4s ease;
+                border-radius: inherit;
+                overflow: hidden;
+            `;
+            heroImgWrapper.appendChild(glowLayer);
+
+            let tiltRAF = null;
+            let currentRotateX = 0, currentRotateY = 0;
+            let targetRotateX = 0, targetRotateY = 0;
+
+            // Lerp suave para transição fluida
+            function lerpTilt() {
+                currentRotateX += (targetRotateX - currentRotateX) * 0.08;
+                currentRotateY += (targetRotateY - currentRotateY) * 0.08;
+
+                heroImgWrapper.style.transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
+
+                // Continua até ficar muito próximo do target
+                if (Math.abs(targetRotateX - currentRotateX) > 0.01 || Math.abs(targetRotateY - currentRotateY) > 0.01) {
+                    tiltRAF = requestAnimationFrame(lerpTilt);
+                } else {
+                    tiltRAF = null;
+                }
+            }
+
+            heroVisualContainer.addEventListener('mousemove', (e) => {
+                const rect = heroImgWrapper.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
+                // Normalizar posição do mouse (-1 a 1)
+                const mouseX = (e.clientX - centerX) / (rect.width / 2);
+                const mouseY = (e.clientY - centerY) / (rect.height / 2);
+
+                // Limitar o range
+                const clampedX = Math.max(-1, Math.min(1, mouseX));
+                const clampedY = Math.max(-1, Math.min(1, mouseY));
+
+                // Definir rotação alvo (invertido para efeito natural)
+                const maxTilt = 8; // graus máximos de inclinação
+                targetRotateX = -clampedY * maxTilt;
+                targetRotateY = clampedX * maxTilt;
+
+                // Atualizar posição do glow
+                const glowX = ((e.clientX - rect.left) / rect.width) * 100;
+                const glowY = ((e.clientY - rect.top) / rect.height) * 100;
+                glowLayer.style.background = `radial-gradient(circle 300px at ${glowX}% ${glowY}%, rgba(184,157,112,0.15), transparent 70%)`;
+                glowLayer.style.opacity = '1';
+
+                // Iniciar animação se não estiver rodando
+                if (!tiltRAF) {
+                    tiltRAF = requestAnimationFrame(lerpTilt);
+                }
+            });
+
+            heroVisualContainer.addEventListener('mouseleave', () => {
+                // Voltar suavemente para posição original
+                targetRotateX = 2;  // rotação padrão original (rotateX(2deg))
+                targetRotateY = -5; // rotação padrão original (rotateY(-5deg))
+                glowLayer.style.opacity = '0';
+
+                if (!tiltRAF) {
+                    tiltRAF = requestAnimationFrame(lerpTilt);
+                }
+            });
+
+            // Floating cards também se movem sutilmente
+            const floatingCards = heroVisualContainer.querySelectorAll('.gs-float-card, .gs-float-card-alt');
+
+            heroVisualContainer.addEventListener('mousemove', (e) => {
+                const rect = heroVisualContainer.getBoundingClientRect();
+                const mouseX = (e.clientX - rect.left) / rect.width - 0.5;
+                const mouseY = (e.clientY - rect.top) / rect.height - 0.5;
+
+                floatingCards.forEach((card, i) => {
+                    const intensity = (i + 1) * 6; // cada card se move com intensidade diferente
+                    gsap.to(card, {
+                        x: mouseX * intensity,
+                        y: mouseY * intensity,
+                        duration: 0.8,
+                        ease: 'power2.out',
+                        overwrite: 'auto'
+                    });
+                });
+            });
+
+            heroVisualContainer.addEventListener('mouseleave', () => {
+                floatingCards.forEach(card => {
+                    gsap.to(card, {
+                        x: 0,
+                        y: 0,
+                        duration: 1,
+                        ease: 'elastic.out(1, 0.5)',
+                        overwrite: 'auto'
+                    });
+                });
+            });
+        }
+    }
+
 });

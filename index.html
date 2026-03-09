@@ -242,17 +242,15 @@
                 class="lg:col-span-7 relative h-[500px] sm:h-[600px] lg:h-[750px] w-full order-1 lg:order-2 flex items-center justify-end invisible-start gs-visual-container">
 
                 <!-- Main Image Wrapper (Frente da Clínica) -->
-                <div class="relative w-full lg:w-[85%] h-full rounded-[2.5rem] overflow-hidden shadow-2xl glass-effect border-2 border-white gs-main-img-wrapper z-10"
+                <div class="relative w-full lg:w-[85%] h-full rounded-[3rem] overflow-hidden gs-main-img-wrapper z-10"
                     style="transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);">
                     <div class="absolute inset-0 bg-stone-900/5 z-10 pointer-events-none mix-blend-multiply"></div>
                     <img src="assets/images/frente-dimagem.webp" alt="Fachada Clínica Dimagem" width="1200" height="800"
-                        class="w-full h-full object-cover scale-[1.05] gs-parallax-img hover:scale-110 transition-transform duration-[1.5s] ease-out img-mask"
+                        class="w-full h-full object-cover scale-[1.05] gs-parallax-img hover:scale-110 transition-transform duration-[1.5s] ease-out"
                         fetchpriority="high" decoding="sync" loading="eager"
-                        onerror="this.src='https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1200'; this.classList.remove('img-mask');">
-                    <!-- Gradiente base para a imagem -->
-                    <div
-                        class="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-transparent to-transparent z-10">
-                    </div>
+                        onerror="this.src='https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1200';">
+                    <!-- Gradiente suave que dissolve nas bordas — efeito infinito -->
+                    <div class="absolute inset-0 z-20 pointer-events-none hero-edge-fade"></div>
                 </div>
 
                 <!-- Floating Card 1: Responsável Clínico -->
@@ -627,7 +625,7 @@
                                 <h4 class="text-xl md:text-2xl font-heading font-bold text-stone-800 mb-2">Acesso aos
                                     Exames</h4>
                                 <p class="text-sm text-stone-500 leading-relaxed font-sans">Acesso seguro ao histórico
-                                    de imagens diagnósticas para médicos solicitantes e pacientes.</p>
+                                    de imagens diagnósticas para médicos radiologistas.</p>
                             </div>
 
                             <div class="flex flex-col sm:flex-row items-center sm:items-end gap-6 w-full mt-2">

@@ -176,6 +176,34 @@ h6 {
     -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
 }
 
+/* Hero Image — Mouse Tilt 3D Effect */
+.gs-main-img-wrapper {
+    will-change: transform;
+    transform-style: preserve-3d;
+    box-shadow:
+        0 0 40px 10px rgba(230, 227, 214, 0.6),
+        0 0 80px 20px rgba(230, 227, 214, 0.3),
+        0 20px 60px -15px rgba(28, 25, 23, 0.15);
+}
+
+/* Bordas que se dissolvem suavemente no fundo — efeito infinito */
+.hero-edge-fade {
+    background:
+        /* Topo — dissolve suavemente */
+        linear-gradient(to bottom, rgba(230, 227, 214, 0.5) 0%, rgba(230, 227, 214, 0.15) 4%, transparent 10%),
+        /* Base — fade sutil para profundidade */
+        linear-gradient(to top, rgba(230, 227, 214, 0.6) 0%, rgba(230, 227, 214, 0.2) 5%, transparent 14%),
+        /* Esquerda */
+        linear-gradient(to right, rgba(230, 227, 214, 0.4) 0%, rgba(230, 227, 214, 0.1) 2%, transparent 7%),
+        /* Direita */
+        linear-gradient(to left, rgba(230, 227, 214, 0.4) 0%, rgba(230, 227, 214, 0.1) 2%, transparent 7%);
+    border-radius: inherit;
+}
+
+.hero-mouse-glow {
+    mix-blend-mode: soft-light;
+}
+
 /* =========================================
            TEAM CARDS — Selection & Animations
            ========================================= */
@@ -546,6 +574,13 @@ html.scrollbar-dark::-webkit-scrollbar-thumb:hover {
 }
 
 /* =========================================
+           PERFORMANCE — Section Containment
+           ========================================= */
+.section-optimized {
+    contain: layout style;
+}
+
+/* =========================================
            LIGHTHOUSE PERFORMANCE FIXES
            ========================================= */
 @media (max-width: 768px) {
@@ -563,7 +598,6 @@ html.scrollbar-dark::-webkit-scrollbar-thumb:hover {
 
     .animate-marquee {
         animation: none !important;
-        /* Disables heavy infinite loop on mobile */
     }
 
     .marquee-container {
@@ -576,6 +610,79 @@ html.scrollbar-dark::-webkit-scrollbar-thumb:hover {
         animation: none !important;
         background-clip: text;
         -webkit-text-fill-color: #b89d70;
+    }
+
+    /* Hero Edge Fade — mais suave em mobile */
+    .hero-edge-fade {
+        background:
+            linear-gradient(to bottom, rgba(230, 227, 214, 0.3) 0%, transparent 8%),
+            linear-gradient(to top, rgba(230, 227, 214, 0.4) 0%, transparent 10%),
+            linear-gradient(to right, rgba(230, 227, 214, 0.2) 0%, transparent 5%),
+            linear-gradient(to left, rgba(230, 227, 214, 0.2) 0%, transparent 5%);
+    }
+
+    /* Wrapper suave em mobile — sombra mais leve */
+    .gs-main-img-wrapper {
+        box-shadow:
+            0 0 20px 5px rgba(230, 227, 214, 0.4),
+            0 10px 30px -10px rgba(28, 25, 23, 0.1) !important;
+        border-radius: 2rem !important;
+    }
+
+    /* Team card info min-height menor em mobile */
+    .team-card__info {
+        min-height: 130px !important;
+    }
+
+    /* Floating cards mais compactos em mobile */
+    .gs-float-card,
+    .gs-float-card-alt {
+        transform: scale(0.85) !important;
+    }
+
+    /* Tabs/badges em mobile: quebrar em multi-linha melhor */
+    .gs-team-header .flex-wrap {
+        gap: 0.375rem !important;
+    }
+
+    /* Section padding mais compacto */
+    #about,
+    #team {
+        padding-top: 4rem !important;
+        padding-bottom: 4rem !important;
+    }
+
+    /* Contato: grid empilhado com menos padding */
+    .gs-contact-info {
+        gap: 0.75rem !important;
+    }
+
+    /* PACS section padding */
+    .gs-team-carousel-container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+/* =========================================
+           SMALL MOBILE (< 400px)
+           ========================================= */
+@media (max-width: 400px) {
+    .gs-main-img-wrapper {
+        border-radius: 1.5rem !important;
+    }
+
+    .team-card {
+        width: 200px !important;
+    }
+
+    .team-card__info {
+        min-height: 120px !important;
+        padding: 1rem !important;
+    }
+
+    .team-card__info h4 {
+        font-size: 0.875rem !important;
     }
 }
 
