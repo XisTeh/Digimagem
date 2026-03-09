@@ -181,6 +181,14 @@ document.addEventListener("DOMContentLoaded", () => {
         let cloneEnd = originalCards[i].cloneNode(true);
         cloneEnd.classList.remove('is-selected');
         cloneEnd.dataset.index = totalOriginalCards + i;
+
+        // CORREÇÃO: Removemos todos os estilos inline (opacity: 0 e matrizes de transform)
+        // que o GSAP injetou nos cards originais antes do clone ser efetuado.
+        cloneEnd.removeAttribute('style');
+
+        // Garantindo que os sub-elementos internos não ficaram presos com transformações inlines do gsap também 
+        cloneEnd.querySelectorAll('*').forEach(el => el.removeAttribute('style'));
+
         track.appendChild(cloneEnd);
     }
 
@@ -222,14 +230,11 @@ document.addEventListener("DOMContentLoaded", () => {
         // No mobile, o CSS já deixa os cartões menores que 100vw, então rolar X cartões revela a borda do próximo.
         const cardWidth = cards[0].offsetWidth + gap;
 
-        // Centralizador Inteligente para Mobile (quando só 1 card é "ativo" mas os do lado aparecem)
+        // O offset original alinha o card perfeitamente à margem esquerda do container.
+        // Como o card é menor que a tela no mobile (ex: 220px vs 360px), o próximo card
+        // ficará naturalmente à mostra (peek) na direita, sem necessidade de centralização forçada.
         let getCalculatedOffset = (slideIndex) => {
-            let baseOffset = -slideIndex * cardWidth;
-            if (window.innerWidth < 540) {
-                const paddingOffset = (window.innerWidth - cards[0].offsetWidth) / 2;
-                return baseOffset + paddingOffset - (getCardGap() * 1.5); // compesação visual para a esquerda
-            }
-            return baseOffset;
+            return -slideIndex * cardWidth;
         };
 
         let offset = getCalculatedOffset(currentSlide);
