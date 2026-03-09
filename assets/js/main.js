@@ -1,12 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     // 1. Configurar Lenis (Smooth Scroll Premium)
+    // Lighthouse Optimization: Disable Lenis smooth scrolling on mobile devices to save main thread CPU
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     const lenis = new Lenis({
         duration: 1.2,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         direction: 'vertical',
         gestureDirection: 'vertical',
-        smooth: true,
+        smooth: !isMobile && !prefersReducedMotion,
         mouseMultiplier: 1,
         smoothTouch: false,
         touchMultiplier: 2,
@@ -77,16 +81,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // 3. Parallax sutil com Scroll (Otimizado)
     gsap.registerPlugin(ScrollTrigger);
 
-    gsap.to('.gs-parallax-img', {
-        yPercent: 15,
-        ease: "none",
-        scrollTrigger: {
-            trigger: "#hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: true
-        }
-    });
+    if (!isMobile && !prefersReducedMotion) {
+        gsap.to('.gs-parallax-img', {
+            yPercent: 15,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "#hero",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+    }
 
     // 4. Seção Neural/Dark Animada
     const aboutTl = gsap.timeline({
@@ -706,17 +712,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // =============================================
     // PARALLAX SUTIL nos background glows
     // =============================================
-    gsap.utils.toArray('.bg-blob').forEach((blob, i) => {
-        gsap.to(blob, {
-            yPercent: -20 + (i * 10),
-            ease: 'none',
-            scrollTrigger: {
-                trigger: blob.closest('section') || '#hero',
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: 1.5
-            }
+    if (!isMobile && !prefersReducedMotion) {
+        gsap.utils.toArray('.bg-blob').forEach((blob, i) => {
+            gsap.to(blob, {
+                yPercent: -20 + (i * 10),
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: blob.closest('section') || '#hero',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: 1.5
+                }
+            });
         });
-    });
+    }
 
 });

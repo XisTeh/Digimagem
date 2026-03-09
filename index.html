@@ -86,8 +86,8 @@
         class="absolute top-5 left-1/2 -translate-x-1/2 w-[95%] max-w-[1280px] z-50 transition-all duration-500 backdrop-blur-[16px] bg-gradient-to-r from-white/80 to-white/40 border-t border-l border-white/80 border-b border-r border-white/30 rounded-full shadow-[0_8px_32px_-8px_rgba(28,25,23,0.08)] invisible-start gs-nav lg:fixed">
         <div class="px-7 py-3.5 md:py-4 flex items-center justify-between w-full">
             <div class="flex items-center shrink-0 pl-1">
-                <img src="assets/images/logodimagem.webp" alt="Dimagem"
-                    class="nav-logo h-8 md:h-9 lg:h-10 object-contain drop-shadow-sm transition-all duration-500">
+                <img src="assets/images/logodimagem.webp" alt="Dimagem" width="200" height="40"
+                    class="nav-logo h-8 md:h-9 lg:h-10 w-auto object-contain drop-shadow-sm transition-all duration-500">
             </div>
 
             <div
@@ -245,7 +245,7 @@
                 <div class="relative w-full lg:w-[85%] h-full rounded-[2.5rem] overflow-hidden shadow-2xl glass-effect border-2 border-white gs-main-img-wrapper z-10"
                     style="transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);">
                     <div class="absolute inset-0 bg-stone-900/5 z-10 pointer-events-none mix-blend-multiply"></div>
-                    <img src="assets/images/frente-dimagem.webp" alt="Fachada Clínica Dimagem"
+                    <img src="assets/images/frente-dimagem.webp" alt="Fachada Clínica Dimagem" width="1200" height="800"
                         class="w-full h-full object-cover scale-[1.05] gs-parallax-img hover:scale-110 transition-transform duration-[1.5s] ease-out img-mask"
                         fetchpriority="high" decoding="sync" loading="eager"
                         onerror="this.src='https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1200'; this.classList.remove('img-mask');">
@@ -264,8 +264,9 @@
                         <div
                             class="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shadow-inner border-2 border-white relative group-hover:scale-105 transition-transform duration-500">
                             <!-- Fallback emborrachado se a imagem não carregar localmente -->
-                            <img src="assets/images/Dr.-CELSO-VEDOLIN.webp" alt="Dr. Celso Vedolin"
-                                class="w-full h-full object-cover object-top" loading="lazy"
+                            <img src="assets/images/Dr.-CELSO-VEDOLIN.webp" alt="Dr. Celso Vedolin" width="80"
+                                height="80" class="w-full h-full object-cover object-top" loading="lazy"
+                                decoding="async"
                                 onerror="this.src='https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400'">
                         </div>
                         <div class="flex flex-col">
@@ -416,6 +417,7 @@
                         <div
                             class="absolute inset-0 rounded-[1.5rem] overflow-hidden shadow-inner border border-white/60 bg-white">
                             <img src="assets/images/frente-dimagem.webp" alt="Dimagem Fachada" loading="lazy"
+                                decoding="async" width="800" height="600"
                                 class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-[2s] ease-out">
                             <!-- Clareamento elegante por cima da foto ao invés de escurecer -->
                             <div
@@ -690,7 +692,8 @@
                                 </div>
                                 <!-- Imagem -->
                                 <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
-                                    <img src="assets/images/Dr.-CELSO-VEDOLIN.webp" alt="Dr. Celso Vedolin"
+                                    <img src="assets/images/Dr.-CELSO-VEDOLIN.webp" alt="Dr. Celso Vedolin" width="260"
+                                        height="346" decoding="async"
                                         class="w-full h-full object-cover object-top transition-all duration-700"
                                         loading="lazy">
                                     <div
@@ -720,8 +723,8 @@
                             <div
                                 class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
                                 <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
-                                    <img src="assets/images/Dra-EMANUELLE-GOBBO-SIMON.webp"
-                                        alt="Dra. Emanuelle Gobbo Simon"
+                                    <img src="assets/images/Dra-EMANUELLE-GOBBO-SIMON.webp" width="260" height="346"
+                                        decoding="async" alt="Dra. Emanuelle Gobbo Simon"
                                         class="w-full h-full object-cover object-top transition-all duration-700"
                                         loading="lazy">
                                     <div
@@ -751,8 +754,8 @@
                             <div
                                 class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
                                 <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
-                                    <img src="assets/images/Dr.-HENRIQUE-DA-ROSA-SOBRINHO.webp"
-                                        alt="Dr. Henrique da Rosa Sobrinho"
+                                    <img src="assets/images/Dr.-HENRIQUE-DA-ROSA-SOBRINHO.webp" width="260" height="346"
+                                        decoding="async" alt="Dr. Henrique da Rosa Sobrinho"
                                         class="w-full h-full object-cover object-top transition-all duration-700"
                                         loading="lazy">
                                     <div
@@ -782,8 +785,8 @@
                             <div
                                 class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
                                 <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
-                                    <img src="assets/images/Dra-JANIZE-REGIANE-PASLOWSKI.webp"
-                                        alt="Dra. Janize Regiane Paslowski"
+                                    <img src="assets/images/Dra-JANIZE-REGIANE-PASLOWSKI.webp" width="260" height="346"
+                                        decoding="async" alt="Dra. Janize Regiane Paslowski"
                                         class="w-full h-full object-cover object-top transition-all duration-700"
                                         loading="lazy">
                                     <div
@@ -813,8 +816,8 @@
                             <div
                                 class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
                                 <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
-                                    <img src="assets/images/Dr.-VINICIUS-CARDOSO-DOS-SANTOS.webp"
-                                        alt="Dr. Vinicius Cardoso dos Santos"
+                                    <img src="assets/images/Dr.-VINICIUS-CARDOSO-DOS-SANTOS.webp" width="260"
+                                        height="346" decoding="async" alt="Dr. Vinicius Cardoso dos Santos"
                                         class="w-full h-full object-cover object-top transition-all duration-700"
                                         loading="lazy">
                                     <div
@@ -845,6 +848,7 @@
                                 class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
                                 <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
                                     <img src="assets/images/Dr.-EDUARDO-TOMASI.webp" alt="Dr. Eduardo Tomasi"
+                                        width="260" height="346" decoding="async"
                                         class="w-full h-full object-cover object-top transition-all duration-700"
                                         loading="lazy">
                                     <div
@@ -875,6 +879,7 @@
                                 class="team-card__inner relative rounded-[1.5rem] overflow-hidden bg-white shadow-md transition-all duration-500">
                                 <div class="team-card__img w-full aspect-[3/4] overflow-hidden relative bg-beige-100">
                                     <img src="assets/images/D.r-KILIAN-CHRISTMANN.webp" alt="Dr. Kilian Christmann"
+                                        width="260" height="346" decoding="async"
                                         class="w-full h-full object-cover object-top transition-all duration-700"
                                         loading="lazy">
                                     <div
@@ -1149,8 +1154,8 @@
 
                     <!-- RM -->
                     <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="RM">
-                        <img src="assets/images/RM.webp" alt="Ressonância Magnética" class="ds-card__image"
-                            loading="lazy" decoding="async">
+                        <img src="assets/images/RM.webp" alt="Ressonância Magnética" class="ds-card__image" width="400"
+                            height="533" loading="lazy" decoding="async">
                         <div class="ds-card__content p-5 lg:p-6">
                             <div class="flex justify-between w-full">
                                 <span class="text-lime-400 font-mono text-sm">01</span>
@@ -1169,7 +1174,7 @@
                     <!-- TC -->
                     <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="TC">
                         <img src="assets/images/TC.webp" alt="Tomografia Computadorizada" class="ds-card__image"
-                            loading="lazy" decoding="async">
+                            width="400" height="533" loading="lazy" decoding="async">
                         <div class="ds-card__content p-5 lg:p-6">
                             <div class="flex justify-between w-full">
                                 <span class="text-lime-400 font-mono text-sm">02</span>
@@ -1188,7 +1193,7 @@
                     <!-- ECO -->
                     <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="ECO">
                         <img src="assets/images/ECO.webp" alt="Ecografia" class="ds-card__image" loading="lazy"
-                            decoding="async">
+                            width="400" height="533" decoding="async">
                         <div class="ds-card__content p-5 lg:p-6">
                             <div class="flex justify-between w-full">
                                 <span class="text-lime-400 font-mono text-sm">03</span>
@@ -1207,7 +1212,7 @@
                     <!-- RX -->
                     <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="RX">
                         <img src="assets/images/RX.webp" alt="Raios-X Digital" class="ds-card__image" loading="lazy"
-                            decoding="async">
+                            width="400" height="533" decoding="async">
                         <div class="ds-card__content p-5 lg:p-6">
                             <div class="flex justify-between w-full">
                                 <span class="text-lime-400 font-mono text-sm">04</span>
@@ -1226,7 +1231,7 @@
                     <!-- MAMOGRAFIA -->
                     <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="MAMOGRAFIA">
                         <img src="assets/images/MAMOGRAFIA.webp" alt="Mamografia" class="ds-card__image" loading="lazy"
-                            decoding="async">
+                            width="400" height="533" decoding="async">
                         <div class="ds-card__content p-5 lg:p-6">
                             <div class="flex justify-between w-full">
                                 <span class="text-lime-400 font-mono text-sm">05</span>
@@ -1244,8 +1249,8 @@
 
                     <!-- D.O -->
                     <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="DO">
-                        <img src="assets/images/D.O.webp" alt="Densitometria Óssea" class="ds-card__image"
-                            loading="lazy" decoding="async">
+                        <img src="assets/images/D.O.webp" alt="Densitometria Óssea" class="ds-card__image" width="400"
+                            height="533" loading="lazy" decoding="async">
                         <div class="ds-card__content p-5 lg:p-6">
                             <div class="flex justify-between w-full">
                                 <span class="text-lime-400 font-mono text-sm">06</span>
@@ -1264,7 +1269,7 @@
                     <!-- BIOPSIA -->
                     <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="BIOPSIA">
                         <img src="assets/images/BIOPSIA.webp" alt="Biópsia" class="ds-card__image" loading="lazy"
-                            decoding="async">
+                            width="400" height="533" decoding="async">
                         <div class="ds-card__content p-5 lg:p-6">
                             <div class="flex justify-between w-full">
                                 <span class="text-lime-400 font-mono text-sm">07</span>
@@ -1283,7 +1288,7 @@
                     <!-- ODONTOLÓGICA -->
                     <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="ODONTOLOGICA">
                         <img src="assets/images/ODONTOLÓGICA.webp" alt="Radiologia Odontológica" class="ds-card__image"
-                            loading="lazy">
+                            width="400" height="533" loading="lazy" decoding="async">
                         <div class="ds-card__content p-5 lg:p-6">
                             <div class="flex justify-between w-full">
                                 <span class="text-lime-400 font-mono text-sm">08</span>
