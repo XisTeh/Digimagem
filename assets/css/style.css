@@ -10,18 +10,7 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Textura Noise Global */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 0.025;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            background-repeat: repeat;
-            background-size: 256px 256px;
-        }
+        /* Textura Noise Global Removida para Performance */
 
         /* Scroll Progress Bar */
         .scroll-progress {
@@ -67,18 +56,7 @@
 
         .glow-pulse {
             box-shadow: 0 0 25px rgba(184, 157, 112, 0.4);
-            animation: pulse-glow 3s infinite alternate;
             will-change: box-shadow;
-        }
-
-        @keyframes pulse-glow {
-            from { box-shadow: 0 0 15px rgba(184, 157, 112, 0.15); }
-            to { box-shadow: 0 0 35px rgba(184, 157, 112, 0.6); }
-        }
-
-        @keyframes pulse-glow-gold {
-            from { box-shadow: 0 0 15px rgba(184, 157, 112, 0.15); }
-            to { box-shadow: 0 0 35px rgba(184, 157, 112, 0.5); }
         }
 
         /* =========================================
@@ -94,19 +72,13 @@
         }
 
         /* Otimização de Performance (Lazy Rendering) */
-        .section-optimized {
-            content-visibility: auto;
-            contain-intrinsic-size: 1000px;
-            contain: paint layout;
-        }
-        
+
         /* Reduzir repaints de animações de orb */
         .ambient-orb {
             position: absolute;
             border-radius: 50%;
             pointer-events: none;
             will-change: transform, opacity;
-            filter: blur(60px);
             transform: translateZ(0); /* Força GPU HW Accel */
         }
         .bg-blob {
@@ -269,16 +241,17 @@
         .team-card.is-selected .team-card__inner::before {
             content: '';
             position: absolute;
-            top: 0; left: -100%;
+            top: 0; left: 0;
             width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
             z-index: 30;
+            transform: translateX(-100%);
             animation: shine-sweep 2s ease-in-out 0.3s;
             pointer-events: none;
         }
         @keyframes shine-sweep {
-            0% { left: -100%; }
-            100% { left: 100%; }
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
 
@@ -305,22 +278,25 @@
             overflow: hidden;
             background: #1c1917;
             color: #E6E3D6;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
             position: relative;
+            transform: translateZ(0);
+            will-change: transform;
         }
         .ds-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-8px) translateZ(0);
             box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
         }
         .ds-card__image {
             position: absolute; inset: 0; width: 100%; height: 100%;
-            object-fit: cover; opacity: 0.5; filter: grayscale(50%);
-            transition: transform 0.8s ease, filter 0.5s ease, opacity 0.5s ease;
+            object-fit: cover; opacity: 0.4;
+            transform: translateZ(0);
+            will-change: transform, opacity;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
         }
         .ds-card:hover .ds-card__image {
-            transform: scale(1.05);
-            opacity: 0.3;
-            filter: grayscale(0%);
+            transform: scale(1.08) translateZ(0);
+            opacity: 0.25;
         }
         .ds-card__content {
             position: relative; z-index: 10;
@@ -409,62 +385,18 @@
             left: 0;
             right: 0;
             height: 250px;
-            background: linear-gradient(
-                to bottom,
-                rgba(28, 25, 23, 0) 0%,
-                rgba(28, 25, 23, 0.01) 10%,
-                rgba(28, 25, 23, 0.04) 22%,
-                rgba(28, 25, 23, 0.08) 33%,
-                rgba(28, 25, 23, 0.16) 44%,
-                rgba(28, 25, 23, 0.3) 55%,
-                rgba(28, 25, 23, 0.5) 66%,
-                rgba(28, 25, 23, 0.72) 77%,
-                rgba(28, 25, 23, 0.9) 88%,
-                rgba(28, 25, 23, 1) 100%
-            );
+            background: linear-gradient(to bottom, rgba(28, 25, 23, 0), rgba(28, 25, 23, 1));
             pointer-events: none;
             z-index: 20;
+            transform: translateZ(0);
         }
 
         /* =========================================
-           AMBIENT BACKGROUND ANIMATIONS
+           AMBIENT BACKGROUND (Static for Performance)
            ========================================= */
-        @keyframes ambient-drift {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(30px, -20px) scale(1.05); }
-            50% { transform: translate(-20px, 15px) scale(0.95); }
-            75% { transform: translate(15px, 25px) scale(1.02); }
-        }
-        @keyframes ambient-drift-reverse {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(-25px, 20px) scale(0.97); }
-            50% { transform: translate(20px, -15px) scale(1.04); }
-            75% { transform: translate(-10px, -25px) scale(1); }
-        }
-        @keyframes ambient-pulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.1); }
-        }
-        @keyframes ambient-rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .ambient-orb--1 {
-            animation: ambient-drift 20s ease-in-out infinite;
-        }
-        .ambient-orb--2 {
-            animation: ambient-drift-reverse 25s ease-in-out infinite;
-        }
-        .ambient-orb--3 {
-            animation: ambient-drift 30s ease-in-out infinite;
-            animation-delay: -10s;
-        }
-        .ambient-orb--pulse {
-            animation: ambient-pulse 8s ease-in-out infinite;
-        }
-        .ambient-grid-shift {
-            animation: ambient-drift 40s ease-in-out infinite;
+        .ambient-orb--1, .ambient-orb--2, .ambient-orb--3, .ambient-orb--pulse, .ambient-grid-shift {
+            /* Animações contínuas desativadas para garantir a fluidez da GPU na transição de blocos */
+            will-change: auto; 
         }
 
         /* =========================================
@@ -480,6 +412,8 @@
         }
         .animate-marquee {
             animation: marquee 40s linear infinite;
+            will-change: transform;
+            transform: translateZ(0);
         }
         .marquee-container {
             display: flex;

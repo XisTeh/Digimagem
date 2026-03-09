@@ -202,7 +202,7 @@
                         src="assets/images/frente-dimagem.webp" 
                         alt="Fachada Clínica Dimagem" 
                         class="w-full h-full object-cover scale-[1.05] gs-parallax-img hover:scale-110 transition-transform duration-[1.5s] ease-out img-mask"
-                        loading="lazy"
+                        fetchpriority="high" decoding="sync"
                         onerror="this.src='https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1200'; this.classList.remove('img-mask');"
                     >
                     <!-- Gradiente base para a imagem -->
@@ -230,7 +230,7 @@
                 <!-- Floating Card 2: Tecnologia (Glass Dark) -->
                 <!-- Posição: Canto superior direito/central -->
                 <div class="absolute top-[15%] -right-[5%] lg:-right-[5%] z-20 gs-float-card-alt delay-200 shadow-2xl group cursor-pointer hover:z-30">
-                    <div class="glass-dark rounded-[1.5rem] p-4 sm:p-5 flex items-center gap-4 border border-white/10 backdrop-blur-md group-hover:scale-105 group-hover:border-primary/30 group-hover:shadow-[0_0_40px_rgba(184,157,112,0.25)] transition-all duration-300" style="box-shadow: 0 0 25px rgba(184,157,112,0.3); animation: pulse-glow-gold 3s infinite alternate;">
+                    <div class="glass-dark rounded-[1.5rem] p-4 sm:p-5 flex items-center gap-4 border border-white/10 backdrop-blur-md group-hover:scale-105 group-hover:border-primary/30 group-hover:shadow-[0_0_40px_rgba(184,157,112,0.25)] transition-all duration-300" style="box-shadow: 0 0 25px rgba(184,157,112,0.3);">
                         <div class="w-12 h-12 rounded-full bg-[#B89D70] flex items-center justify-center text-white shadow-lg relative overflow-hidden group-hover:bg-[#c4ad82] transition-colors duration-300">
                             <div class="absolute top-0 left-0 w-full h-1/2 bg-white/25 rounded-t-full"></div>
                             <iconify-icon icon="solar:scanner-bold-duotone" width="24" class="relative z-10 group-hover:rotate-12 transition-transform duration-300"></iconify-icon>
@@ -411,8 +411,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center mb-16 lg:mb-20 gs-team-header">
                 <div class="w-full relative">
                     <!-- Decoração sutil atrás do título -->
-                    <div class="absolute -left-6 top-8 w-20 h-20 rounded-full bg-primary/[0.06] blur-2xl pointer-events-none"></div>
-                    <div class="absolute right-10 bottom-0 w-32 h-32 rounded-full bg-sage/[0.06] blur-3xl pointer-events-none"></div>
+                    <div class="absolute -left-6 top-8 w-20 h-20 rounded-full bg-[radial-gradient(circle,rgba(184,157,112,0.15)_0%,transparent_70%)] pointer-events-none"></div>
+                    <div class="absolute right-10 bottom-0 w-32 h-32 rounded-full bg-[radial-gradient(circle,rgba(158,160,143,0.15)_0%,transparent_70%)] pointer-events-none"></div>
                     
                     <div class="gs-team-badge inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-primary/30 bg-white/60 shadow-sm text-xs font-bold uppercase tracking-widest text-primary mb-6">
                         <iconify-icon icon="solar:stethoscope-bold-duotone" width="16"></iconify-icon> Corpo Clínico
@@ -459,8 +459,8 @@
                     <!-- PACS INTEGRAÇÃO -->
                     <div class="bg-white/60 backdrop-blur-xl rounded-[2rem] p-8 md:p-10 border border-white shadow-[0_20px_50px_rgba(184,157,112,0.1)] relative overflow-hidden group gs-reveal transform translate-z-0">
                         <!-- Rederring Glow Premium -->
-                        <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-primary/10 rounded-full blur-[60px] group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-700 pointer-events-none"></div>
-                        <div class="absolute -left-20 -top-20 w-64 h-64 bg-stone-400/5 rounded-full blur-[50px] group-hover:bg-stone-400/10 transition-all duration-700 pointer-events-none"></div>
+                        <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-[radial-gradient(circle,rgba(184,157,112,0.15)_0%,transparent_70%)] rounded-full group-hover:bg-[radial-gradient(circle,rgba(184,157,112,0.25)_0%,transparent_70%)] transition-all duration-700 pointer-events-none"></div>
+                        <div class="absolute -left-20 -top-20 w-64 h-64 bg-[radial-gradient(circle,rgba(168,162,158,0.08)_0%,transparent_70%)] rounded-full transition-all duration-700 pointer-events-none"></div>
                         
                         <!-- Logo Watermark Background -->
                         <div class="absolute -right-4 -top-8 text-[#B89D70]/[0.05] font-serif italic text-[8rem] md:text-[12rem] rotate-[-5deg] select-none pointer-events-none group-hover:scale-[1.05] group-hover:-rotate-6 transition-transform duration-1000">Pacs</div>
@@ -665,89 +665,93 @@
         </div>
 
         <!-- Grade Marquee Transparente -->
-        <div class="w-full relative py-4 mask-edges" style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);">
-            
-            <div class="marquee-container animate-marquee gap-6 sm:gap-8 px-4 flex-nowrap items-center">
-                <!-- Para dar loop perfeito, os items precisam ser duplicados. -->
-
-                <!-- BLOCO 1 -->
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:health-bold" class="text-stone-400 group-hover:text-primary transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Cabergs Saúde</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:heart-pulse-bold" class="text-lime-400/80 group-hover:text-lime-400 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">IPE Saúde</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:card-2-bold" class="text-stone-400 group-hover:text-blue-400 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Vital Saúde</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:wallet-bold" class="text-stone-400 group-hover:text-blue-400 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Vital Cauzzo</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:virus-bold" class="text-stone-400 group-hover:text-green-500 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">CISA</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:shield-bold" class="text-stone-400 group-hover:text-blue-500 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">CASSI</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:users-group-rounded-bold" class="text-stone-400 group-hover:text-orange-400 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Saúde Caixa</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:leaf-bold" class="text-stone-400 group-hover:text-green-600 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Unimed</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:letter-bold" class="text-stone-400 group-hover:text-yellow-500 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Correios</span>
-                </div>
-
-                <!-- BLOCO 2 (DUPLICADO EXATAMENTE IGUAL PARA O LOOP DO MARQUEE NÃO QUEBRAR) -->
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:health-bold" class="text-stone-400 group-hover:text-primary transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Cabergs Saúde</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:heart-pulse-bold" class="text-lime-400/80 group-hover:text-lime-400 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">IPE Saúde</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:card-2-bold" class="text-stone-400 group-hover:text-blue-400 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Vital Saúde</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:wallet-bold" class="text-stone-400 group-hover:text-blue-400 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Vital Cauzzo</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:virus-bold" class="text-stone-400 group-hover:text-green-500 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">CISA</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:shield-bold" class="text-stone-400 group-hover:text-blue-500 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">CASSI</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:users-group-rounded-bold" class="text-stone-400 group-hover:text-orange-400 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Saúde Caixa</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:leaf-bold" class="text-stone-400 group-hover:text-green-600 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Unimed</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 backdrop-blur-md group">
-                    <iconify-icon icon="solar:letter-bold" class="text-stone-400 group-hover:text-yellow-500 transition-colors"></iconify-icon>
-                    <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Correios</span>
-                </div>
-
-            </div>
-        </div>
+        <div class="w-full relative py-4 flex overflow-hidden">
+            <!-- Fade L -->
+             <div class="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-stone-900 to-transparent z-10 pointer-events-none transform-gpu"></div>
+             <!-- Fade R -->
+             <div class="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-stone-900 to-transparent z-10 pointer-events-none transform-gpu"></div>
+             
+             <div class="marquee-container animate-marquee gap-6 sm:gap-8 px-4 flex-nowrap items-center will-change-transform">
+                 <!-- Para dar loop perfeito, os items precisam ser duplicados. -->
+ 
+                 <!-- BLOCO 1 -->
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:health-bold" class="text-stone-400 group-hover:text-primary transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Cabergs Saúde</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:heart-pulse-bold" class="text-lime-400/80 group-hover:text-lime-400 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">IPE Saúde</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:card-2-bold" class="text-stone-400 group-hover:text-blue-400 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Vital Saúde</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:wallet-bold" class="text-stone-400 group-hover:text-blue-400 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Vital Cauzzo</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:virus-bold" class="text-stone-400 group-hover:text-green-500 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">CISA</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:shield-bold" class="text-stone-400 group-hover:text-blue-500 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">CASSI</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:users-group-rounded-bold" class="text-stone-400 group-hover:text-orange-400 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Saúde Caixa</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:leaf-bold" class="text-stone-400 group-hover:text-green-600 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Unimed</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:letter-bold" class="text-stone-400 group-hover:text-yellow-500 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Correios</span>
+                 </div>
+ 
+                 <!-- BLOCO 2 (DUPLICADO EXATAMENTE IGUAL PARA O LOOP DO MARQUEE NÃO QUEBRAR) -->
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:health-bold" class="text-stone-400 group-hover:text-primary transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Cabergs Saúde</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:heart-pulse-bold" class="text-lime-400/80 group-hover:text-lime-400 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">IPE Saúde</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:card-2-bold" class="text-stone-400 group-hover:text-blue-400 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Vital Saúde</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:wallet-bold" class="text-stone-400 group-hover:text-blue-400 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Vital Cauzzo</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:virus-bold" class="text-stone-400 group-hover:text-green-500 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">CISA</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:shield-bold" class="text-stone-400 group-hover:text-blue-500 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">CASSI</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:users-group-rounded-bold" class="text-stone-400 group-hover:text-orange-400 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Saúde Caixa</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:leaf-bold" class="text-stone-400 group-hover:text-green-600 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Unimed</span>
+                 </div>
+                 <div class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all cursor-default shrink-0 group">
+                     <iconify-icon icon="solar:letter-bold" class="text-stone-400 group-hover:text-yellow-500 transition-colors"></iconify-icon>
+                     <span class="font-heading font-semibold text-stone-200 uppercase tracking-wider text-xs sm:text-sm">Correios</span>
+                 </div>
+ 
+             </div>
+         </div>
     
 
     <!-- 6️⃣ EXAMES (CARDS LAVA EFF) -->
@@ -792,7 +796,7 @@
                 
                 <!-- RM -->
                 <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="RM">
-                    <img src="assets/images/RM.webp" alt="Ressonância Magnética" class="ds-card__image" loading="lazy">
+                    <img src="assets/images/RM.webp" alt="Ressonância Magnética" class="ds-card__image" loading="lazy" decoding="async">
                     <div class="ds-card__content p-5 lg:p-6">
                         <div class="flex justify-between w-full">
                             <span class="text-lime-400 font-mono text-sm">01</span>
@@ -808,7 +812,7 @@
 
                 <!-- TC -->
                 <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="TC">
-                    <img src="assets/images/TC.webp" alt="Tomografia Computadorizada" class="ds-card__image" loading="lazy">
+                    <img src="assets/images/TC.webp" alt="Tomografia Computadorizada" class="ds-card__image" loading="lazy" decoding="async">
                     <div class="ds-card__content p-5 lg:p-6">
                         <div class="flex justify-between w-full">
                             <span class="text-lime-400 font-mono text-sm">02</span>
@@ -824,7 +828,7 @@
 
                 <!-- ECO -->
                 <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="ECO">
-                    <img src="assets/images/ECO.webp" alt="Ecografia" class="ds-card__image" loading="lazy">
+                    <img src="assets/images/ECO.webp" alt="Ecografia" class="ds-card__image" loading="lazy" decoding="async">
                     <div class="ds-card__content p-5 lg:p-6">
                         <div class="flex justify-between w-full">
                             <span class="text-lime-400 font-mono text-sm">03</span>
@@ -840,7 +844,7 @@
 
                 <!-- RX -->
                 <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="RX">
-                    <img src="assets/images/RX.webp" alt="Raios-X Digital" class="ds-card__image" loading="lazy">
+                    <img src="assets/images/RX.webp" alt="Raios-X Digital" class="ds-card__image" loading="lazy" decoding="async">
                     <div class="ds-card__content p-5 lg:p-6">
                         <div class="flex justify-between w-full">
                             <span class="text-lime-400 font-mono text-sm">04</span>
@@ -856,7 +860,7 @@
 
                 <!-- MAMOGRAFIA -->
                 <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="MAMOGRAFIA">
-                    <img src="assets/images/MAMOGRAFIA.webp" alt="Mamografia" class="ds-card__image" loading="lazy">
+                    <img src="assets/images/MAMOGRAFIA.webp" alt="Mamografia" class="ds-card__image" loading="lazy" decoding="async">
                     <div class="ds-card__content p-5 lg:p-6">
                         <div class="flex justify-between w-full">
                             <span class="text-lime-400 font-mono text-sm">05</span>
@@ -872,7 +876,7 @@
 
                 <!-- D.O -->
                 <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="DO">
-                    <img src="assets/images/D.O.webp" alt="Densitometria Óssea" class="ds-card__image" loading="lazy">
+                    <img src="assets/images/D.O.webp" alt="Densitometria Óssea" class="ds-card__image" loading="lazy" decoding="async">
                     <div class="ds-card__content p-5 lg:p-6">
                         <div class="flex justify-between w-full">
                             <span class="text-lime-400 font-mono text-sm">06</span>
@@ -888,7 +892,7 @@
 
                 <!-- BIOPSIA -->
                 <div class="ds-card aspect-[3/4] gs-exam-card cursor-pointer group" data-preparo="BIOPSIA">
-                    <img src="assets/images/BIOPSIA.webp" alt="Biópsia" class="ds-card__image" loading="lazy">
+                    <img src="assets/images/BIOPSIA.webp" alt="Biópsia" class="ds-card__image" loading="lazy" decoding="async">
                     <div class="ds-card__content p-5 lg:p-6">
                         <div class="flex justify-between w-full">
                             <span class="text-lime-400 font-mono text-sm">07</span>
@@ -1009,8 +1013,8 @@
                 <div class="lg:col-span-3 relative">
                     <div class="bg-white/[0.04] backdrop-blur-xl rounded-[2rem] p-8 md:p-10 border border-white/10 relative overflow-hidden group">
                         <!-- Glow decorativo -->
-                        <div class="absolute -top-20 -left-20 w-60 h-60 bg-primary/8 rounded-full blur-[60px] pointer-events-none group-hover:bg-primary/12 transition-all duration-700"></div>
-                        <div class="absolute -bottom-16 -right-16 w-48 h-48 bg-sage/5 rounded-full blur-[50px] pointer-events-none"></div>
+                        <div class="absolute -top-20 -left-20 w-60 h-60 bg-[radial-gradient(circle,rgba(184,157,112,0.1)_0%,transparent_70%)] rounded-full pointer-events-none group-hover:bg-[radial-gradient(circle,rgba(184,157,112,0.15)_0%,transparent_70%)] transition-all duration-700"></div>
+                        <div class="absolute -bottom-16 -right-16 w-48 h-48 bg-[radial-gradient(circle,rgba(158,160,143,0.1)_0%,transparent_70%)] rounded-full pointer-events-none"></div>
                         
                         <div class="relative z-10">
                             <div class="flex items-center gap-3 mb-8">
@@ -1186,8 +1190,8 @@
         <div id="pacs-content" class="relative bg-white/95 backdrop-blur-3xl border border-white/60 w-full max-w-xl max-h-[90vh] rounded-[2rem] shadow-[0_25px_80px_-15px_rgba(0,0,0,0.25)] overflow-hidden flex flex-col transform scale-95 opacity-0">
             
             <!-- Glow decorativo no modal -->
-            <div class="absolute -top-20 -right-20 w-48 h-48 bg-primary/10 rounded-full blur-[50px] pointer-events-none"></div>
-            <div class="absolute -bottom-16 -left-16 w-40 h-40 bg-sage/10 rounded-full blur-[40px] pointer-events-none"></div>
+            <div class="absolute -top-20 -right-20 w-48 h-48 bg-[radial-gradient(circle,rgba(184,157,112,0.15)_0%,transparent_70%)] rounded-full pointer-events-none"></div>
+            <div class="absolute -bottom-16 -left-16 w-40 h-40 bg-[radial-gradient(circle,rgba(158,160,143,0.15)_0%,transparent_70%)] rounded-full pointer-events-none"></div>
             
             <!-- Linha decorativa superior gradiente -->
             <div class="w-full h-1 bg-gradient-to-r from-transparent via-[#B89D70] to-transparent"></div>
@@ -1201,7 +1205,7 @@
                 <div class="text-center mb-8">
                     <!-- Ícone com glow -->
                     <div class="relative inline-flex mb-5">
-                        <div class="absolute inset-0 bg-[#B89D70]/20 rounded-2xl blur-xl scale-150 animate-pulse pointer-events-none"></div>
+                        <div class="absolute inset-0 bg-[radial-gradient(circle,rgba(184,157,112,0.2)_0%,transparent_70%)] rounded-2xl scale-150 pointer-events-none transition-opacity"></div>
                         <div class="relative w-16 h-16 bg-gradient-to-br from-[#B89D70]/15 to-[#B89D70]/5 rounded-2xl flex items-center justify-center border border-[#B89D70]/20 shadow-sm">
                             <iconify-icon icon="solar:user-speak-bold-duotone" class="text-[#B89D70]" width="30"></iconify-icon>
                         </div>

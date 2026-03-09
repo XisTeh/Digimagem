@@ -74,34 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ease: "back.out(1.5)"
             }, 1);
 
-            // 3. Efeitos Contínuos (Float e Parallax sutil com Scroll)
-            gsap.to('.gs-float-card', {
-                y: "-=15",
-                duration: 3,
-                yoyo: true,
-                repeat: -1,
-                ease: "sine.inOut"
-            });
-            
-            gsap.to('.gs-float-card-alt', {
-                y: "+=12",
-                duration: 3.5,
-                yoyo: true,
-                repeat: -1,
-                ease: "sine.inOut",
-                delay: 0.5
-            });
-
-            gsap.to('.gs-float-slow', {
-                y: "-=20",
-                rotation: 5,
-                duration: 6,
-                yoyo: true,
-                repeat: -1,
-                ease: "sine.inOut"
-            });
-
-            // Parallax na imagem principal ao scrollar (ScrollTrigger)
+            // 3. Parallax sutil com Scroll (Otimizado)
             gsap.registerPlugin(ScrollTrigger);
             
             gsap.to('.gs-parallax-img', {
@@ -113,46 +86,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     end: "bottom top",
                     scrub: true
                 }
-            });
-            
-            // Mouse Move Parallax na Section Inteira (Otimizado com quickTo e requestAnimationFrame)
-            const heroSection = document.getElementById('hero');
-            
-            const xToImg = gsap.quickTo('.gs-main-img-wrapper', 'rotationY', {duration: 1, ease: 'power2.out'});
-            const yToImg = gsap.quickTo('.gs-main-img-wrapper', 'rotationX', {duration: 1, ease: 'power2.out'});
-            const xToCard = gsap.quickTo('.gs-float-card', 'x', {duration: 1, ease: 'power2.out'});
-            const yToCard = gsap.quickTo('.gs-float-card', 'y', {duration: 1, ease: 'power2.out'});
-            const xToCardAlt = gsap.quickTo('.gs-float-card-alt', 'x', {duration: 1, ease: 'power2.out'});
-            const yToCardAlt = gsap.quickTo('.gs-float-card-alt', 'y', {duration: 1, ease: 'power2.out'});
-
-            let ticking = false;
-
-            heroSection.addEventListener('mousemove', (e) => {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        const x = (e.clientX / window.innerWidth - 0.5) * 20; // range -10 to 10
-                        const y = (e.clientY / window.innerHeight - 0.5) * 20;
-
-                        xToImg(-5 + x * 0.5);
-                        yToImg(2 - y * 0.5);
-                        xToCard(x * -1.5);
-                        yToCard(y * -1.5);
-                        xToCardAlt(x * 1.2);
-                        yToCardAlt(y * 1.2);
-                        
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            }, { passive: true });
-            
-            heroSection.addEventListener('mouseleave', () => {
-                xToImg(-5);
-                yToImg(2);
-                xToCard(0);
-                yToCard(0);
-                xToCardAlt(0);
-                yToCardAlt(0);
             });
 
             // 4. Seção Neural/Dark Animada
