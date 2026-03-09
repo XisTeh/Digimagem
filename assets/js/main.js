@@ -142,7 +142,25 @@ document.addEventListener("DOMContentLoaded", () => {
     // 5. CORPO CLÍNICO — Animações + Carrossel
     // =============================================
 
-    // Animação de entrada com stagger individual
+    const track = document.getElementById('team-track');
+    let originalCards = Array.from(document.querySelectorAll('.team-card'));
+    const totalOriginalCards = originalCards.length;
+
+    // Precisamos de clones suficientes para encher a tela inteira visível + transbordo
+    // 4 clones p/ direita e 4 clones p/ esquerda garante segurança em qualquer viewport
+    for (let i = 0; i < 4; i++) {
+        // Clone para o final (indo pra direita)
+        let cloneEnd = originalCards[i].cloneNode(true);
+        cloneEnd.classList.remove('is-selected');
+        cloneEnd.dataset.index = totalOriginalCards + i;
+        track.appendChild(cloneEnd);
+    }
+
+    // Agora recarregamos os seletores após clonar
+    const cards = document.querySelectorAll('.team-card');
+    const totalCards = cards.length;
+
+    // Animação de entrada com stagger individual (agora pega originais + clones juntos)
     gsap.set('.gs-team-badge', { autoAlpha: 0, x: -20 });
     gsap.set('.gs-team-title', { autoAlpha: 0, y: 40 });
     gsap.set('.gs-team-subtitle', { autoAlpha: 0, y: 30 });
@@ -170,29 +188,6 @@ document.addEventListener("DOMContentLoaded", () => {
         .to('.gs-team-dots', { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, "-=0.3");
 
     // Carrossel Logic infinito aprimorado
-    const track = document.getElementById('team-track');
-    let originalCards = Array.from(document.querySelectorAll('.team-card'));
-    const totalOriginalCards = originalCards.length;
-
-    // Precisamos de clones suficientes para encher a tela inteira visível + transbordo
-    // 4 clones p/ direita e 4 clones p/ esquerda garante segurança em qualquer viewport
-    for (let i = 0; i < 4; i++) {
-        // Clone para o final (indo pra direita)
-        let cloneEnd = originalCards[i].cloneNode(true);
-        cloneEnd.classList.remove('is-selected');
-        cloneEnd.dataset.index = totalOriginalCards + i;
-
-        // CORREÇÃO: Removemos todos os estilos inline (opacity: 0 e matrizes de transform)
-        // que o GSAP injetou nos cards originais antes do clone ser efetuado.
-        cloneEnd.removeAttribute('style');
-
-        // Garantindo que os sub-elementos internos não ficaram presos com transformações inlines do gsap também 
-        cloneEnd.querySelectorAll('*').forEach(el => el.removeAttribute('style'));
-
-        track.appendChild(cloneEnd);
-    }
-
-    const cards = document.querySelectorAll('.team-card');
     const prevBtn = document.getElementById('team-prev');
     const nextBtn = document.getElementById('team-next');
     const dots = document.querySelectorAll('.team-dot');
@@ -226,34 +221,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function updateCarousel(animated = true, forceInstant = false) {
         const gap = getCardGap();
-        // A largura de passo agora é baseada no cartão em si, não na tela.
-        // No mobile, o CSS já deixa os cartões menores que 100vw, então rolar X cartões revela a borda do próximo.
         const cardWidth = cards[0].offsetWidth + gap;
-
-        // O offset original alinha o card perfeitamente à margem esquerda do container.
-        // Como o card é menor que a tela no mobile (ex: 220px vs 360px), o próximo card
-        // ficará naturalmente à mostra (peek) na direita, sem necessidade de centralização forçada.
-        let getCalculatedOffset = (slideIndex) => {
-            return -slideIndex * cardWidth;
-        };
-
-        let offset = getCalculatedOffset(currentSlide);
 
         // Proteção de limites p/ criar o efeito infinito sem salto visível
         if (currentSlide >= totalOriginalCards) {
             // Se passou do último real e já está vendo o clone inteiro, teleporta pro início invisivelmente
             if (!animated || forceInstant) {
                 currentSlide = currentSlide % totalOriginalCards;
-                offset = getCalculatedOffset(currentSlide);
             } else {
                 // Anima até o clone e no final reseta por trás das cortinas
                 gsap.to(track, {
-                    x: getCalculatedOffset(currentSlide),
+                    x: -currentSlide * cardWidth,
                     duration: 0.7,
                     ease: 'power3.out',
                     onComplete: () => {
                         currentSlide = currentSlide % totalOriginalCards;
-                        gsap.set(track, { x: getCalculatedOffset(currentSlide) });
+                        gsap.set(track, { x: -currentSlide * cardWidth });
                     }
                 });
                 updateDotsState();
@@ -262,9 +245,10 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (currentSlide < 0) {
             if (!animated || forceInstant) {
                 currentSlide = totalOriginalCards - 1;
-                offset = getCalculatedOffset(currentSlide);
             }
         }
+
+        const offset = -currentSlide * cardWidth;
 
         if (animated && !forceInstant) {
             gsap.to(track, {
