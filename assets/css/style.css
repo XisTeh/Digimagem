@@ -511,6 +511,10 @@ html.scrollbar-dark::-webkit-scrollbar-thumb:hover {
     filter: brightness(10) !important;
 }
 
+#main-nav.nav-dark a:not(.btn-premium) iconify-icon {
+    color: #b89d70 !important;
+}
+
 /* Section Divider — gradiente suave */
 .section-divider {
     height: 1px;
